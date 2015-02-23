@@ -1,0 +1,27 @@
+{
+    "dependencies": {
+        "angular": "1.2.x", 
+        "angular-bootstrap": "0.11", 
+        "angular-loader": "1.2.x", 
+        "angular-mocks": "~1.2.x", 
+        "angular-route": "1.2.x", 
+        "angular-resource": "1.2.x",
+        "bootstrap": "3.1.1", 
+        "html5-boilerplate": "~4.3.0",
+        "dangle": null,
+        "d3": "3.4.11",
+        "angular-markdown-filter": null,
+        "angular-sanitize": "1.2.x",
+        "jquery" : "1.11.1",
+        "respond": "1.4.2",
+        "json2": "3d7767b6b1",
+        "angulartics": "0.16.3",
+        "elasticsearch": "3.1.2"
+    }, 
+    "description": "EBiSC catalogue using AngularJS", 
+    "homepage": "https://bitbucket.org/istreeter/gca_ebisc_browser", 
+    "license": "Apache2", 
+    "name": "gca_ebisc_browser", 
+    "private": true, 
+    "version": "0.0.1"
+}
