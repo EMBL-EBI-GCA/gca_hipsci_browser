@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" xmlns:ng="http://angularjs.org" xmlns:dcc="ignore-dcc" xmlns:ui="ignore-ui" xmlns:fs="ignore-fs" id="ng-app" ng-app="dccPortal" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" xmlns:ng="http://angularjs.org" xmlns:dcc="ignore-dcc" xmlns:ui="ignore-ui" xmlns:fs="ignore-fs" id="ng-app" ng-app="dccPortal" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" xmlns:ng="http://angularjs.org" xmlns:dcc="ignore-dcc" xmlns:ui="ignore-ui" xmlns:fs="ignore-fs" id="ng-app" ng-app="dccPortal" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" xmlns:ng="http://angularjs.org" xmlns:dcc="ignore-dcc" xmlns:ui="ignore-ui" xmlns:fs="ignore-fs" id="ng-app" ng-app="ebiscBrowser" class="no-js"> <!--<![endif]-->
+<head>
+  <title>EBiSC catalogue</title>
+	
+</head>
+<body role="document">
+
+  <!-- jQuery must be loaded before angular-->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+
+	<!-- angular components -->
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-route/angular-route.min.js"></script>
+	<script src="bower_components/angular-resource/angular-resource.min.js"></script>
+	<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+
+
+	<script src="bower_components/elasticsearch/elasticsearch.angular.min.js"></script>
+
+
+	<!-- app components -->
+  <script src="js/app.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/controllers.js"></script>
+
+  <div ng-view></div>
+	  
+</body>
+</html>

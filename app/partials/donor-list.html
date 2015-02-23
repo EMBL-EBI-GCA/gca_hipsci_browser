@@ -1,0 +1,11 @@
+
+<h1>Donors</h1>
+
+<ul class="donors">
+    <li ng-repeat="donor in data" class="donor">
+        <a href="#/donors/{{donor.Name}}">{{donor.Name}}</a>
+    </li>
+</ul>
+
+<a ng-click="loadNext()">Next...</a>
+<a ng-click="loadPrevious()">Previous...</a>

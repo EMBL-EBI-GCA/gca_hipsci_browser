@@ -1,0 +1,10 @@
+
+<h1>{{data.Name}}</h1>
+
+<p>Available cell lines</p>
+<ul class="ipscs">
+    <li ng-repeat="ipsc in data.CellLines" class="ipsc">
+        <a href="#/lines/{{ipsc}}">{{ipsc}}</a>
+    </li>
+</ul>
+
