@@ -21,6 +21,10 @@ ebiscBrowser.config(['$routeProvider',
       templateUrl: 'partials/donor-list.html',
       controller: 'DonorListCtrl'
     }).
+    when('/lines', {
+      templateUrl: 'partials/line-list.html',
+      controller: 'LineListCtrl'
+    }).
     when('/donors/:donorName', {
       templateUrl: 'partials/donor-detail.html',
       controller: 'DonorDetailCtrl'

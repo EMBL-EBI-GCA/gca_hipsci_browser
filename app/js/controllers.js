@@ -28,7 +28,7 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'esClient',
   }
 ]);
 
-controllers.controller('DonorListCtrl', ['$scope', '$routeParams', 'itemSearcher',
+var listController =
   function($scope, $routeParams, itemSearcher) {
     $scope.searchParams = {
         documentType: 'donor',
@@ -39,6 +39,11 @@ controllers.controller('DonorListCtrl', ['$scope', '$routeParams', 'itemSearcher
         columnHeaders: ['Name', 'Sex']
     };
 
+    //child class should override this function;
+    $scope.fieldToHref = function(fieldName, fieldValue) {
+          return null;
+  };
+
     $scope.search = function() {
         itemSearcher.search($scope.searchParams)
         .then(function(resp) {
@@ -48,9 +53,8 @@ controllers.controller('DonorListCtrl', ['$scope', '$routeParams', 'itemSearcher
                 $scope.data[i].columnHrefs = {};
                 for (var j=0; j<$scope.searchParams.fields.length; j++) {
                     var field = $scope.searchParams.fields[j];
-                    if (field == 'name') {
-                        $scope.data[i].columnHrefs[field] = "#/donors/" + $scope.data[i].fields[field][0];
-                    }
+                    if ($scope.data[i].fields[field] == null) continue;
+                    $scope.data[i].columnHrefs[field] = $scope.fieldToHref(field, $scope.data[i].fields[field][0]);
                 }
             }
         });
@@ -73,6 +77,47 @@ controllers.controller('DonorListCtrl', ['$scope', '$routeParams', 'itemSearcher
         $scope.search();
     };
 
-    $scope.search();
+  };
+
+
+controllers.controller('DonorListCtrl', ['$scope', '$injector',
+  function($scope, $injector) {
+      $injector.invoke(listController, this, {$scope: $scope});
+      $scope.searchParams.documentType = 'donor';
+      $scope.searchParams.fields = ['name', 'sex'];
+      $scope.searchParams.columnHeaders = ['Name', 'Sex'];
+
+      $scope.fieldToHref = function(fieldName, fieldValue) {
+          console.log("here2");
+          if (fieldName == 'name') {
+              return "#/donors/" + fieldValue;
+          }
+          return null;
+      };
+
+      $scope.search();
   }
 ]);
+
+controllers.controller('LineListCtrl', ['$scope', '$injector',
+  function($scope, $injector) {
+      $injector.invoke(listController, this, {$scope: $scope});
+      $scope.searchParams.documentType = 'cellLine';
+      $scope.searchParams.fields = ['name', 'donor', 'bioSamplesAccession'];
+      $scope.searchParams.columnHeaders = ['Name', 'Donor', 'Biosamples ID'];
+
+      $scope.fieldToHref = function(fieldName, fieldValue) {
+          console.log("here2");
+          if (fieldName == 'name') {
+              return "#/donors/" + fieldValue;
+          }
+          if (fieldName == 'bioSamplesAccession') {
+              return "http://www.ebi.ac.uk/biosamples/sample/" + fieldValue;
+          }
+          return null;
+      };
+
+      $scope.search();
+  }
+]);
+

@@ -9,20 +9,16 @@
         <!--<td ng-repeat="field in searchParams.fields">{{donor.fields[field][0]}}</td>--!>
         <!--<td ng-repeat="field in searchParams.fields">{{formatField(donor,field)}}</td>--!>
         <td ng-repeat="field in searchParams.fields">
-            <span ng-if="donor.columnHrefs[field]"><a href="{{donor.columnHrefs[field]}}">{{donor.fields[field][0]}}<a></span>
+            <span ng-if="donor.columnHrefs[field]"><a ng-href="{{donor.columnHrefs[field]}}">{{donor.fields[field][0]}}<a></span>
             <span ng-if="! donor.columnHrefs[field]">{{donor.fields[field][0]}}</span>
         </td>
     </tr>
 </table>
 
 <p>
-    <a ng-click="loadNext()">Next...</a>
-    <a ng-click="loadPrevious()">Previous...</a>
+    <a href="" ng-click="loadNext()">Next...</a>
+    <a href="" ng-click="loadPrevious()">Previous...</a>
 </p>
 
-<p>
-    <a ng-click="exportData('csv')">Export as csv</a>
-</p>
-<p>
-    <a ng-click="exportData('tsv')">Export as tsv</a>
-</p>
+    <button ng-click="exportData('csv')">Export as csv</button>
+    <button ng-click="exportData('tsv')">Export as tsv</button>

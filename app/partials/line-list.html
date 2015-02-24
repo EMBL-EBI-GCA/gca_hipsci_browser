@@ -1,0 +1,22 @@
+
+<h1>Cell Lines</h1>
+
+<table class="cellLines">
+    <tr>
+        <th ng-repeat="field in searchParams.columnHeaders">{{field}}</th>
+    </tr>
+    <tr ng-repeat="cellLine in data">
+        <td ng-repeat="field in searchParams.fields">
+            <span ng-if="cellLine.columnHrefs[field]"><a ng-href="{{cellLine.columnHrefs[field]}}">{{cellLine.fields[field][0]}}<a></span>
+            <span ng-if="! cellLine.columnHrefs[field]">{{cellLine.fields[field][0]}}</span>
+        </td>
+    </tr>
+</table>
+
+<p>
+    <a href="" ng-click="loadNext()">Next...</a>
+    <a href="" ng-click="loadPrevious()">Previous...</a>
+</p>
+
+    <button ng-click="exportData('csv')">Export as csv</button>
+    <button ng-click="exportData('tsv')">Export as tsv</button>
