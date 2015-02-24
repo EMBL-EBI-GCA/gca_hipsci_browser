@@ -43,6 +43,7 @@ controllers.controller('DonorListCtrl', ['$scope', '$routeParams', 'itemSearcher
         itemSearcher.search($scope.searchParams)
         .then(function(resp) {
             $scope.data = resp.hits.hits;
+            $scope.numHits = resp.hits.total;
             for (var i=0; i<$scope.data.length; i++) {
                 $scope.data[i].columnHrefs = {};
                 for (var j=0; j<$scope.searchParams.fields.length; j++) {
@@ -56,7 +57,10 @@ controllers.controller('DonorListCtrl', ['$scope', '$routeParams', 'itemSearcher
     };
 
     $scope.exportData = function(format) {
-        itemSearcher.exportData($scope.searchParams, format);
+        var searchParams = $scope.searchParams;
+        searchParams.page = 0;
+        searchParams.size = $scope.numHits;
+        itemSearcher.exportData(searchParams, format);
     };
 
     $scope.loadNext = function() {
