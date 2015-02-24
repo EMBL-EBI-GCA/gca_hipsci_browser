@@ -1,11 +1,25 @@
 
 <h1>Donors</h1>
 
-<ul class="donors">
-    <li ng-repeat="donor in data" class="donor">
-        <a href="#/donors/{{donor.Name}}">{{donor.Name}}</a>
-    </li>
-</ul>
+<table class="donors">
+    <tr>
+        <th ng-repeat="field in searchParams.columnHeaders">{{field}}</th>
+    </tr>
+    <tr ng-repeat="donor in data">
+        <!--<td ng-repeat="field in searchParams.fields">{{donor.fields[field][0]}}</td>--!>
+        <!--<td ng-repeat="field in searchParams.fields">{{formatField(donor,field)}}</td>--!>
+        <td ng-repeat="field in searchParams.fields">
+            <span ng-if="donor.columnHrefs[field]"><a href="{{donor.columnHrefs[field]}}">{{donor.fields[field][0]}}<a></span>
+            <span ng-if="! donor.columnHrefs[field]">{{donor.fields[field][0]}}</span>
+        </td>
+    </tr>
+</table>
 
-<a ng-click="loadNext()">Next...</a>
-<a ng-click="loadPrevious()">Previous...</a>
+<p>
+    <a ng-click="loadNext()">Next...</a>
+    <a ng-click="loadPrevious()">Previous...</a>
+</p>
+
+<p>
+    <a ng-click="exportData('csv')">Export as csv</a>
+</p>
