@@ -88,7 +88,6 @@ controllers.controller('DonorListCtrl', ['$scope', '$injector',
       $scope.searchParams.columnHeaders = ['Name', 'Sex'];
 
       $scope.fieldToHref = function(fieldName, fieldValue) {
-          console.log("here2");
           if (fieldName == 'name') {
               return "#/donors/" + fieldValue;
           }
@@ -107,9 +106,8 @@ controllers.controller('LineListCtrl', ['$scope', '$injector',
       $scope.searchParams.columnHeaders = ['Name', 'Donor', 'Biosamples ID'];
 
       $scope.fieldToHref = function(fieldName, fieldValue) {
-          console.log("here2");
           if (fieldName == 'name') {
-              return "#/donors/" + fieldValue;
+              return "#/lines/" + fieldValue;
           }
           if (fieldName == 'bioSamplesAccession') {
               return "http://www.ebi.ac.uk/biosamples/sample/" + fieldValue;

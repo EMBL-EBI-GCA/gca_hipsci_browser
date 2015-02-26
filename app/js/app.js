@@ -30,7 +30,7 @@ ebiscBrowser.config(['$routeProvider',
       controller: 'DonorDetailCtrl'
     }).
     otherwise({
-      redirectTo: '/lines/HPSI0413i-uahf_3'
+      redirectTo: '/lines/'
     });
   }
 ]);
