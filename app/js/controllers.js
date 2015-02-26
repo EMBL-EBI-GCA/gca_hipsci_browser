@@ -28,8 +28,7 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'esClient',
   }
 ]);
 
-var listController =
-  function($scope, $routeParams, itemSearcher) {
+function listController($scope, $routeParams, itemSearcher) {
     $scope.searchParams = {
         documentType: 'donor',
         page: 0,
@@ -77,7 +76,8 @@ var listController =
         $scope.search();
     };
 
-  };
+};
+listController.$inject = ['$scope', '$routeParams', 'itemSearcher'];
 
 
 controllers.controller('DonorListCtrl', ['$scope', '$injector',
