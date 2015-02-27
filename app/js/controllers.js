@@ -38,24 +38,12 @@ function listController($scope, $routeParams, itemSearcher) {
         columnHeaders: ['Name', 'Sex']
     };
 
-    //child class should override this function;
-    $scope.fieldToHref = function(fieldName, fieldValue) {
-          return null;
-  };
 
     $scope.search = function() {
         itemSearcher.search($scope.searchParams)
         .then(function(resp) {
             $scope.data = resp.hits.hits;
             $scope.numHits = resp.hits.total;
-            for (var i=0; i<$scope.data.length; i++) {
-                $scope.data[i].columnHrefs = {};
-                for (var j=0; j<$scope.searchParams.fields.length; j++) {
-                    var field = $scope.searchParams.fields[j];
-                    if ($scope.data[i].fields[field] == null) continue;
-                    $scope.data[i].columnHrefs[field] = $scope.fieldToHref(field, $scope.data[i].fields[field][0]);
-                }
-            }
         });
     };
 
@@ -87,13 +75,6 @@ controllers.controller('DonorListCtrl', ['$scope', '$injector',
       $scope.searchParams.fields = ['name', 'sex'];
       $scope.searchParams.columnHeaders = ['Name', 'Sex'];
 
-      $scope.fieldToHref = function(fieldName, fieldValue) {
-          if (fieldName == 'name') {
-              return "#/donors/" + fieldValue;
-          }
-          return null;
-      };
-
       $scope.search();
   }
 ]);
@@ -104,16 +85,6 @@ controllers.controller('LineListCtrl', ['$scope', '$injector',
       $scope.searchParams.documentType = 'cellLine';
       $scope.searchParams.fields = ['name', 'donor', 'bioSamplesAccession'];
       $scope.searchParams.columnHeaders = ['Name', 'Donor', 'Biosamples ID'];
-
-      $scope.fieldToHref = function(fieldName, fieldValue) {
-          if (fieldName == 'name') {
-              return "#/lines/" + fieldValue;
-          }
-          if (fieldName == 'bioSamplesAccession') {
-              return "http://www.ebi.ac.uk/biosamples/sample/" + fieldValue;
-          }
-          return null;
-      };
 
       $scope.search();
   }

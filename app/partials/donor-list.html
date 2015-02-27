@@ -6,11 +6,11 @@
         <th ng-repeat="field in searchParams.columnHeaders">{{field}}</th>
     </tr>
     <tr ng-repeat="donor in data">
-        <!--<td ng-repeat="field in searchParams.fields">{{donor.fields[field][0]}}</td>--!>
-        <!--<td ng-repeat="field in searchParams.fields">{{formatField(donor,field)}}</td>--!>
-        <td ng-repeat="field in searchParams.fields">
-            <span ng-if="donor.columnHrefs[field]"><a ng-href="{{donor.columnHrefs[field]}}">{{donor.fields[field][0]}}<a></span>
-            <span ng-if="! donor.columnHrefs[field]">{{donor.fields[field][0]}}</span>
+        <td ng-repeat="field in searchParams.fields" ng-switch="field">
+            <a ng-switch-when="bioSamplesAccession" href="http://www.ebi.ac.uk/biosamples/sample/{{donor.fields[field][0]}}">{{donor.fields[field][0]}}</a>
+            <a ng-switch-when="name" href="#/donors/{{donor.fields[field][0]}}">{{donor.fields[field][0]}}</a>
+            <span ng-switch-default>{{donor.fields[field][0]}}</span>
+
         </td>
     </tr>
 </table>
