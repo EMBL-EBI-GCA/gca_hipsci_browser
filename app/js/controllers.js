@@ -38,12 +38,21 @@ function listController($scope, $routeParams, itemSearcher) {
         columnHeaders: ['Name', 'Sex']
     };
 
+    $scope.searchResults = [];
+
 
     $scope.search = function() {
         itemSearcher.search($scope.searchParams)
         .then(function(resp) {
             $scope.data = resp.hits.hits;
             $scope.numHits = resp.hits.total;
+            for (var i=0; i<resp.hits.hits.length; i++) {
+                var listItem = {};
+                for (var field in resp.hits.hits[i]) {
+                    listItem[field] = resp.hits.hits[i][field][0];
+                }
+                $scope.searchResults.push(listItem);
+            }
         });
     };
 
