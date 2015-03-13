@@ -7,7 +7,7 @@ var services = angular.module('ebiscBrowser.services', ['elasticsearch']);
 services.service('esClient', ['esFactory',
   function(esFactory) {
       return esFactory({
-          host: '127.0.0.1:3000',
+          host: 'vg-rs-dev1:8000/api',
           apiVersion: '1.3'
       });
   }
@@ -34,7 +34,8 @@ services.factory('itemSearcher', ['esClient',
           var form = document.createElement('form');
           var body = buildSearchBody(searchParams);
           body.column_names = searchParams.columnHeaders;
-          form.action='http://127.0.0.1:3000/hipsci/' + searchParams.documentType + '/_search.' +format;
+          //form.action='http://vg-rs-dev1:8000/api/hipsci/' + searchParams.documentType + '/_search.' +format;
+          form.action='/api/hipsci/' + searchParams.documentType + '/_search.' +format;
           form.method='POST';
           form.target="_self";
 
