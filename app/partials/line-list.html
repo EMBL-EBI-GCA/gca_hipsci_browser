@@ -5,11 +5,12 @@
     <tr>
         <th ng-repeat="field in searchParams.columnHeaders">{{field}}</th>
     </tr>
-    <tr ng-repeat="cellLine in data">
+    <tr ng-repeat="cellLine in displayResults">
+    <p>here</p>
         <td ng-repeat="field in searchParams.fields" ng-switch="field">
-            <a ng-switch-when="bioSamplesAccession" href="http://www.ebi.ac.uk/biosamples/sample/{{cellLine.fields[field][0]}}">{{cellLine.fields[field][0]}}</a>
-            <a ng-switch-when="name" href="#/lines/{{cellLine.fields[field][0]}}">{{cellLine.fields[field][0]}}</a>
-            <span ng-switch-default>{{cellLine.fields[field][0]}}</span>
+            <a ng-switch-when="bioSamplesAccession" href="http://www.ebi.ac.uk/biosamples/sample/{{cellLine[field]}}">{{cellLine[field]}}</a>
+            <a ng-switch-when="name" href="#/lines/{{cellLine[field]}}">{{cellLine[field]}}</a>
+            <span ng-switch-default>{{cellLine[field]}}</span>
 
         </td>
     </tr>

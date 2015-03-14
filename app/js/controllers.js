@@ -38,21 +38,32 @@ function listController($scope, $routeParams, itemSearcher) {
         columnHeaders: ['Name', 'Sex']
     };
 
-    $scope.searchResults = [];
+    $scope.cachedResults = {};
+    $scope.setDisplayResults = function() {
+        var displayResults = $scope.cachedResults[$scope.searchParams.page];
+        if (typeof displayResults == "undefined") {
+            $scope.search().then(function(returnResults) {$scope.displayResults = returnResults});
+        }
+        else {
+            $scope.displayResults = displayResults;
+        }
+    };
 
 
     $scope.search = function() {
-        itemSearcher.search($scope.searchParams)
+        return itemSearcher.search($scope.searchParams)
         .then(function(resp) {
-            $scope.data = resp.hits.hits;
             $scope.numHits = resp.hits.total;
+            var returnResults = [];
             for (var i=0; i<resp.hits.hits.length; i++) {
                 var listItem = {};
-                for (var field in resp.hits.hits[i]) {
-                    listItem[field] = resp.hits.hits[i][field][0];
+                for (var field in resp.hits.hits[i].fields) {
+                    listItem[field] = resp.hits.hits[i].fields[field][0];
                 }
-                $scope.searchResults.push(listItem);
+                returnResults.push(listItem);
             }
+            $scope.cachedResults[$scope.searchParams.page] = returnResults;
+            return returnResults;
         });
     };
 
@@ -65,12 +76,12 @@ function listController($scope, $routeParams, itemSearcher) {
 
     $scope.loadNext = function() {
         $scope.searchParams.page++;
-        $scope.search();
+        $scope.setDisplayResults();
     };
 
     $scope.loadPrevious = function() {
         $scope.searchParams.page--;
-        $scope.search();
+        $scope.setDisplayResults();
     };
 
 };
@@ -84,7 +95,7 @@ controllers.controller('DonorListCtrl', ['$scope', '$injector',
       $scope.searchParams.fields = ['name', 'sex'];
       $scope.searchParams.columnHeaders = ['Name', 'Sex'];
 
-      $scope.search();
+      $scope.setDisplayResults();
   }
 ]);
 
@@ -95,7 +106,7 @@ controllers.controller('LineListCtrl', ['$scope', '$injector',
       $scope.searchParams.fields = ['name', 'donor', 'bioSamplesAccession'];
       $scope.searchParams.columnHeaders = ['Name', 'Donor', 'Biosamples ID'];
 
-      $scope.search();
+      $scope.setDisplayResults();
   }
 ]);
 
