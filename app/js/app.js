@@ -5,7 +5,8 @@ var dependencies = [
   'ngSanitize',
   'hipsciBrowser.services',
   'hipsciBrowser.controllers',
-  'hipsciBrowser.navigation'
+  'hipsciBrowser.navigation',
+  'ui.bootstrap'
 ];
 
 // Declare app level module which depends on filters, and services

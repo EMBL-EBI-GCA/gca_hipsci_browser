@@ -40,7 +40,7 @@ function listController($scope, $routeParams, itemSearcher) {
 
     $scope.cachedResults = {};
     $scope.setDisplayResults = function() {
-        var displayResults = $scope.cachedResults[$scope.searchParams.page];
+        var displayResults = $scope.cachedResults[$scope.currentPage];
         if (typeof displayResults == "undefined") {
             $scope.search().then(function(returnResults) {$scope.displayResults = returnResults});
         }
@@ -49,11 +49,15 @@ function listController($scope, $routeParams, itemSearcher) {
         }
     };
 
+    $scope.currentPage = 1;
+
 
     $scope.search = function() {
+        $scope.searchParams.page = $scope.currentPage -1;
         return itemSearcher.search($scope.searchParams)
         .then(function(resp) {
             $scope.numHits = resp.hits.total;
+            $scope.numPages = Math.ceil($scope.numHits / $scope.searchParams.size);
             var returnResults = [];
             for (var i=0; i<resp.hits.hits.length; i++) {
                 var listItem = {};
@@ -62,7 +66,7 @@ function listController($scope, $routeParams, itemSearcher) {
                 }
                 returnResults.push(listItem);
             }
-            $scope.cachedResults[$scope.searchParams.page] = returnResults;
+            $scope.cachedResults[$scope.currentPage] = returnResults;
             return returnResults;
         });
     };
@@ -74,15 +78,6 @@ function listController($scope, $routeParams, itemSearcher) {
         itemSearcher.exportData(searchParams, format);
     };
 
-    $scope.loadNext = function() {
-        $scope.searchParams.page++;
-        $scope.setDisplayResults();
-    };
-
-    $scope.loadPrevious = function() {
-        $scope.searchParams.page--;
-        $scope.setDisplayResults();
-    };
 
 };
 listController.$inject = ['$scope', '$routeParams', 'itemSearcher'];

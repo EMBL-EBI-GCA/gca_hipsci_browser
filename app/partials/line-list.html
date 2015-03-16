@@ -1,24 +1,44 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <h1>Cell Lines</h1>
+        <hr/>
+    		<pagination 
+    			total-items="numHits"
+    			ng-model="currentPage"
+                        ng-change="setDisplayResults()"
+    			items-per-page="searchParams.size"
+    			max-size="numPages"
+    			class="pagination-sm" boundary-links="true" rotate="false" >
+                </pagination>
 
-<h1>Cell Lines</h1>
+        <table class="cellLines table table-striped">
+            <thead>
+                <tr class="slanted">
+                    <th ng-repeat="field in searchParams.columnHeaders">{{field}}</th>
+                </tr>
+            </thead>
+            <tr ng-repeat="cellLine in displayResults">
+                <td ng-repeat="field in searchParams.fields" ng-switch="field">
+                    <a ng-switch-when="bioSamplesAccession" href="http://www.ebi.ac.uk/biosamples/sample/{{cellLine[field]}}">{{cellLine[field]}}</a>
+                    <a ng-switch-when="name" href="#/lines/{{cellLine[field]}}">{{cellLine[field]}}</a>
+                    <a ng-switch-when="donor" href="#/donors/{{cellLine[field]}}">{{cellLine[field]}}</a>
+                    <span ng-switch-default="">{{cellLine[field]}}</span>
 
-<table class="cellLines">
-    <tr>
-        <th ng-repeat="field in searchParams.columnHeaders">{{field}}</th>
-    </tr>
-    <tr ng-repeat="cellLine in displayResults">
-        <td ng-repeat="field in searchParams.fields" ng-switch="field">
-            <a ng-switch-when="bioSamplesAccession" href="http://www.ebi.ac.uk/biosamples/sample/{{cellLine[field]}}">{{cellLine[field]}}</a>
-            <a ng-switch-when="name" href="#/lines/{{cellLine[field]}}">{{cellLine[field]}}</a>
-            <span ng-switch-default>{{cellLine[field]}}</span>
+                </td>
+            </tr>
+        </table>
 
-        </td>
-    </tr>
-</table>
+    		<pagination 
+    			total-items="numHits"
+    			ng-model="currentPage"
+                        ng-change="setDisplayResults()"
+    			items-per-page="searchParams.size"
+    			max-size="numPages"
+    			class="pagination-sm" boundary-links="true" rotate="false" >
+                </pagination>
 
-<p>
-    <a href="" ng-click="loadNext()">Next...</a>
-    <a href="" ng-click="loadPrevious()">Previous...</a>
-</p>
 
-    <button ng-click="exportData('csv')">Export as csv</button>
-    <button ng-click="exportData('tsv')">Export as tsv</button>
+            <button ng-click="exportData('csv')">Export as csv</button>
+            <button ng-click="exportData('tsv')">Export as tsv</button>
+    </div>
+</div>
