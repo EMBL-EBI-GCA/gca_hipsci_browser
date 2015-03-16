@@ -1,0 +1,109 @@
+/* app css stylesheet */
+body {
+  background-color: rgb(235,235,235);
+}
+p {
+  text-align: justify;
+}
+
+hr {
+  margin: 15px 0;
+}
+
+
+/*Print icon*/
+div.print {
+  position: relative;
+}
+div.print a {
+  cursor: pointer;
+  position: absolute;
+  margin: 11px;
+  right: 0;
+  z-index: 100;
+}
+@media print {
+  div.print {
+    display: none;
+  }
+}
+
+
+/*Sort BG*/
+.sort {
+  background-repeat: no-repeat;
+  background-position: right center;
+  cursor: pointer;
+  background-image: url(../img/bg.gif);
+}
+
+.slanted .sort {
+    background-position: right 58px;
+}
+.sort.sortAsc {
+	background-image: url(../img/asc.gif);
+}
+.sort.sortDesc {
+	background-image: url(../img/desc.gif);
+}
+
+/*footer images should all scale to the height of the blueprint logo, but keep their aspect ratio*/
+.footer div.logo {
+  text-align: center;
+}
+.footer div.logo:first-child {
+  text-align: left;
+}
+.footer div.logo:last-child {
+  text-align: right;
+}
+@media (max-width: 767px) { /* @screen-xs-max */
+  .footer div.logo {
+    text-align: center !important;
+    margin-bottom: 15px;
+  }
+}
+.footer  {
+  font-size: 11px;
+  padding-bottom: 15px;
+}
+.footer .right{
+  text-align: right;
+}
+
+/* fixed height logo images */
+img.logo {
+  height: 54px;
+}
+
+/* push images in paragraphs over to the left */
+p .left-image{
+  margin: 0 5px 5px 0;
+  float: left;
+}
+
+/*Download link symbol is a bit weedy, make it bigger and bolder*/
+a.download {
+  font-size: 1.3em;
+  font-weight: bolder;
+  text-decoration: underline;
+}
+/*padding for the fixed position nav bar */
+body { padding-top: 60px; } 
+
+/*angular ui bootstrap css fix see http://angular-ui.github.io/bootstrap/*/
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+
+/* logo to replace nav bar on printed page */
+.print-only-logo {
+  display: none;
+  padding: 0 15px 15px;
+}
+
+@media print {
+  .print-only-logo {
+    display: block;
+  }
+}
+

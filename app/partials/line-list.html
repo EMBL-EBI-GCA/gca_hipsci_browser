@@ -6,7 +6,6 @@
         <th ng-repeat="field in searchParams.columnHeaders">{{field}}</th>
     </tr>
     <tr ng-repeat="cellLine in displayResults">
-    <p>here</p>
         <td ng-repeat="field in searchParams.fields" ng-switch="field">
             <a ng-switch-when="bioSamplesAccession" href="http://www.ebi.ac.uk/biosamples/sample/{{cellLine[field]}}">{{cellLine[field]}}</a>
             <a ng-switch-when="name" href="#/lines/{{cellLine[field]}}">{{cellLine[field]}}</a>

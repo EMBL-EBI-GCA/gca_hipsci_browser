@@ -5,6 +5,7 @@ var dependencies = [
   'ngSanitize',
   'ebiscBrowser.services',
   'ebiscBrowser.controllers',
+  'ebiscBrowser.navigation'
 ];
 
 // Declare app level module which depends on filters, and services
