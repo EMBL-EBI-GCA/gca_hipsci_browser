@@ -11,6 +11,16 @@
     			class="pagination-sm" boundary-links="true" rotate="false" >
                 </pagination>
 
+                <div class="btn-group" dropdown="">
+                    <button type="button" class="btn btn-primary dropdown-toggle" >
+                        Export<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li ng-click="exportData('csv')">comma delimited .csv</li>
+                        <li ng-click="exportData('tsv')">tab delimited .tsv</li>
+                    </ul>
+                </div>
+
         <table class="cellLines table table-striped">
             <thead>
                 <tr class="slanted">
