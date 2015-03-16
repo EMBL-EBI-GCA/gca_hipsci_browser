@@ -2,7 +2,7 @@
 
 /* Services */
 
-var services = angular.module('ebiscBrowser.services', ['elasticsearch']);
+var services = angular.module('hipsciBrowser.services', ['elasticsearch']);
 
 services.service('esClient', ['esFactory',
   function(esFactory) {

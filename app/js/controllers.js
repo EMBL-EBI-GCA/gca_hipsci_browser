@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-var controllers = angular.module('ebiscBrowser.controllers', []);
+var controllers = angular.module('hipsciBrowser.controllers', []);
 
 controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'esClient',
   function($scope, $routeParams, esClient) {

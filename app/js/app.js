@@ -3,15 +3,15 @@
 var dependencies = [
   'ngRoute',
   'ngSanitize',
-  'ebiscBrowser.services',
-  'ebiscBrowser.controllers',
-  'ebiscBrowser.navigation'
+  'hipsciBrowser.services',
+  'hipsciBrowser.controllers',
+  'hipsciBrowser.navigation'
 ];
 
 // Declare app level module which depends on filters, and services
-var ebiscBrowser = angular.module('ebiscBrowser', dependencies);
+var hipsciBrowser = angular.module('hipsciBrowser', dependencies);
 
-ebiscBrowser.config(['$routeProvider',
+hipsciBrowser.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
     when('/lines/:ipscName', {

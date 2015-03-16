@@ -1,6 +1,6 @@
 'use strict';
 
-var navigation = angular.module('ebiscBrowser.navigation', []);
+var navigation = angular.module('hipsciBrowser.navigation', []);
 
 navigation.directive('navigationBanner', ['$location', function($location) {
     var activeLink = function (viewLocation) {
