@@ -1,9 +1,9 @@
 {
-  "name": "gca_ebisc_browser",
+  "name": "gca_hipsci_browser",
   "private": true,
   "version": "0.0.0",
-  "description": "A catalogue of EBiSC cell lines",
-  "repository": "https://bitbucket.org/istreeter/gca_ebisc_browser",
+  "description": "A catalogue of HipSci cell lines",
+  "repository": "https://github.com/EMBL-EBI-GCA/gca_hipsci_browser",
   "license": "Apache 2",
   "devDependencies": {
     "karma": "~0.10",
