@@ -6,7 +6,7 @@ var dependencies = [
   'hipsciBrowser.services',
   'hipsciBrowser.controllers',
   'hipsciBrowser.navigation',
-  'ui.bootstrap'
+  'ui.bootstrap',
 ];
 
 // Declare app level module which depends on filters, and services

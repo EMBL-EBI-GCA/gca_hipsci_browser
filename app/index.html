@@ -60,15 +60,20 @@
   <script src="js/app.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
-
   <script src="js/navigation.js"></script>
+  <script src="js/ready.js"></script>
 
 <div class="print-only-logo"><img src="img/hipsci-logo.png" class="logo" /></div>
 <!--[if gte IE 8]><!--> 
     <navigation-banner></navigation-banner>
 <!--<![endif]-->
 
-  <div ng-view></div>
+    <div class="view-container container-fluid" role="main">
+        <div class="print visible-desktop">
+            <a class="glyphicon glyphicon-print" title="Print this page"></a>
+        </div>
+        <div ng-view class="view-frame"></div>
+    </div>
 	  
 </body>
 </html>
