@@ -6,6 +6,7 @@ var dependencies = [
   'hipsciBrowser.services',
   'hipsciBrowser.controllers',
   'hipsciBrowser.navigation',
+  'hipsciBrowser.listUtils',
   'ui.bootstrap',
 ];
 
@@ -21,11 +22,13 @@ hipsciBrowser.config(['$routeProvider',
     }).
     when('/donors', {
       templateUrl: 'partials/donor-list.html',
-      controller: 'DonorListCtrl'
+      controller: 'ListCtrl',
+      resolve: {listTypeConfig: 'donorConfig'}
     }).
     when('/lines', {
       templateUrl: 'partials/line-list.html',
-      controller: 'LineListCtrl'
+      controller: 'ListCtrl',
+      resolve: {listTypeConfig: 'lineConfig'}
     }).
     when('/donors/:donorName', {
       templateUrl: 'partials/donor-detail.html',
