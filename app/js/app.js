@@ -23,11 +23,13 @@ hipsciBrowser.config(['$routeProvider',
     when('/donors', {
       templateUrl: 'partials/donor-list.html',
       controller: 'ListCtrl',
+      controllerAs: 'ListCtrl',
       resolve: {listTypeConfig: 'donorConfig'}
     }).
     when('/lines', {
       templateUrl: 'partials/line-list.html',
       controller: 'ListCtrl',
+      controllerAs: 'ListCtrl',
       resolve: {listTypeConfig: 'lineConfig'}
     }).
     when('/donors/:donorName', {

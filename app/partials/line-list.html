@@ -7,11 +7,11 @@
             <div class="row">
             <div class = "col-md-4">
                 <pagination 
-    			total-items="numHits"
-    			ng-model="currentPage"
-                        ng-change="setPage()"
-    			items-per-page="hitsPerPage"
-    			max-size="numPages"
+    			total-items="ListCtrl.numHits"
+    			ng-model="ListCtrl.currentPage"
+                        ng-change="ListCtrl.setPage()"
+    			items-per-page="ListCtrl.hitsPerPage"
+    			max-size="ListCtrl.numPages"
     			class="pagination-sm" boundary-links="true" rotate="false" >
                 </pagination>
             </div>
@@ -22,8 +22,8 @@
                         Export<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a ng-click="exportData('csv')">comma delimited .csv</a></li>
-                        <li><a ng-click="exportData('tsv')">tab delimited .tsv</a></li>
+                        <li><a ng-click="ListCtrl.exportData('csv')">comma delimited .csv</a></li>
+                        <li><a ng-click="ListCtrl.exportData('tsv')">tab delimited .tsv</a></li>
                     </ul>
                 </div>
             </div>
@@ -32,11 +32,11 @@
                 <table class="cellLines table table-striped">
                     <thead>
                         <tr class="slanted">
-                            <th ng-repeat="field in columnHeaders">{{field}}</th>
+                            <th ng-repeat="field in ListCtrl.columnHeaders">{{field}}</th>
                         </tr>
                     </thead>
-                    <tr ng-repeat="cellLine in displayResults">
-                        <td ng-repeat="field in fields" ng-switch="field">
+                    <tr ng-repeat="cellLine in ListCtrl.displayResults">
+                        <td ng-repeat="field in ListCtrl.fields" ng-switch="field">
                             <a ng-switch-when="bioSamplesAccession" href="http://www.ebi.ac.uk/biosamples/sample/{{cellLine[field]}}">{{cellLine[field]}}</a>
                             <a ng-switch-when="name" href="#/lines/{{cellLine[field]}}">{{cellLine[field]}}</a>
                             <a ng-switch-when="donor" href="#/donors/{{cellLine[field]}}">{{cellLine[field]}}</a>
@@ -47,11 +47,11 @@
                 </table>
 
                 <pagination 
-    			total-items="numHits"
-    			ng-model="currentPage"
-                        ng-change="setPage()"
-    			items-per-page="hitsPerPage"
-    			max-size="numPages"
+    			total-items="ListCtrl.numHits"
+    			ng-model="ListCtrl.currentPage"
+                        ng-change="ListCtrl.setPage()"
+    			items-per-page="ListCtrl.hitsPerPage"
+    			max-size="ListCtrl.numPages"
     			class="pagination-sm" boundary-links="true" rotate="false" >
                 </pagination>
             </div>
