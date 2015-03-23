@@ -32,15 +32,15 @@
                 <table class="cellLines table table-striped">
                     <thead>
                         <tr class="slanted">
-                            <th ng-repeat="field in ListCtrl.columnHeaders">{{field}}</th>
+                            <th ng-repeat="field in ListCtrl.columnHeaders" ng-bind="field"></th>
                         </tr>
                     </thead>
                     <tr ng-repeat="cellLine in ListCtrl.displayResults">
                         <td ng-repeat="field in ListCtrl.fields" ng-switch="field">
-                            <a ng-switch-when="bioSamplesAccession" href="http://www.ebi.ac.uk/biosamples/sample/{{cellLine[field]}}">{{cellLine[field]}}</a>
-                            <a ng-switch-when="name" href="#/lines/{{cellLine[field]}}">{{cellLine[field]}}</a>
-                            <a ng-switch-when="donor" href="#/donors/{{cellLine[field]}}">{{cellLine[field]}}</a>
-                            <span ng-switch-default="">{{cellLine[field]}}</span>
+                            <a ng-switch-when="bioSamplesAccession" ng-href="http://www.ebi.ac.uk/biosamples/sample/{{cellLine[field]}}" ng-bind="cellLine[field]"></a>
+                            <a ng-switch-when="name" ng-href="#/lines/{{cellLine[field]}}" ng-bind="cellLine[field]"></a>
+                            <a ng-switch-when="donor" ng-href="#/donors/{{cellLine[field]}}" ng-bind="cellLine[field]"></a>
+                            <span ng-switch-default="" ng-bind="cellLine[field]"></span>
 
                         </td>
                     </tr>

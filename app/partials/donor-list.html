@@ -25,14 +25,14 @@
         <table class="donors table table-striped">
             <thead>
                 <tr class="slanted">
-                    <th ng-repeat="field in ListCtrl.columnHeaders">{{field}}</th>
+                    <th ng-repeat="field in ListCtrl.columnHeaders" ng-bind="field"></th>
                 </tr>
             </thead>
             <tr ng-repeat="donor in ListCtrl.displayResults">
                 <td ng-repeat="field in ListCtrl.fields" ng-switch="field">
-                    <a ng-switch-when="bioSamplesAccession" href="http://www.ebi.ac.uk/biosamples/sample/{{donor[field]}}">{{donor[field]}}</a>
-                    <a ng-switch-when="name" href="#/donors/{{donor[field]}}">{{donor[field]}}</a>
-                    <span ng-switch-default="">{{donor[field]}}</span>
+                    <a ng-switch-when="bioSamplesAccession" ng-href="http://www.ebi.ac.uk/biosamples/sample/{{donor[field]}}" ng-bind="donor[field]"></a>
+                    <a ng-switch-when="name" ng-href="#/donors/{{donor[field]}}" ng-bind="donor[field]"></a>
+                    <span ng-switch-default="" ng-bind="donor[field]"></span>
 
                 </td>
             </tr>
