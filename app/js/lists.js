@@ -12,12 +12,10 @@ listUtils.controller('ListCtrl', ['listTypeConfig', 'esClient',
         this.displayResults = [];
         this.numHits = 0;
 
-        var controller = this;
-
         this.documentType = listTypeConfig.documentType;
         this.cachedHits = [];
 
-        listTypeConfig.initScope(controller);
+        listTypeConfig.initScope(this);
 
         this.search = function() {
             var searchBody = {
@@ -25,14 +23,14 @@ listUtils.controller('ListCtrl', ['listTypeConfig', 'esClient',
                 size: this.hitsPerPage,
                 from: (this.currentPage -1) * this.hitsPerPage,
             };
-            listTypeConfig.amendSearchBody(searchBody, controller);
+            listTypeConfig.amendSearchBody(searchBody, this);
             return esClient.search( {
                 index: 'hipsci',
                 type: this.documentType,
                 body: searchBody,
-            }).then(function(resp) {
-                controller.numHits = resp.hits.total
-                controller.numPages = Math.ceil(controller.numHits / controller.hitsPerPage);
+            }).then(angular.bind(this, function(resp) {
+                this.numHits = resp.hits.total
+                this.numPages = Math.ceil(this.numHits / this.hitsPerPage);
                 var displayResults = [];
                 for (var i=0; i<resp.hits.hits.length; i++) {
                     var listItem = {};
@@ -41,9 +39,9 @@ listUtils.controller('ListCtrl', ['listTypeConfig', 'esClient',
                     }
                     displayResults.push(listItem);
                 }
-                controller.displayResults = displayResults;
-                controller.cachedHits[controller.currentPage] = controller.displayResults
-            });
+                this.displayResults = displayResults;
+                this.cachedHits[this.currentPage] = this.displayResults
+            }));
         };
 
         this.exportData = function(format) {
@@ -54,7 +52,7 @@ listUtils.controller('ListCtrl', ['listTypeConfig', 'esClient',
             page: 0,
             size: this.numHits,
           };
-          listTypeConfig.amendSearchBody(body, controller);
+          listTypeConfig.amendSearchBody(body, this);
           //form.action='http://vg-rs-dev1:8000/api/hipsci/' + this.documentType + '/_search.' +format;
           //form.action='/api/hipsci/' + this.documentType + '/_search.' +format;
           form.action='http://127.0.0.1:3000/hipsci/' + this.documentType + '/_search.' +format;
