@@ -13,3 +13,4 @@ listComponents.directive('listPagination', function() {
         +' class="pagination-sm" boundary-links="true" rotate="false" ></pagination>'
   };
 });
+
