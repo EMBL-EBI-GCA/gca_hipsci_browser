@@ -17,41 +17,78 @@ listUtils.controller('LineCtrl', function() {
 
 listUtils.directive('listPanel', ['esClient', function (esClient) {
   return {
-    //scope: {documentType: '@'},
-    scope: false,
     controllerAs: 'ListPanelCtrl',
     restrict: 'E',
-    //transclude: true,
-    //template: '<div ng-transclude></div>',
-    link: function(scope, iElement, iAttrs, controller) {
-      controller.documentType = scope.$eval(iAttrs.documentType);
-      controller.columnHeaders = scope.$eval(iAttrs.columnHeaders);
-      controller.fields = scope.$eval(iAttrs.fields);
-      controller.search();
+    transclude: 'true',
+    scope: {},
+    link: function(scope, iElement, iAttrs, controller, transcludeFn) {
+      transcludeFn(scope, function(clonedTranscludedContent) {
+          iElement.append(clonedTranscludedContent);
+      });
+      controller.documentType = scope.$parent.$eval(iAttrs.documentType);
+      controller.columnHeaders = scope.$parent.$eval(iAttrs.columnHeaders);
+      controller.fields = scope.$parent.$eval(iAttrs.fields);
+      controller.refreshSearch();
     },
-    controller: ['$scope', function ($scope) {
-      this.currentPage = 1;
-      this.numPages = 0;
-      this.hitsPerPage = 10;
-      this.displayResults = [];
-      this.numHits = 0;
+    controller: function () {
+      var controller = this;
+      controller.currentPage = 1;
+      controller.numPages = 0;
+      controller.hitsPerPage = 10;
+      controller.displayResults = [];
+      controller.numHits = 0;
+
+      controller.isSearching = false;
+      controller.refreshRequired = false;
   
-      this.cachedHits = [];
-      this.filters = [];
+      var cachedHits = [];
+      var filterReqs = {};
+      var filterCallbacks = {};
+      var aggReqs = {};
+      var aggExcludeFilters = {};
+      var aggCallbacks = {};
   
-      this.search = function() {
+      var search = function() {
+          if (controller.isSearching) {
+              controller.refreshRequired = true;
+              return;
+          }
+          controller.isSearching = true;
         var searchBody = {
-          fields: this.fields,
-          size: this.hitsPerPage,
-          from: (this.currentPage -1) * this.hitsPerPage,
+          fields: controller.fields,
+          size: controller.hitsPerPage,
+          from: (controller.currentPage -1) * controller.hitsPerPage,
         };
+        var filterKeys = Object.keys(filterReqs);
+        if (filterKeys.length >0) {
+            if (filterKeys.length == 1) {
+                searchBody['query'] = {filtered: {filter: filterReqs[filterKeys[0]]}};
+            }
+            else {
+                var filterArr = [];
+                for (var i=0; i<filterKeys.length; i++) {
+                    filterArr.push(filterReqs[filterKeys[i]]);
+                }
+                searchBody['query'] = {filtered: {filter: {and: filterArr}}};
+            }
+        }
+
+        var aggKeys = Object.keys(aggReqs);
+        if (aggKeys.length >0) {
+            searchBody['aggs'] = {};
+            for (var i=0; i<aggKeys.length; i++) {
+                searchBody['aggs'][aggKeys[i]] = aggReqs[aggKeys[i]];
+            }
+        }
+
+
         return esClient.search( {
           index: 'hipsci',
-          type: this.documentType,
+          type: controller.documentType,
           body: searchBody,
-        }).then(angular.bind(this, function(resp) {
-          this.numHits = resp.hits.total
-          this.numPages = Math.ceil(this.numHits / this.hitsPerPage);
+        }).then(function(resp) {
+          controller.numHits = resp.hits.total;
+          controller.numPages = Math.ceil(controller.numHits / controller.hitsPerPage);
           var displayResults = [];
           for (var i=0; i<resp.hits.hits.length; i++) {
               var listItem = {};
@@ -60,22 +97,36 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
               }
               displayResults.push(listItem);
           }
-          this.displayResults = displayResults;
-          this.cachedHits[this.currentPage] = this.displayResults
-        }));
+          controller.displayResults = displayResults;
+          cachedHits[controller.currentPage] = controller.displayResults;
+
+          if (resp.hasOwnProperty('aggregations')) {
+              var aggKeys = Object.keys(resp['aggregations']);
+              for (var i=0; i<aggKeys.length; i++) {
+                  if (aggCallbacks.hasOwnProperty([aggKeys[i]])) {
+                      aggCallbacks[aggKeys[i]](resp['aggregations'][aggKeys[i]]);
+                  }
+              }
+          }
+          controller.isSearching = false;
+          if (controller.refreshRequired) {
+              controller.refreshRequired = false;
+              search();
+          }
+        });
       };
   
-      this.exportData = function(format) {
+      controller.exportData = function(format) {
         var form = document.createElement('form');
         var body = {
-        fields: this.fields,
-        column_names: this.columnHeaders,
+        fields: controller.fields,
+        column_names: controller.columnHeaders,
         page: 0,
-        size: this.numHits,
+        size: controller.numHits,
         };
         //form.action='http://vg-rs-dev1:8000/api/hipsci/' + this.documentType + '/_search.' +format;
         //form.action='/api/hipsci/' + this.documentType + '/_search.' +format;
-        form.action='http://127.0.0.1:3000/hipsci/' + this.documentType + '/_search.' +format;
+        form.action='http://127.0.0.1:3000/hipsci/' + controller.documentType + '/_search.' +format;
         form.method='POST';
         form.target="_self";
   
@@ -89,20 +140,37 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
         form.submit();
       };
   
-      this.refreshSearch = function () {
-        this.currentPage = 1;
-        this.search();
+      controller.refreshSearch = function () {
+        controller.currentPage = 1;
+        cachedHits.length = 0;
+        search();
       };
-      this.setPage = function () {
-        var displayResults = this.cachedHits[this.currentPage];
+      controller.setPage = function () {
+        var displayResults = cachedHits[controller.currentPage];
         if (typeof displayResults == "undefined") {
-          this.search();
+          search();
         }
         else {
-          this.displayResults = displayResults
+          controller.displayResults = displayResults
         }
       };
-    }]
+      controller.registerFilter = function(filterName, filterReq, disableCallback) {
+          if (typeof filterReq == 'undefined') {
+              delete filterReqs[filterName];
+              delete filterCallbacks[filterName];
+          }
+          else {
+              filterReqs[filterName] = filterReq;
+              filterCallbacks[filterName] = filterReq;
+          }
+      };
+      controller.registerAggregate = function(aggName, aggReq, excludeFilter, processCallback) {
+          aggReqs[aggName] = aggReq;
+          aggExcludeFilters[aggName] = excludeFilter;
+          aggCallbacks[aggName] = processCallback;
+
+      };
+    }
 
   };
 }]);

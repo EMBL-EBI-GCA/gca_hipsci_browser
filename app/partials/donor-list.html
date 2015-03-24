@@ -1,9 +1,15 @@
-<list-panel document-type="DonorCtrl.documentType" fields="DonorCtrl.fields" column-headers="DonorCtrl.columnHeaders">
 <div class="panel panel-default">
     <div class="panel-body">
+    <list-panel document-type="DonorCtrl.documentType" fields="DonorCtrl.fields" column-headers="DonorCtrl.columnHeaders">
 
         <h1>Donors</h1>
         <hr/>
+
+        <div class="row">
+            <div class="col-md-3 fixd-width-lhs">
+                <or-facet title="Sex" field="sex"></or-facet>
+            </div>
+            <div class="col-md-9 fixd-width-rhs">
     		<list-pagination></list-pagination>
 
                 <div class="btn-group" dropdown="">
@@ -33,7 +39,9 @@
         </table>
 
     		<list-pagination></list-pagination>
+            </div>
 
+        </div>
+    </list-panel>
     </div>
 </div>
-</list-panel>
