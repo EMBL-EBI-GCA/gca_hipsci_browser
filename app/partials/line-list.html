@@ -1,3 +1,4 @@
+<list-panel document-type="LineCtrl.documentType" fields="LineCtrl.fields" column-headers="LineCtrl.columnHeaders">
 <div class="panel panel-default">
     <div class="panel-body">
         <h1>Cell Lines</h1>
@@ -7,11 +8,11 @@
             <div class="row">
             <div class = "col-md-4">
                 <pagination 
-    			total-items="ListCtrl.numHits"
-    			ng-model="ListCtrl.currentPage"
-                        ng-change="ListCtrl.setPage()"
-    			items-per-page="ListCtrl.hitsPerPage"
-    			max-size="ListCtrl.numPages"
+    			total-items="ListPanelCtrl.numHits"
+    			ng-model="ListPanelCtrl.currentPage"
+                        ng-change="ListPanelCtrl.setPage()"
+    			items-per-page="ListPanelCtrl.hitsPerPage"
+    			max-size="ListPanelCtrl.numPages"
     			class="pagination-sm" boundary-links="true" rotate="false" >
                 </pagination>
             </div>
@@ -22,8 +23,8 @@
                         Export<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a ng-click="ListCtrl.exportData('csv')">comma delimited .csv</a></li>
-                        <li><a ng-click="ListCtrl.exportData('tsv')">tab delimited .tsv</a></li>
+                        <li><a ng-click="ListPanelCtrl.exportData('csv')">comma delimited .csv</a></li>
+                        <li><a ng-click="ListPanelCtrl.exportData('tsv')">tab delimited .tsv</a></li>
                     </ul>
                 </div>
             </div>
@@ -32,11 +33,11 @@
                 <table class="cellLines table table-striped">
                     <thead>
                         <tr class="slanted">
-                            <th ng-repeat="field in ListCtrl.columnHeaders" ng-bind="field"></th>
+                            <th ng-repeat="field in ListPanelCtrl.columnHeaders" ng-bind="field"></th>
                         </tr>
                     </thead>
-                    <tr ng-repeat="cellLine in ListCtrl.displayResults">
-                        <td ng-repeat="field in ListCtrl.fields" ng-switch="field">
+                    <tr ng-repeat="cellLine in ListPanelCtrl.displayResults">
+                        <td ng-repeat="field in ListPanelCtrl.fields" ng-switch="field">
                             <a ng-switch-when="bioSamplesAccession" ng-href="http://www.ebi.ac.uk/biosamples/sample/{{cellLine[field]}}" ng-bind="cellLine[field]"></a>
                             <a ng-switch-when="name" ng-href="#/lines/{{cellLine[field]}}" ng-bind="cellLine[field]"></a>
                             <a ng-switch-when="donor" ng-href="#/donors/{{cellLine[field]}}" ng-bind="cellLine[field]"></a>
@@ -47,11 +48,11 @@
                 </table>
 
                 <pagination 
-    			total-items="ListCtrl.numHits"
-    			ng-model="ListCtrl.currentPage"
-                        ng-change="ListCtrl.setPage()"
-    			items-per-page="ListCtrl.hitsPerPage"
-    			max-size="ListCtrl.numPages"
+    			total-items="ListPanelCtrl.numHits"
+    			ng-model="ListPanelCtrl.currentPage"
+                        ng-change="ListPanelCtrl.setPage()"
+    			items-per-page="ListPanelCtrl.hitsPerPage"
+    			max-size="ListPanelCtrl.numPages"
     			class="pagination-sm" boundary-links="true" rotate="false" >
                 </pagination>
             </div>
@@ -60,3 +61,4 @@
 
     </div>
 </div>
+</list-panel>

@@ -1,14 +1,15 @@
+<list-panel document-type="DonorCtrl.documentType" fields="DonorCtrl.fields" column-headers="DonorCtrl.columnHeaders">
 <div class="panel panel-default">
     <div class="panel-body">
 
         <h1>Donors</h1>
         <hr/>
     		<pagination 
-    			total-items="ListCtrl.numHits"
-    			ng-model="ListCtrl.currentPage"
-                        ng-change="ListCtrl.setPage()"
-    			items-per-page="ListCtrl.hitsPerPage"
-    			max-size="ListCtrl.numPages"
+    			total-items="ListPanelCtrl.numHits"
+    			ng-model="ListPanelCtrl.currentPage"
+                        ng-change="ListPanelCtrl.setPage()"
+    			items-per-page="ListPanelCtrl.hitsPerPage"
+    			max-size="ListPanelCtrl.numPages"
     			class="pagination-sm" boundary-links="true" rotate="false" >
                 </pagination>
 
@@ -17,19 +18,19 @@
                         Export<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a ng-click="ListCtrl.exportData('csv')">comma delimited .csv</a></li>
-                        <li><a ng-click="ListCtrl.exportData('tsv')">tab delimited .tsv</a></li>
+                        <li><a ng-click="ListPanelCtrl.exportData('csv')">comma delimited .csv</a></li>
+                        <li><a ng-click="ListPanelCtrl.exportData('tsv')">tab delimited .tsv</a></li>
                     </ul>
                 </div>
 
         <table class="donors table table-striped">
             <thead>
                 <tr class="slanted">
-                    <th ng-repeat="field in ListCtrl.columnHeaders" ng-bind="field"></th>
+                    <th ng-repeat="field in ListPanelCtrl.columnHeaders" ng-bind="field"></th>
                 </tr>
             </thead>
-            <tr ng-repeat="donor in ListCtrl.displayResults">
-                <td ng-repeat="field in ListCtrl.fields" ng-switch="field">
+            <tr ng-repeat="donor in ListPanelCtrl.displayResults">
+                <td ng-repeat="field in ListPanelCtrl.fields" ng-switch="field">
                     <a ng-switch-when="bioSamplesAccession" ng-href="http://www.ebi.ac.uk/biosamples/sample/{{donor[field]}}" ng-bind="donor[field]"></a>
                     <a ng-switch-when="name" ng-href="#/donors/{{donor[field]}}" ng-bind="donor[field]"></a>
                     <span ng-switch-default="" ng-bind="donor[field]"></span>
@@ -39,14 +40,15 @@
         </table>
 
     		<pagination 
-    			total-items="ListCtrl.numHits"
-    			ng-model="ListCtrl.currentPage"
-                        ng-change="ListCtrl.setPage()"
-    			items-per-page="ListCtrl.hitsPerPage"
-    			max-size="ListCtrl.numPages"
+    			total-items="ListPanelCtrl.numHits"
+    			ng-model="ListPanelCtrl.currentPage"
+                        ng-change="ListPanelCtrl.setPage()"
+    			items-per-page="ListPanelCtrl.hitsPerPage"
+    			max-size="ListPanelCtrl.numPages"
     			class="pagination-sm" boundary-links="true" rotate="false" >
                 </pagination>
 
 
     </div>
 </div>
+</list-panel>
