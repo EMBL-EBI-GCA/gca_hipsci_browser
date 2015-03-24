@@ -7,14 +7,7 @@
             <div class = "col-md-12">
             <div class="row">
             <div class = "col-md-4">
-                <pagination 
-    			total-items="ListPanelCtrl.numHits"
-    			ng-model="ListPanelCtrl.currentPage"
-                        ng-change="ListPanelCtrl.setPage()"
-    			items-per-page="ListPanelCtrl.hitsPerPage"
-    			max-size="ListPanelCtrl.numPages"
-    			class="pagination-sm" boundary-links="true" rotate="false" >
-                </pagination>
+    		<list-pagination></list-pagination>
             </div>
             <div class = "col-md-1">
 
@@ -47,14 +40,7 @@
                     </tr>
                 </table>
 
-                <pagination 
-    			total-items="ListPanelCtrl.numHits"
-    			ng-model="ListPanelCtrl.currentPage"
-                        ng-change="ListPanelCtrl.setPage()"
-    			items-per-page="ListPanelCtrl.hitsPerPage"
-    			max-size="ListPanelCtrl.numPages"
-    			class="pagination-sm" boundary-links="true" rotate="false" >
-                </pagination>
+    		<list-pagination></list-pagination>
             </div>
 
         </div>

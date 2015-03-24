@@ -7,6 +7,7 @@ var dependencies = [
   'hipsciBrowser.controllers',
   'hipsciBrowser.navigation',
   'hipsciBrowser.listUtils',
+  'hipsciBrowser.listComponents',
   'ui.bootstrap',
 ];
 
