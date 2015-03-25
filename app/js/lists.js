@@ -19,8 +19,8 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
   return {
     controllerAs: 'ListPanelCtrl',
     restrict: 'E',
-    transclude: 'true',
-    scope: {},
+    transclude: true,
+    scope: true,
     link: function(scope, iElement, iAttrs, controller, transcludeFn) {
       transcludeFn(scope, function(clonedTranscludedContent) {
           iElement.append(clonedTranscludedContent);
@@ -28,7 +28,11 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       controller.documentType = scope.$parent.$eval(iAttrs.documentType);
       controller.columnHeaders = scope.$parent.$eval(iAttrs.columnHeaders);
       controller.fields = scope.$parent.$eval(iAttrs.fields);
-      controller.refreshSearch();
+
+      iElement.find('or-facet').each(function() {controller.waitForAggs++;});
+      if (controller.waitForAggs == 0) {
+          controller.refreshSearch();
+      }
     },
     controller: function () {
       var controller = this;
@@ -38,9 +42,8 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       controller.displayResults = [];
       controller.numHits = 0;
 
-      controller.isSearching = false;
-      controller.refreshRequired = false;
-  
+      controller.waitForAggs = 0;
+
       var cachedHits = [];
       var filterReqs = {};
       var filterCallbacks = {};
@@ -49,27 +52,48 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       var aggCallbacks = {};
   
       var search = function() {
-          if (controller.isSearching) {
-              controller.refreshRequired = true;
-              return;
-          }
-          controller.isSearching = true;
         var searchBody = {
           fields: controller.fields,
           size: controller.hitsPerPage,
           from: (controller.currentPage -1) * controller.hitsPerPage,
         };
+
         var filterKeys = Object.keys(filterReqs);
-        if (filterKeys.length >0) {
-            if (filterKeys.length == 1) {
-                searchBody['query'] = {filtered: {filter: filterReqs[filterKeys[0]]}};
+        var aggExcludeFilterKeys = [];
+        var globalFilterKeys = [];
+        for (var i=0; i<filterKeys.length; i++) {
+            if (aggExcludeFilters.hasOwnProperty(filterKeys[i])
+                    && aggExcludeFilters[filterKeys[i]]) {
+                aggExcludeFilterKeys.push(filterKeys[i]);
+            }
+            else {
+                globalFilterKeys.push(filterKeys[i]);
+            }
+        }
+
+        if (globalFilterKeys.length >0) {
+            if (globalFilterKeys.length == 1) {
+                searchBody['query'] = {filtered: {filter: filterReqs[globalFilterKeys[0]]}};
             }
             else {
                 var filterArr = [];
-                for (var i=0; i<filterKeys.length; i++) {
-                    filterArr.push(filterReqs[filterKeys[i]]);
+                for (var i=0; i<globalFilterKeys.length; i++) {
+                    filterArr.push(filterReqs[globalFilterKeys[i]]);
                 }
                 searchBody['query'] = {filtered: {filter: {and: filterArr}}};
+            }
+        }
+
+        if (aggExcludeFilterKeys.length >0) {
+            if (aggExcludeFilterKeys.length == 1) {
+                searchBody['post_filter'] = filterReqs[aggExcludeFilterKeys[0]];
+            }
+            else {
+                var filterArr = [];
+                for (var i=0; i<aggExcludeFilterKeys.length; i++) {
+                    filterArr.push(filterReqs[aggExcludeFilterKeys[i]]);
+                }
+                searchBody['post_filter'] = {and: filterArr};
             }
         }
 
@@ -107,11 +131,6 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
                       aggCallbacks[aggKeys[i]](resp['aggregations'][aggKeys[i]]);
                   }
               }
-          }
-          controller.isSearching = false;
-          if (controller.refreshRequired) {
-              controller.refreshRequired = false;
-              search();
           }
         });
       };
@@ -168,6 +187,10 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
           aggReqs[aggName] = aggReq;
           aggExcludeFilters[aggName] = excludeFilter;
           aggCallbacks[aggName] = processCallback;
+          controller.waitForAggs --;
+          if (controller.waitForAggs <= 0) {
+              controller.refreshSearch();
+          }
 
       };
     }

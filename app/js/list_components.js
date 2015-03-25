@@ -62,7 +62,6 @@ listComponents.directive('orFacet', function() {
             scope.buttonRequired = (ulElem.prop('scrollHeight') > ulElem.height());
         };
         ListPanelCtrl.registerAggregate(scope.field, aggReq, true, processAggResp);
-        ListPanelCtrl.refreshSearch();
 
         scope.handleEvent = function(agg) {
             var term = agg['key'];
