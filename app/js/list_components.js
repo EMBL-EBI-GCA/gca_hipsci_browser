@@ -27,7 +27,6 @@ listComponents.directive('orFacet', function() {
         scope.aggs = [];
         scope.collapsed = true;
         scope.buttonText = '+';
-        scope.buttonRequired = false;
 
 
         var disableCallback = function() {
@@ -54,12 +53,23 @@ listComponents.directive('orFacet', function() {
         };
 
         var aggReq = { terms: {field: scope.field } };
-        var ulElem = iElement.find("ul").first();
         var processAggResp = function(resp) {
             scope.aggs = resp.buckets.sort(function(a,b) {
-                return b['doc_count'] - a['doc_count'];
+                if (scope.filteredTerms.hasOwnProperty(b['key']) == scope.filteredTerms.hasOwnProperty(a['key'])) {
+                    return b['doc_count'] - a['doc_count'];
+                }
+                return scope.filteredTerms.hasOwnProperty(b['key']);
             });
-            scope.buttonRequired = (ulElem.prop('scrollHeight') > ulElem.height());
+            if (scope.aggs.length == 0) {
+                for (var aggKey in scope.filteredTerms) {
+                    scope.aggs.push({key: aggKey, doc_count: 0});
+                }
+            }
+        };
+        var ulElem = iElement.find("ul").first();
+        scope.buttonRequired = function() {
+            var buttonRequired = !scope.collapsed || (ulElem.prop('scrollHeight') > ulElem.height());
+            return buttonRequired;
         };
         ListPanelCtrl.registerAggregate(scope.field, aggReq, true, processAggResp);
 
@@ -76,8 +86,8 @@ listComponents.directive('orFacet', function() {
         };
 
         scope.toggleCollapse = function() {
-            scope.collapse = !scope.collapse;
-            scope.buttonText = scope.collapse ? '+' : '-';
+            scope.collapsed = !scope.collapsed;
+            scope.buttonText = scope.collapsed ? '+' : '-';
         };
 
     }

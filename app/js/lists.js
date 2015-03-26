@@ -4,8 +4,8 @@ var listUtils = angular.module('hipsciBrowser.listUtils', []);
 
 listUtils.controller('DonorCtrl', function() {
     this.documentType = 'donor';
-    this.fields = ['name', 'sex'];
-    this.columnHeaders = ['Name', 'Sex'];
+    this.fields = ['name', 'sex', 'ethnicity'];
+    this.columnHeaders = ['Name', 'Sex', 'Ethnicity'];
 });
 
 listUtils.controller('LineCtrl', function() {
@@ -101,7 +101,32 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
         if (aggKeys.length >0) {
             searchBody['aggs'] = {};
             for (var i=0; i<aggKeys.length; i++) {
-                searchBody['aggs'][aggKeys[i]] = aggReqs[aggKeys[i]];
+                var aggKey = aggKeys[i];
+                var extraFilterKeys = [];
+                for (var j=0; j<aggExcludeFilterKeys.length; j++) {
+                    if (aggExcludeFilterKeys[j] != aggKey) {
+                        extraFilterKeys.push(aggExcludeFilterKeys[j]);
+                    }
+                }
+                if (extraFilterKeys.length >0) {
+                    var filter;
+                    if (extraFilterKeys.length ==1) {
+                        searchBody['aggs'][aggKey] = {filter: filterReqs[extraFilterKeys[0]]};
+                    }
+                    else {
+                        var extraFilterReqs = [];
+                        for (var j=0; j<extraFilterKeys.length; j++) {
+                            extraFilterReqs.push(filterReqs[extraFilterKeys[j]]);
+                        }
+                        searchBody['aggs'][aggKey] = {filter: {and: extraFilterReqs}};
+                    }
+                    searchBody['aggs'][aggKey]['aggs'] = {};
+                    searchBody['aggs'][aggKey]['aggs'][aggKey] = aggReqs[aggKey];
+                    
+                }
+                else {
+                    searchBody['aggs'][aggKey] = aggReqs[aggKey];
+                }
             }
         }
 
@@ -125,10 +150,15 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
           cachedHits[controller.currentPage] = controller.displayResults;
 
           if (resp.hasOwnProperty('aggregations')) {
-              var aggKeys = Object.keys(resp['aggregations']);
+              var aggResps = resp['aggregations'];
+              var aggKeys = Object.keys(aggResps);
               for (var i=0; i<aggKeys.length; i++) {
                   if (aggCallbacks.hasOwnProperty([aggKeys[i]])) {
-                      aggCallbacks[aggKeys[i]](resp['aggregations'][aggKeys[i]]);
+                      var aggRespObj = aggResps[aggKeys[i]];
+                      if (aggRespObj.hasOwnProperty(aggKeys[i])) {
+                          aggRespObj = aggRespObj[aggKeys[i]];
+                      }
+                      aggCallbacks[aggKeys[i]](aggRespObj);
                   }
               }
           }

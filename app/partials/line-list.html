@@ -1,15 +1,16 @@
-<list-panel document-type="LineCtrl.documentType" fields="LineCtrl.fields" column-headers="LineCtrl.columnHeaders">
 <div class="panel panel-default">
     <div class="panel-body">
+    <list-panel document-type="LineCtrl.documentType" fields="LineCtrl.fields" column-headers="LineCtrl.columnHeaders">
         <h1>Cell Lines</h1>
         <hr/>
         <div class="row">
-            <div class = "col-md-12">
-            <div class="row">
-            <div class = "col-md-4">
-    		<list-pagination></list-pagination>
+            <div class="col-md-3 fixd-width-lhs">
+                <or-facet title="Source Material" field="sourceMaterial"></or-facet>
+                <or-facet title="Disease Status" field="diseaseStatus"></or-facet>
+                <or-facet title="Donor Age" field="donorAge"></or-facet>
             </div>
-            <div class = "col-md-1">
+            <div class="col-md-9 fixd-width-rhs">
+    		<list-pagination></list-pagination>
 
                 <div class="btn-group" dropdown="">
                     <button type="button" class="btn btn-sm btn-primary dropdown-toggle" >
@@ -20,8 +21,6 @@
                         <li><a ng-click="ListPanelCtrl.exportData('tsv')">tab delimited .tsv</a></li>
                     </ul>
                 </div>
-            </div>
-            </div>
 
                 <table class="cellLines table table-striped">
                     <thead>
@@ -45,6 +44,6 @@
 
         </div>
 
+    </list-panel>
     </div>
 </div>
-</list-panel>
