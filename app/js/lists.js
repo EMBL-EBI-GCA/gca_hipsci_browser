@@ -48,6 +48,7 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       controller.hitsPerPage = 10;
       controller.displayResults = [];
       controller.numHits = 0;
+      controller.query = '';
 
       controller.waitForAggs = 0;
 
@@ -138,6 +139,15 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
                         searchBody['aggs'][aggKey+'.'+j] = aggReqs[aggKey][j];
                     }
                 }
+            }
+        }
+
+        if (controller.query.length >0) {
+            if (globalFilterKeys.length >0) {
+                searchBody.query.filtered['query'] = {fuzzy: {_all: controller.query}};
+            }
+            else {
+                searchBody['query'] = {fuzzy: {_all: controller.query}};
             }
         }
 

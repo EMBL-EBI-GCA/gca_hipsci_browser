@@ -3,7 +3,7 @@
     <list-panel document-type="LineCtrl.documentType" fields="LineCtrl.fields" column-headers="LineCtrl.columnHeaders">
         <h1>Cell Lines</h1>
         <hr/>
-        <div class="row">
+        <div class="row list-panel">
             <div class="col-md-3 fixd-width-lhs">
                 <facets-clear text="Clear filters"></facets-clear>
                 <or-facet title="Source Material" field="sourceMaterial"></or-facet>
@@ -13,7 +13,7 @@
             <div class="col-md-9 fixd-width-rhs">
     		<list-pagination></list-pagination>
 
-                <div class="btn-group pull-right" dropdown="">
+                <div class="export-button btn-group pull-right" dropdown="">
                     <button type="button" class="btn btn-primary dropdown-toggle" >
                         Export<span class="caret"></span>
                     </button>
@@ -21,6 +21,9 @@
                         <li><a ng-click="ListPanelCtrl.exportData('csv')">comma delimited .csv</a></li>
                         <li><a ng-click="ListPanelCtrl.exportData('tsv')">tab delimited .tsv</a></li>
                     </ul>
+                </div>
+                <div class="list-search-box">
+                    <list-search-box></list-search-box>
                 </div>
 
             <div class="matrix-wrapper table-responsive">

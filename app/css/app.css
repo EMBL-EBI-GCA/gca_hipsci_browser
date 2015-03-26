@@ -97,10 +97,15 @@ p .left-image{
   right: 10px;
 }
 /* Facet filter query input*/
-.facet-filter{
+.list-search-box{
   float: right;
   margin-top: 20px;
   margin-bottom: 20px;
+  margin-right: 20px;
+}
+.export-button button {
+  margin-top: 10px;
+  margin-right: 20px;
 }
 /*match the panel heading style*/
 .facet .heading{

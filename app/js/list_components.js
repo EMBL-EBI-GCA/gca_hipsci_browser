@@ -13,6 +13,14 @@ listComponents.directive('listPagination', function() {
   };
 });
 
+listComponents.directive('listSearchBox', function() {
+  return {
+    restrict: 'E',
+    scope: false,
+    template: '<span>Search:<input ng-model="ListPanelCtrl.query" ng-change="ListPanelCtrl.refreshSearch()"></input></span>'
+  };
+});
+
 listComponents.directive('orFacet', function() {
   return {
     restrict: 'E',
