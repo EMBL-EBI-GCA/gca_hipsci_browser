@@ -210,9 +210,24 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
           }
           else {
               filterReqs[filterName] = filterReq;
-              filterCallbacks[filterName] = filterReq;
+              filterCallbacks[filterName] = disableCallback;
           }
       };
+      controller.clearFilters = function() {
+          var filterKeys = Object.keys(filterReqs);
+          if (filterKeys.length ==0) {
+              return;
+          }
+          for (var i=0; i<filterKeys.length; i++) {
+              if (filterCallbacks.hasOwnProperty(filterKeys[i])) {
+                  filterCallbacks[filterKeys[i]]();
+                  delete filterCallbacks[filterKeys[i]];
+              };
+              delete filterReqs[filterKeys[i]];
+          }
+          controller.refreshSearch();
+      };
+
       controller.registerAggregate = function(aggName, aggReq, excludeFilter, processCallback) {
           aggReqs[aggName] = aggReq;
           aggExcludeFilters[aggName] = excludeFilter;

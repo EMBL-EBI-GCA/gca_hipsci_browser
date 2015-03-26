@@ -32,7 +32,7 @@ listComponents.directive('orFacet', function() {
         var disableCallback = function() {
             scope.filteredTerms = {};
             for (var i=0; i<scope.aggs.length; i++) {
-                scope.aggs[i] = '';
+                scope.aggs[i]['doc_count'] = '';
             }
         };
         var registerFilter = function() {
@@ -93,3 +93,21 @@ listComponents.directive('orFacet', function() {
     }
   };
 });
+
+
+
+listComponents.directive('facetsClear', [function() {
+  return {
+    restrict: 'E',
+    require: '^listPanel',
+    scope: {
+      'text': '@'
+    },
+    link: function(scope, element, attrs, ListPanelController) {
+      scope.clearParent = function() {
+        ListPanelController.clearFilters();
+      };
+    },
+    template: '<button class="btn btn-primary" ng-click="clearParent()" ng-bind="text"></button>'
+  };
+}]);
