@@ -60,7 +60,7 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
           controller.refreshSearch();
       }
     },
-    controller: function () {
+    controller: ['$timeout', function ($timeout) {
       var controller = this;
       controller.currentPage = 1;
       controller.numPages = 0;
@@ -70,6 +70,7 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       controller.query = '';
 
       controller.waitForAggs = 0;
+      controller.delayedSearchActivated = false;
 
       var cachedHits = [];
       var filterReqs = {};
@@ -79,6 +80,7 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       var aggCallbacks = {};
   
       var search = function() {
+        controller.delayedSearchActivated = false;
         var searchBody = {
           fields: controller.fields,
           size: controller.hitsPerPage,
@@ -297,7 +299,19 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
           }
 
       };
-    }
+
+      controller.delayedSearch = function(event) {
+          if (event.keyCode === 13) {
+              controller.refreshSearch();
+              return;
+          }
+          if (controller.delayedSearchActivated) {
+              return;
+          }
+          controller.delayedSearchActivated = true;
+          $timeout(function() {if (controller.delayedSearchActivated) {controller.refreshSearch();}}, 1000);
+      };
+    }]
 
   };
 }]);
