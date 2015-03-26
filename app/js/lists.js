@@ -128,11 +128,15 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
                         searchBody['aggs'][aggKey] = {filter: {and: extraFilterReqs}};
                     }
                     searchBody['aggs'][aggKey]['aggs'] = {};
-                    searchBody['aggs'][aggKey]['aggs'][aggKey] = aggReqs[aggKey];
+                    for (var j=0; j<aggReqs[aggKey].length; j++) {
+                        searchBody['aggs'][aggKey]['aggs'][aggKey+'.'+j] = aggReqs[aggKey][j];
+                    }
                     
                 }
                 else {
-                    searchBody['aggs'][aggKey] = aggReqs[aggKey];
+                    for (var j=0; j<aggReqs[aggKey].length; j++) {
+                        searchBody['aggs'][aggKey+'.'+j] = aggReqs[aggKey][j];
+                    }
                 }
             }
         }
@@ -158,15 +162,19 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
 
           if (resp.hasOwnProperty('aggregations')) {
               var aggResps = resp['aggregations'];
-              var aggKeys = Object.keys(aggResps);
+              var aggKeys = Object.keys(aggReqs);
               for (var i=0; i<aggKeys.length; i++) {
-                  if (aggCallbacks.hasOwnProperty([aggKeys[i]])) {
-                      var aggRespObj = aggResps[aggKeys[i]];
-                      if (aggRespObj.hasOwnProperty(aggKeys[i])) {
-                          aggRespObj = aggRespObj[aggKeys[i]];
+                  if (aggCallbacks.hasOwnProperty(aggKeys[i])) {
+                      var aggRespObjs = [];
+                      var aggRespTopObj = aggResps.hasOwnProperty(aggKeys[i]) ? aggResps[aggKeys[i]] : aggResps;
+                      for (var j=0; j<aggReqs[aggKeys[i]].length; j++) {
+                          var aggKey = aggKeys[i]+'.'+j;
+                          if (aggRespTopObj.hasOwnProperty(aggKey)) {
+                              aggRespObjs[j] = aggRespTopObj[aggKey];
+                          }
                       }
-                      aggCallbacks[aggKeys[i]](aggRespObj);
                   }
+                  aggCallbacks[aggKeys[i]](aggRespObjs);
               }
           }
         });
@@ -250,8 +258,8 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
           controller.refreshSearch();
       };
 
-      controller.registerAggregate = function(aggName, aggReq, excludeFilter, processCallback) {
-          aggReqs[aggName] = aggReq;
+      controller.registerAggregate = function(aggName, aggReqArr, excludeFilter, processCallback) {
+          aggReqs[aggName] = aggReqArr;
           aggExcludeFilters[aggName] = excludeFilter;
           aggCallbacks[aggName] = processCallback;
           controller.waitForAggs --;

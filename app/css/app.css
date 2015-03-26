@@ -124,7 +124,72 @@ body { padding-top: 60px; }
 /*angular ui bootstrap css fix see http://angular-ui.github.io/bootstrap/*/
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
+/* matrix grid styles */
+div.matrix-wrapper {
+  padding-right: 80px; /* to prevent slanting heading to overflow out of the page */
+}
+html[data-useragent*='MSIE 8'] div.matrix-wrapper {
+  padding-right: 0; /* not need in IE 8 since the heading are not slanting */
+}
+table.matrix th.assay{
+  width: 25px;
+  height: 80px;
+  white-space: nowrap;
+}
+table.matrix th.assay > div {
+  -ms-transform:translate(20px, 0px) rotate(315deg);
+  -moz-transform:translate(20px, 0px) rotate(315deg);
+  -webkit-transform:translate(20px, 0px) rotate(315deg);
+  -o-transform:translate(20px, 0px) rotate(315deg);
+  transform:translate(20px, 0px) rotate(315deg);
+  width: inherit;
+}
+table.matrix th.assay > div > span {
+  border-bottom: 1px solid #ccc;
+  padding: 5px 10px;
+}
+html[data-useragent*='MSIE 8'] table.matrix th.assay > div { /* for IE8 only */
+  font-size: 65%;
+  margin: 0 -8px;
+  padding: 2px;
+  width: auto;
+}
+html[data-useragent*='MSIE 8'] table.matrix th.assay > div > span {
+  border: none;
+  padding: 0;
+}
+table.matrix td.assay {
+  text-align: center;
+  border-left: thin solid #ddd;
+  overflow: hidden;
+}
 
+table.matrix td.assay a {
+  color: #058dc7;
+  font-size: 20px;
+  text-decoration:none;
+  text-align: center;
+  margin: -8px -8px -108px;
+  padding-bottom: 100px;
+  line-height: 36px;
+  display: block;
+}
+table.matrix td.assay a:hover {
+  background-color: #b3d4fc;
+}
+
+/* layout for matrix and files page with fixed width lhs column */
+@media (min-width: 992px) { /* @screen-md-min */
+  .fixd-width-lhs {
+    width: 350px;
+  }
+
+  .fixd-width-rhs {
+    float: none;
+    margin-left: 350px;
+    width: auto;
+  }
+}
 /* logo to replace nav bar on printed page */
 .print-only-logo {
   display: none;
@@ -136,4 +201,14 @@ body { padding-top: 60px; }
     display: block;
   }
 }
+/* row with same height panels */
+.flex-row, .flex-row > div[class*='col-']  {
+  display: -webkit-flex;
+  display: flex;
+}
 
+@media (max-width: 767px) { /* @screen-xs-max */
+  .flex-row, .flex-row > div[class*='col-']  {
+    display: block;
+  }
+}

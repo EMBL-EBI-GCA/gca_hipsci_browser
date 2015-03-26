@@ -10,5 +10,15 @@
 			<span ng-bind="agg['key']"></span>
                         <span class="badge" ng-bind="agg['doc_count']"></span>
 		</li>
+                <li ng-if="aggsOther" class="list-group-item facet-term active:false">
+			<span>Other</span>
+                        <span class="badge" ng-bind="aggsOther"></span>
+                </li>
+		<li ng-if="aggsNoData" class="list-group-item facet-term" 
+			ng-class="{active: filterNoData}"
+			ng-click="handleNoDataEvent()" >
+			<span>No Data</span>
+                        <span class="badge" ng-bind="aggsNoData"></span>
+		</li>
 	</ul>
 </div>

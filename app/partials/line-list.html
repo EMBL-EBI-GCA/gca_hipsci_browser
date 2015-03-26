@@ -11,11 +11,9 @@
                 <or-facet title="Donor Age" field="donorAge"></or-facet>
             </div>
             <div class="col-md-9 fixd-width-rhs">
-            <div class="row">
     		<list-pagination></list-pagination>
 
-            <div class="col-md-2 pull-right">
-                <div class="btn-group" dropdown="">
+                <div class="btn-group pull-right" dropdown="">
                     <button type="button" class="btn btn-primary dropdown-toggle" >
                         Export<span class="caret"></span>
                     </button>
@@ -24,21 +22,20 @@
                         <li><a ng-click="ListPanelCtrl.exportData('tsv')">tab delimited .tsv</a></li>
                     </ul>
                 </div>
-            </div>
-            </div>
 
-                <table class="cellLines table table-striped">
+            <div class="matrix-wrapper table-responsive">
+                <table class="matrix table table-striped">
                     <thead>
                         <tr class="slanted">
-                            <th ng-repeat="field in ListPanelCtrl.columnHeaders" ng-bind="field"></th>
+                            <th ng-repeat="columnHeader in LineCtrl.columnHeaders" ng-class="LineCtrl.fieldType(LineCtrl.fields[$index])"><div><span ng-bind="columnHeader"></span></div></th>
                         </tr>
                     </thead>
                     <tr ng-repeat="cellLine in ListPanelCtrl.displayResults">
-                        <td ng-repeat="field in ListPanelCtrl.fields" ng-switch="LineCtrl.fieldType(field)">
+                        <td ng-repeat="field in ListPanelCtrl.fields" ng-switch="LineCtrl.fieldType(field)" ng-class="LineCtrl.fieldType(field)">
                             <a ng-switch-when="bioSamplesAccession" ng-href="http://www.ebi.ac.uk/biosamples/sample/{{cellLine[field]}}" ng-bind="cellLine[field]"></a>
                             <a ng-switch-when="name" ng-href="#/lines/{{cellLine[field]}}" ng-bind="cellLine[field]"></a>
                             <a ng-switch-when="donor" ng-href="#/donors/{{cellLine[field]}}" ng-bind="cellLine[field]"></a>
-                            <span ng-switch-when="assay" class="assays" ng-class="{hasdata: cellLine[field]}">
+                            <span ng-switch-when="assay" class="assay" ng-class="{hasdata: cellLine[field]}">
                                 <a ng-if="cellLine[field]" ng-href="https://www.ebi.ac.uk/ega/studies/{{cellLine[field]}}" popover="{{cellLine[field]}}" popover-trigger="mouseenter" target="_blank">&#x25cf;</a>
                             </span>
                             <span ng-switch-default="" ng-bind="cellLine[field]"></span>
@@ -46,6 +43,7 @@
                         </td>
                     </tr>
                 </table>
+            </div>
 
     		<list-pagination></list-pagination>
             </div>
