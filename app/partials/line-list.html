@@ -34,10 +34,13 @@
                         </tr>
                     </thead>
                     <tr ng-repeat="cellLine in ListPanelCtrl.displayResults">
-                        <td ng-repeat="field in ListPanelCtrl.fields" ng-switch="field">
+                        <td ng-repeat="field in ListPanelCtrl.fields" ng-switch="LineCtrl.fieldType(field)">
                             <a ng-switch-when="bioSamplesAccession" ng-href="http://www.ebi.ac.uk/biosamples/sample/{{cellLine[field]}}" ng-bind="cellLine[field]"></a>
                             <a ng-switch-when="name" ng-href="#/lines/{{cellLine[field]}}" ng-bind="cellLine[field]"></a>
                             <a ng-switch-when="donor" ng-href="#/donors/{{cellLine[field]}}" ng-bind="cellLine[field]"></a>
+                            <span ng-switch-when="assay" class="assays" ng-class="{hasdata: cellLine[field]}">
+                                <a ng-if="cellLine[field]" ng-href="https://www.ebi.ac.uk/ega/studies/{{cellLine[field]}}" popover="{{cellLine[field]}}" popover-trigger="mouseenter" target="_blank">&#x25cf;</a>
+                            </span>
                             <span ng-switch-default="" ng-bind="cellLine[field]"></span>
 
                         </td>
