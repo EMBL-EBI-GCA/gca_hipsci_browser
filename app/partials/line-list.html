@@ -11,10 +11,12 @@
                 <or-facet title="Donor Age" field="donorAge"></or-facet>
             </div>
             <div class="col-md-9 fixd-width-rhs">
+            <div class="row">
     		<list-pagination></list-pagination>
 
+            <div class="col-md-2 pull-right">
                 <div class="btn-group" dropdown="">
-                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" >
+                    <button type="button" class="btn btn-primary dropdown-toggle" >
                         Export<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
@@ -22,6 +24,8 @@
                         <li><a ng-click="ListPanelCtrl.exportData('tsv')">tab delimited .tsv</a></li>
                     </ul>
                 </div>
+            </div>
+            </div>
 
                 <table class="cellLines table table-striped">
                     <thead>

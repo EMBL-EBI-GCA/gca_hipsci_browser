@@ -167,12 +167,27 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
   
       controller.exportData = function(format) {
         var form = document.createElement('form');
-        var body = {
+        var searchBody = {
         fields: controller.fields,
         column_names: controller.columnHeaders,
-        page: 0,
+        from: 0,
         size: controller.numHits,
         };
+
+        var filterKeys = Object.keys(filterReqs);
+        if (filterKeys.length >0) {
+            if (filterKeys.length == 1) {
+                searchBody['query'] = {filtered: {filter: filterReqs[filterKeys[0]]}};
+            }
+            else {
+                var filterArr = [];
+                for (var i=0; i<filterKeys.length; i++) {
+                    filterArr.push(filterReqs[filterKeys[i]]);
+                }
+                searchBody['query'] = {filtered: {filter: {and: filterArr}}};
+            }
+        }
+
         //form.action='http://vg-rs-dev1:8000/api/hipsci/' + this.documentType + '/_search.' +format;
         //form.action='/api/hipsci/' + this.documentType + '/_search.' +format;
         form.action='http://127.0.0.1:3000/hipsci/' + controller.documentType + '/_search.' +format;
@@ -182,7 +197,7 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
         var input = document.createElement("textarea");
         input.setAttribute('type', 'hidden');
         input.setAttribute('name', 'json');
-        input.value = JSON.stringify(body);
+        input.value = JSON.stringify(searchBody);
         form.appendChild(input);
         form.style.display = 'none';
         document.body.appendChild(form);
