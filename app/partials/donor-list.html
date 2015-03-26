@@ -5,18 +5,17 @@
         <h1>Donors</h1>
         <hr/>
 
-        <div class="row">
+        <div class="row list-panel">
             <div class="col-md-3 fixd-width-lhs">
                 <facets-clear text="Clear filters"></facets-clear>
                 <or-facet title="Sex" field="sex"></or-facet>
                 <or-facet title="Ethnicity" field="ethnicity"></or-facet>
+                <or-facet title="Disease Status" field="diseaseStatus"></or-facet>
             </div>
             <div class="col-md-9 fixd-width-rhs">
-            <div class="row">
     		<list-pagination></list-pagination>
 
-            <div class="col-md-2 pull-right">
-                <div class="btn-group" dropdown="">
+                <div class="export-button btn-group pull-right" dropdown="">
                     <button type="button" class="btn btn-primary dropdown-toggle" >
                         Export<span class="caret"></span>
                     </button>
@@ -25,24 +24,27 @@
                         <li><a ng-click="ListPanelCtrl.exportData('tsv')">tab delimited .tsv</a></li>
                     </ul>
                 </div>
-            </div>
-            </div>
+                <div class="list-search-box">
+                    <list-search-box></list-search-box>
+                </div>
 
-        <table class="donors table table-striped">
+            <div class="matrix-wrapper table-responsive">
+            <table class="matrix table table-striped">
             <thead>
                 <tr class="slanted">
-                    <th ng-repeat="field in ListPanelCtrl.columnHeaders" ng-bind="field"></th>
+                    <th ng-repeat="columnHeader in DonorCtrl.columnHeaders" ng-class="DonorCtrl.fieldMatrixClass(DonorCtrl.fields[$index])"><div><span ng-bind="columnHeader"></span></div></th>
                 </tr>
             </thead>
             <tr ng-repeat="donor in ListPanelCtrl.displayResults">
-                <td ng-repeat="field in ListPanelCtrl.fields" ng-switch="field">
-                    <a ng-switch-when="bioSamplesAccession" ng-href="http://www.ebi.ac.uk/biosamples/sample/{{donor[field]}}" ng-bind="donor[field]"></a>
+                        <td ng-repeat="field in ListPanelCtrl.fields" ng-switch="DonorCtrl.fieldType(field)" ng-class="DonorCtrl.fieldMatrixClass(field)">
+                    <a ng-switch-when="bioSamplesAccession" ng-href="http://www.ebi.ac.uk/biosamples/sample/{{donor[field]}}" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a>
                     <a ng-switch-when="name" ng-href="#/donors/{{donor[field]}}" ng-bind="donor[field]"></a>
                     <span ng-switch-default="" ng-bind="donor[field]"></span>
 
                 </td>
             </tr>
         </table>
+            </div>
 
     		<list-pagination></list-pagination>
             </div>

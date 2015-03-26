@@ -4,8 +4,20 @@ var listUtils = angular.module('hipsciBrowser.listUtils', []);
 
 listUtils.controller('DonorCtrl', function() {
     this.documentType = 'donor';
-    this.fields = ['name', 'sex', 'ethnicity'];
-    this.columnHeaders = ['Name', 'Sex', 'Ethnicity'];
+    this.fields = ['name', 'sex', 'ethnicity', 'diseaseStatus', 'age', 'bioSamplesAccession'];
+    this.columnHeaders = ['Name', 'Sex', 'Ethnicity', 'Disease Status', 'Age', 'Biosample'];
+
+    this.fieldType = function(field) {
+        return field;
+    };
+    this.fieldMatrixClass = function(field) {
+        var cssClass = this.fieldType(field).toLowerCase();
+        if (cssClass == 'biosamplesaccession') {
+            cssClass = cssClass + ' matrix-dot';
+        }
+        return cssClass;
+    };
+
 });
 
 listUtils.controller('LineCtrl', function() {
