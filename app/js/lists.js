@@ -301,7 +301,7 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       };
 
       controller.delayedSearch = function(event) {
-          if (event.keyCode === 13) {
+          if (typeof event == 'object' && event.keyCode === 13) {
               controller.refreshSearch();
               return;
           }
