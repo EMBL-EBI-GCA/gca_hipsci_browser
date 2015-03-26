@@ -11,13 +11,20 @@ listUtils.controller('DonorCtrl', function() {
 listUtils.controller('LineCtrl', function() {
     this.documentType = 'cellLine';
     this.fields =  ['name', 'diseaseStatus', 'sex', 'sourceMaterial', 'tissueProvider', 'bioSamplesAccession', 'assays.exomeseq', 'assays.rnaseq', 'assays.gtarray', 'assays.gexarray', 'assays.mtarray'];
-    this.columnHeaders = ['Name', 'Disease Status', 'Sex', 'Source Material', 'Tissue Provider', 'Biosamples ID', 'exomeseq', 'rnaseq', 'gtarray', 'gexarray', 'mtarray'];
+    this.columnHeaders = ['Name', 'Disease Status', 'Sex', 'Source Material', 'Tissue Provider', 'Biosample', 'exomeseq', 'rnaseq', 'gtarray', 'gexarray', 'mtarray'];
 
     this.fieldType = function(field) {
         if (field.match(/^assays/)) {
             return 'assay';
         }
         return field;
+    };
+    this.fieldMatrixClass = function(field) {
+        var cssClass = this.fieldType(field).toLowerCase();
+        if (cssClass == 'assay' || cssClass == 'biosamplesaccession') {
+            cssClass = cssClass + ' matrix-dot';
+        }
+        return cssClass;
     };
 });
 

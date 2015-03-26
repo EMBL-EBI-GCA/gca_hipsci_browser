@@ -136,12 +136,12 @@ div.matrix-wrapper {
 html[data-useragent*='MSIE 8'] div.matrix-wrapper {
   padding-right: 0; /* not need in IE 8 since the heading are not slanting */
 }
-table.matrix th.assay{
+table.matrix th.matrix-dot{
   width: 25px;
   height: 80px;
   white-space: nowrap;
 }
-table.matrix th.assay > div {
+table.matrix th.matrix-dot > div {
   -ms-transform:translate(20px, 0px) rotate(315deg);
   -moz-transform:translate(20px, 0px) rotate(315deg);
   -webkit-transform:translate(20px, 0px) rotate(315deg);
@@ -149,27 +149,27 @@ table.matrix th.assay > div {
   transform:translate(20px, 0px) rotate(315deg);
   width: inherit;
 }
-table.matrix th.assay > div > span {
+table.matrix th.matrix-dot > div > span {
   border-bottom: 1px solid #ccc;
   padding: 5px 10px;
 }
-html[data-useragent*='MSIE 8'] table.matrix th.assay > div { /* for IE8 only */
+html[data-useragent*='MSIE 8'] table.matrix th.matrix-dot > div { /* for IE8 only */
   font-size: 65%;
   margin: 0 -8px;
   padding: 2px;
   width: auto;
 }
-html[data-useragent*='MSIE 8'] table.matrix th.assay > div > span {
+html[data-useragent*='MSIE 8'] table.matrix th.matrix-dot > div > span {
   border: none;
   padding: 0;
 }
-table.matrix td.assay {
+table.matrix td.matrix-dot {
   text-align: center;
   border-left: thin solid #ddd;
   overflow: hidden;
 }
 
-table.matrix td.assay a {
+table.matrix td.matrix-dot a {
   color: #058dc7;
   font-size: 20px;
   text-decoration:none;
@@ -179,8 +179,15 @@ table.matrix td.assay a {
   line-height: 36px;
   display: block;
 }
-table.matrix td.assay a:hover {
+table.matrix td.matrix-dot a:hover {
   background-color: #b3d4fc;
+}
+
+table.matrix td.biosamplesaccession a{
+  color: #99B397;
+}
+table.matrix td.assay a{
+  color: #B67E9C;
 }
 
 /* layout for matrix and files page with fixed width lhs column */
