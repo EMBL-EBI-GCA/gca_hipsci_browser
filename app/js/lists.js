@@ -51,12 +51,14 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
     transclude: true,
     scope: true,
     link: function(scope, iElement, iAttrs, controller, transcludeFn) {
-      transcludeFn(scope, function(clonedTranscludedContent) {
+      var transcludeScope = scope.$parent.$new();
+      transcludeScope.ListPanelCtrl = controller;
+      transcludeFn(transcludeScope, function(clonedTranscludedContent) {
           iElement.append(clonedTranscludedContent);
       });
-      controller.documentType = scope.$parent.$eval(iAttrs.documentType);
-      controller.columnHeaders = scope.$parent.$eval(iAttrs.columnHeaders);
-      controller.fields = scope.$parent.$eval(iAttrs.fields);
+      controller.documentType = transcludeScope.$eval(iAttrs.documentType);
+      controller.columnHeaders = transcludeScope.$eval(iAttrs.columnHeaders);
+      controller.fields = transcludeScope.$eval(iAttrs.fields);
 
       iElement.find('aggs-filter').each(function() {controller.waitForAggs++;});
       if (controller.waitForAggs == 0) {

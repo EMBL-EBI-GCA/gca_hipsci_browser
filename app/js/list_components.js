@@ -42,8 +42,8 @@ listComponents.directive('aggsFilter', function() {
         scope.collapsed = true;
         scope.buttonText = '+';
 
-        var existsFields = scope.$eval(scope.existsFields);
-        var existsLabels = scope.$eval(scope.existsLabels);
+        var existsFields = scope.$parent.$eval(scope.existsFields);
+        var existsLabels = scope.$parent.$eval(scope.existsLabels);
 
         var disableCallback = function() {
             scope.filteredTerms = {};
@@ -193,5 +193,46 @@ listComponents.directive('facetsClear', [function() {
       };
     },
     template: '<button class="btn btn-primary" ng-click="clearParent()" ng-bind="text"></button>'
+  };
+}]);
+
+
+
+
+listComponents.directive('rowBuilder', ['$compile', function($compile) {
+  return {
+    restrict: 'A',
+    scope: {
+        fields: '@',
+        displayResults: '=',
+        type: '@rowBuilder'
+    },
+    replace: false,
+    compile: function(tElement, tAttrs) {
+        console.log("in the compiler");
+      return {
+        post: function(scope, iElement, iAttrs) {
+        console.log("in the linker");
+            var fields = scope.$parent.$eval(scope.fields);
+            iElement.append('<tr ng-repeat="dR in displayResults"></tr>');
+            var tr = iElement.find('tr');
+
+            var tdElement = function (field, dataName) {
+                var fieldTdEl = 
+                    field == 'bioSamplesAccession' ? '<td class="biosamplesaccession matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/'+dataName+'" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a></td>'
+                    : field == 'cellLines' ? '<td class="cellLines matrix-dot" popover="{{'+dataName+'.join(\', \')}}" popover-trigger="mouseenter" ng-bind="'+dataName+'.length"></td>'
+                    : field == 'name' ? '<td class="name"><a ng-href="#/donors/{{'+dataName+'}}" ng-bind="'+dataName+'"</a></td>'
+                    : '<td ng-bind="'+dataName+'"></td>';
+                return fieldTdEl;
+            };
+            for (var i=0; i<fields.length; i++) {
+                var dataName= "dR['"+fields[i]+"']";
+                tr.append(tdElement(fields[i], dataName));
+            }
+
+
+            var linkfunc = $compile(tr);
+            linkfunc(scope);
+    }};}
   };
 }]);
