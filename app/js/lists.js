@@ -25,6 +25,9 @@ listUtils.controller('LineCtrl', function() {
     this.fields =  ['name', 'diseaseStatus', 'sex', 'sourceMaterial', 'tissueProvider', 'bioSamplesAccession', 'assays.exomeseq', 'assays.rnaseq', 'assays.gtarray', 'assays.gexarray', 'assays.mtarray'];
     this.columnHeaders = ['Name', 'Disease Status', 'Sex', 'Source Material', 'Tissue Provider', 'Biosample', 'exomeseq', 'rnaseq', 'gtarray', 'gexarray', 'mtarray'];
 
+    this.assaysFields =  ['assays.exomeseq', 'assays.rnaseq', 'assays.gtarray', 'assays.gexarray', 'assays.mtarray'];
+    this.assaysHeaders = ['exomeseq', 'rnaseq', 'gtarray', 'gexarray', 'mtarray'];
+
     this.fieldType = function(field) {
         if (field.match(/^assays/)) {
             return 'assay';

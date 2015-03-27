@@ -28,6 +28,7 @@ listComponents.directive('aggsFilter', function() {
         title: '@',
         field: '@',
         existsFields: '@',
+        existsLabels: '@',
         type: '@'
     },
     require: '^listPanel',
@@ -41,9 +42,8 @@ listComponents.directive('aggsFilter', function() {
         scope.collapsed = true;
         scope.buttonText = '+';
 
-        console.log(scope.existsFields);
         var existsFields = scope.$eval(scope.existsFields);
-        console.log(existsFields);
+        var existsLabels = scope.$eval(scope.existsLabels);
 
         var disableCallback = function() {
             scope.filteredTerms = {};
@@ -100,9 +100,12 @@ listComponents.directive('aggsFilter', function() {
                 }
                 return scope.filteredTerms.hasOwnProperty(b['key']);
             });
+            for (var i=0; i<scope.aggs.length; i++) {
+                scope.aggs[i].field = scope.aggs[i].key;
+            }
             if (scope.aggs.length == 0) {
                 for (var aggKey in scope.filteredTerms) {
-                    scope.aggs.push({key: aggKey, doc_count: 0});
+                    scope.aggs.push({key: aggKey, doc_count: 0, field: aggKey});
                 }
             }
             scope.aggsOther = resps[0].sum_other_doc_count;
@@ -115,14 +118,14 @@ listComponents.directive('aggsFilter', function() {
             }
             for (var i=0; i<existsFields.length; i++) {
                 if (resps[i].value >0) {
-                    scope.aggs.push({key: existsFields[i], doc_count: resps[i].value});
+                    scope.aggs.push({key: existsLabels[i], doc_count: resps[i].value, field: existsFields[i]});
                 }
             }
             scope.aggs = scope.aggs.sort(function(a,b) {
-                if (scope.filteredTerms.hasOwnProperty(b['key']) == scope.filteredTerms.hasOwnProperty(a['key'])) {
+                if (scope.filteredTerms.hasOwnProperty(b['field']) == scope.filteredTerms.hasOwnProperty(a['field'])) {
                     return b['doc_count'] - a['doc_count'];
                 }
-                return scope.filteredTerms.hasOwnProperty(b['key']);
+                return scope.filteredTerms.hasOwnProperty(b['field']);
             });
         };
         if (scope.type == 'terms') {
@@ -135,7 +138,6 @@ listComponents.directive('aggsFilter', function() {
             for (var i=0; i<existsFields.length; i++) {
                 aggReqs.push({value_count: {field: existsFields[i]}});
             }
-            console.log(aggReqs);
             ListPanelCtrl.registerAggregate(scope.field, aggReqs, false, processExistsAggResp);
         }
         var ulElem = iElement.find("ul").first();
@@ -145,7 +147,7 @@ listComponents.directive('aggsFilter', function() {
         };
 
         scope.handleEvent = function(agg) {
-            var term = agg['key'];
+            var term = scope.type=='terms' ? agg['key'] : agg['field'];
             if (scope.filteredTerms.hasOwnProperty(term)) {
                 delete scope.filteredTerms[term];
             }
