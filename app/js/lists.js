@@ -4,15 +4,15 @@ var listUtils = angular.module('hipsciBrowser.listUtils', []);
 
 listUtils.controller('DonorCtrl', function() {
     this.documentType = 'donor';
-    this.fields = ['name', 'sex', 'ethnicity', 'diseaseStatus', 'age', 'bioSamplesAccession'];
-    this.columnHeaders = ['Name', 'Sex', 'Ethnicity', 'Disease Status', 'Age', 'Biosample'];
+    this.fields = ['name', 'sex', 'ethnicity', 'diseaseStatus', 'age', 'bioSamplesAccession', 'cellLines'];
+    this.columnHeaders = ['Name', 'Sex', 'Ethnicity', 'Disease Status', 'Age', 'Biosample', 'Cell Lines'];
 
     this.fieldType = function(field) {
         return field;
     };
     this.fieldMatrixClass = function(field) {
         var cssClass = this.fieldType(field).toLowerCase();
-        if (cssClass == 'biosamplesaccession') {
+        if (cssClass == 'biosamplesaccession' || cssClass == 'celllines') {
             cssClass = cssClass + ' matrix-dot';
         }
         return cssClass;
@@ -187,7 +187,13 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
           for (var i=0; i<resp.hits.hits.length; i++) {
               var listItem = {};
               for (var field in resp.hits.hits[i].fields) {
-                  listItem[field] = resp.hits.hits[i].fields[field][0];
+                  // This is a temporary hack and I need to get rid of it.
+                  if (field === 'cellLines') {
+                      listItem[field] = resp.hits.hits[i].fields[field];
+                  }
+                  else {
+                      listItem[field] = resp.hits.hits[i].fields[field][0];
+                  }
               }
               displayResults.push(listItem);
           }

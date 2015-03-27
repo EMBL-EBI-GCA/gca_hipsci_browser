@@ -36,8 +36,9 @@
                 </tr>
             </thead>
             <tr ng-repeat="donor in ListPanelCtrl.displayResults">
-                        <td ng-repeat="field in ListPanelCtrl.fields" ng-switch="DonorCtrl.fieldType(field)" ng-class="DonorCtrl.fieldMatrixClass(field)">
+                <td ng-repeat="field in ListPanelCtrl.fields" ng-switch="DonorCtrl.fieldType(field)" ng-class="DonorCtrl.fieldMatrixClass(field)">
                     <a ng-switch-when="bioSamplesAccession" ng-href="http://www.ebi.ac.uk/biosamples/sample/{{donor[field]}}" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a>
+                    <span ng-switch-when="cellLines" popover="{{donor[field].join(', ')}}" popover-trigger="mouseenter" ng-bind="donor[field].length"></span>
                     <a ng-switch-when="name" ng-href="#/donors/{{donor[field]}}" ng-bind="donor[field]"></a>
                     <span ng-switch-default="" ng-bind="donor[field]"></span>
 
