@@ -21,12 +21,14 @@ listComponents.directive('listSearchBox', function() {
   };
 });
 
-listComponents.directive('orFacet', function() {
+listComponents.directive('aggsFilter', function() {
   return {
     restrict: 'E',
     scope: {
         title: '@',
         field: '@',
+        existsFields: '@',
+        type: '@'
     },
     require: '^listPanel',
     templateUrl: 'partials/uiFacet.html',
@@ -39,6 +41,9 @@ listComponents.directive('orFacet', function() {
         scope.collapsed = true;
         scope.buttonText = '+';
 
+        console.log(scope.existsFields);
+        var existsFields = scope.$eval(scope.existsFields);
+        console.log(existsFields);
 
         var disableCallback = function() {
             scope.filteredTerms = {};
@@ -49,7 +54,7 @@ listComponents.directive('orFacet', function() {
             scope.aggsOther = 0;
             scope.aggsNoData = 0;
         };
-        var registerFilter = function() {
+        var registerTermsFilter = function() {
             var filtTermsArr = Object.keys(scope.filteredTerms);
             var filterReq = {};
             if (filtTermsArr.length == 0) {
@@ -73,10 +78,22 @@ listComponents.directive('orFacet', function() {
             }
             ListPanelCtrl.registerFilter(scope.field, filterReq, disableCallback);
         };
+        var registerExistsFilter = function() {
+            var filtTermsArr = Object.keys(scope.filteredTerms);
+            var filterReq = undefined;
+            if (filtTermsArr.length == 1) {
+                filterReq = {exists: {field: filtTermsArr[0]}};
+            }
+            else if (filtTermsArr.length > 1) {
+                filterReq = {and: []};
+                for (var i=0; i<filtTermsArr.length; i++) {
+                    filterReq.and.push({exists: {field: filtTermsArr[i]}});
+                }
+            }
+            ListPanelCtrl.registerFilter(scope.field, filterReq, disableCallback);
+        };
 
-        var aggReq = { terms: {field: scope.field, size: 20}};
-        var aggMissingReq = {missing: {field: scope.field}};
-        var processAggResp = function(resps) {
+        var processTermsAggResp = function(resps) {
             scope.aggs = resps[0].buckets.sort(function(a,b) {
                 if (scope.filteredTerms.hasOwnProperty(b['key']) == scope.filteredTerms.hasOwnProperty(a['key'])) {
                     return b['doc_count'] - a['doc_count'];
@@ -91,7 +108,36 @@ listComponents.directive('orFacet', function() {
             scope.aggsOther = resps[0].sum_other_doc_count;
             scope.aggsNoData = resps[1].doc_count;
         };
-        ListPanelCtrl.registerAggregate(scope.field, [aggReq,aggMissingReq], true, processAggResp);
+        var processExistsAggResp = function(resps) {
+            scope.aggs = [];
+            if (resps.length != existsFields.length) {
+                return;
+            }
+            for (var i=0; i<existsFields.length; i++) {
+                if (resps[i].value >0) {
+                    scope.aggs.push({key: existsFields[i], doc_count: resps[i].value});
+                }
+            }
+            scope.aggs = scope.aggs.sort(function(a,b) {
+                if (scope.filteredTerms.hasOwnProperty(b['key']) == scope.filteredTerms.hasOwnProperty(a['key'])) {
+                    return b['doc_count'] - a['doc_count'];
+                }
+                return scope.filteredTerms.hasOwnProperty(b['key']);
+            });
+        };
+        if (scope.type == 'terms') {
+            var aggReq = { terms: {field: scope.field, size: 20}};
+            var aggMissingReq = {missing: {field: scope.field}};
+            ListPanelCtrl.registerAggregate(scope.field, [aggReq,aggMissingReq], true, processTermsAggResp);
+        }
+        else if (scope.type == 'exists') {
+            var aggReqs = [];
+            for (var i=0; i<existsFields.length; i++) {
+                aggReqs.push({value_count: {field: existsFields[i]}});
+            }
+            console.log(aggReqs);
+            ListPanelCtrl.registerAggregate(scope.field, aggReqs, false, processExistsAggResp);
+        }
         var ulElem = iElement.find("ul").first();
         scope.buttonRequired = function() {
             var buttonRequired = !scope.collapsed || (ulElem.prop('scrollHeight') > ulElem.height());
@@ -106,12 +152,18 @@ listComponents.directive('orFacet', function() {
             else {
                 scope.filteredTerms[term] = true;
             }
-            registerFilter();
+            if (scope.type == 'terms') {
+                registerTermsFilter();
+            }
+            else if (scope.type == 'exists') {
+                registerExistsFilter();
+            }
+            else return;
             ListPanelCtrl.refreshSearch();
         };
         scope.handleNoDataEvent = function() {
             scope.filterNoData = !scope.filterNoData;
-            registerFilter();
+            registerTermsFilter();
             ListPanelCtrl.refreshSearch();
         }
 

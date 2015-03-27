@@ -55,7 +55,7 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       controller.columnHeaders = scope.$parent.$eval(iAttrs.columnHeaders);
       controller.fields = scope.$parent.$eval(iAttrs.fields);
 
-      iElement.find('or-facet').each(function() {controller.waitForAggs++;});
+      iElement.find('aggs-filter').each(function() {controller.waitForAggs++;});
       if (controller.waitForAggs == 0) {
           controller.refreshSearch();
       }
