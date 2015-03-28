@@ -28,16 +28,7 @@
                     <list-search-box></list-search-box>
                 </div>
 
-            <div class="matrix-wrapper table-responsive">
-            <table class="matrix table table-striped">
-            <thead>
-                <tr class="slanted">
-                    <th ng-repeat="columnHeader in DonorCtrl.columnHeaders" ng-class="DonorCtrl.fieldMatrixClass(DonorCtrl.fields[$index])"><div><span ng-bind="columnHeader"></span></div></th>
-                </tr>
-            </thead>
-            <tbody row-builder="donor" display-results="ListPanelCtrl.displayResults" fields="DonorCtrl.fields">
-            </tbody>
-        </table>
+            <div class="matrix-wrapper table-responsive" list-table="donor">
             </div>
 
     		<list-pagination></list-pagination>

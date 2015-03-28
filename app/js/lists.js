@@ -61,9 +61,7 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       controller.fields = transcludeScope.$eval(iAttrs.fields);
 
       iElement.find('aggs-filter').each(function() {controller.waitForAggs++;});
-      if (controller.waitForAggs == 0) {
-          controller.refreshSearch();
-      }
+      controller.linkingFinish()
     },
     controller: ['$timeout', function ($timeout) {
       var controller = this;
@@ -73,6 +71,8 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       controller.displayResults = [];
       controller.numHits = 0;
       controller.query = '';
+      controller.fields = [];
+      controller.columnHeaders = [];
 
       controller.waitForAggs = 0;
       controller.delayedSearchActivated = false;
@@ -83,6 +83,8 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       var aggReqs = {};
       var aggExcludeFilters = {};
       var aggCallbacks = {};
+      controller.tableInitCallback = undefined;
+      controller.tableRespCallback = undefined;
   
       var search = function() {
         controller.delayedSearchActivated = false;
@@ -189,15 +191,12 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
           for (var i=0; i<resp.hits.hits.length; i++) {
               var listItem = {};
               for (var field in resp.hits.hits[i].fields) {
-                  // This is a temporary hack and I need to get rid of it.
-                  if (field === 'cellLines') {
-                      listItem[field] = resp.hits.hits[i].fields[field];
-                  }
-                  else {
-                      listItem[field] = resp.hits.hits[i].fields[field][0];
-                  }
+                  listItem[field] = resp.hits.hits[i].fields[field][0];
               }
               displayResults.push(listItem);
+          }
+          if (typeof controller.tableRespCallback != 'undefined') {
+              controller.tableRespCallback(resp.hits.hits);
           }
           controller.displayResults = displayResults;
           cachedHits[controller.currentPage] = controller.displayResults;
@@ -311,6 +310,14 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
 
       };
 
+      controller.registerTable = function(tableInitCallback, tableRespCallback) {
+          controller.tableInitCallback = tableInitCallback;
+          controller.tableRespCallback = tableRespCallback;
+          if (controller.fields.length >0) {
+              controller.tableInitCallback();
+          }
+      };
+
       controller.delayedSearch = function(event) {
           if (typeof event == 'object' && event.keyCode === 13) {
               controller.refreshSearch();
@@ -321,6 +328,15 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
           }
           controller.delayedSearchActivated = true;
           $timeout(function() {if (controller.delayedSearchActivated) {controller.refreshSearch();}}, 1000);
+      };
+
+      controller.linkingFinish = function () {
+          if (typeof controller.tableInitCallback != 'undefined') {
+              controller.tableInitCallback();
+          }
+          if (controller.waitForAggs == 0) {
+              controller.refreshSearch();
+          }
       };
     }]
 

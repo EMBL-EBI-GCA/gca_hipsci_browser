@@ -197,42 +197,67 @@ listComponents.directive('facetsClear', [function() {
 }]);
 
 
-
-
-listComponents.directive('rowBuilder', ['$compile', function($compile) {
+listComponents.directive('listTable', ['$compile', function($compile) {
   return {
-    restrict: 'A',
+    restrict: 'AE',
     scope: {
-        fields: '@',
-        displayResults: '=',
-        type: '@rowBuilder'
+        type: '@listTable'
     },
+    require: '^listPanel',
     replace: false,
+    template: '<table class="matrix table table-striped"><thead ><tr class="slanted"></tr></thead><tbody></tbody></table>',
     compile: function(tElement, tAttrs) {
-        console.log("in the compiler");
       return {
-        post: function(scope, iElement, iAttrs) {
-        console.log("in the linker");
-            var fields = scope.$parent.$eval(scope.fields);
-            iElement.append('<tr ng-repeat="dR in displayResults"></tr>');
-            var tr = iElement.find('tr');
+        post: function(scope, iElement, iAttrs, listPanelCtrl) {
 
-            var tdElement = function (field, dataName) {
-                var fieldTdEl = 
-                    field == 'bioSamplesAccession' ? '<td class="biosamplesaccession matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/'+dataName+'" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a></td>'
-                    : field == 'cellLines' ? '<td class="cellLines matrix-dot" popover="{{'+dataName+'.join(\', \')}}" popover-trigger="mouseenter" ng-bind="'+dataName+'.length"></td>'
-                    : field == 'name' ? '<td class="name"><a ng-href="#/donors/{{'+dataName+'}}" ng-bind="'+dataName+'"</a></td>'
-                    : '<td ng-bind="'+dataName+'"></td>';
-                return fieldTdEl;
+            scope.processedHits = [];
+
+            var compileTable = function () {
+                var tableEl = iElement.find('table');
+                var headEl = iElement.find('thead');
+                var bodyEl = iElement.find('tbody');
+                var headTrEl = headEl.find('tr');
+                for (var i=0; i<listPanelCtrl.fields.length; i++) {
+                    headTrEl.append(
+                        listPanelCtrl.fields[i] == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div>'+listPanelCtrl.columnHeaders[i]+'</div></th>'
+                      : listPanelCtrl.fields[i] == 'cellLines' ? '<th class="matrix-dot"><div>'+listPanelCtrl.columnHeaders[i]+'</div></th>'
+                      : '<th><div>'+listPanelCtrl.columnHeaders[i]+'</div></th>'
+                    );
+                }
+
+                bodyEl.append('<tr ng-repeat="hit in processedHits"></tr>');
+                var rowEl = bodyEl.find('tr');
+                for (var i=0; i<listPanelCtrl.fields.length; i++) {
+                    var hitStr = 'hit['+i+']';
+                    rowEl.append(
+                        listPanelCtrl.fields[i] == 'bioSamplesAccession' ? '<td class="biosamplesaccession matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/'+hitStr+'" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a></td>'
+                      : listPanelCtrl.fields[i] == 'cellLines' ? '<td class="cellLines matrix-dot" popover="{{'+hitStr+'.join(\', \')}}" popover-trigger="mouseenter" ng-bind="'+hitStr+'.length"></td>'
+                      : listPanelCtrl.fields[i] == 'name' ? '<td class="name"><a ng-href="#/donors/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
+                      : '<td ng-bind="'+hitStr+'"></td>'
+                    );
+                }
+
+
+
+                var linkFunc = $compile(tableEl);
+                linkFunc(scope);
             };
-            for (var i=0; i<fields.length; i++) {
-                var dataName= "dR['"+fields[i]+"']";
-                tr.append(tdElement(fields[i], dataName));
-            }
 
+            var processHits = function(respHits) {
+                scope.processedHits = [];
+                for (var i=0; i<respHits.length; i++) {
+                    var hit = [];
+                    for (var j=0; j<listPanelCtrl.fields.length; j++) {
+                        var field = listPanelCtrl.fields[j];
+                        hit[j] = ! respHits[i].fields.hasOwnProperty(field) ? undefined
+                                : field == 'cellLines' ? respHits[i].fields[field]
+                                : respHits[i].fields[field][0];
+                    }
+                    scope.processedHits.push(hit);
+                }
+            };
 
-            var linkfunc = $compile(tr);
-            linkfunc(scope);
+            listPanelCtrl.registerTable(compileTable, processHits);
     }};}
   };
 }]);
