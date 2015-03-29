@@ -27,7 +27,6 @@ listComponents.directive('aggsFilter', function() {
     scope: {
         title: '@',
         field: '@',
-        existsFields: '@',
         existsLabels: '@',
         type: '@'
     },
