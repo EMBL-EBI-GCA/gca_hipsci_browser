@@ -48,17 +48,12 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
   return {
     controllerAs: 'ListPanelCtrl',
     restrict: 'E',
-    transclude: true,
-    scope: true,
+    transclude: false,
+    scope: false,
     link: function(scope, iElement, iAttrs, controller, transcludeFn) {
-      var transcludeScope = scope.$parent.$new();
-      transcludeScope.ListPanelCtrl = controller;
-      transcludeFn(transcludeScope, function(clonedTranscludedContent) {
-          iElement.append(clonedTranscludedContent);
-      });
-      controller.documentType = transcludeScope.$eval(iAttrs.documentType);
-      controller.columnHeaders = transcludeScope.$eval(iAttrs.columnHeaders);
-      controller.fields = transcludeScope.$eval(iAttrs.fields);
+      controller.documentType = scope.$eval(iAttrs.documentType);
+      controller.columnHeaders = scope.$eval(iAttrs.columnHeaders);
+      controller.fields = scope.$eval(iAttrs.fields);
 
       iElement.find('aggs-filter').each(function() {controller.waitForAggs++;});
       controller.linkingFinish()
