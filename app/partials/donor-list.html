@@ -28,7 +28,9 @@
                     <list-search-box></list-search-box>
                 </div>
 
-            <div class="matrix-wrapper table-responsive" list-table="donor">
+            <div class="matrix-wrapper table-responsive">
+                <list-table class="matrix table table-striped" type="donor" compile-head="DonorCtrl.compileHead" compile-row="DonorCtrl.compileRow" process-hit-fields="DonorCtrl.processHitFields">
+                </list-table>
             </div>
 
     		<list-pagination></list-pagination>

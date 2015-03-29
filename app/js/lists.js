@@ -3,9 +3,63 @@
 var listUtils = angular.module('hipsciBrowser.listUtils', []);
 
 listUtils.controller('DonorCtrl', function() {
+    var controller=this;
     this.documentType = 'donor';
     this.fields = ['name', 'sex', 'ethnicity', 'diseaseStatus', 'age', 'bioSamplesAccession', 'cellLines'];
     this.columnHeaders = ['Name', 'Sex', 'Ethnicity', 'Disease Status', 'Age', 'Biosample', 'Cell Lines'];
+
+    var columnHeadersMap = {
+        name: 'Name',
+        sex: 'Sex',
+        ethnicity: 'Ethnicity',
+        diseaseStatus: 'Disease Status',
+        age: 'Age',
+        bioSamplesAccession: 'Biosample',
+        cellLines: 'Cell Lines'
+    };
+
+    this.compileHead = function() {
+        console.log('compiling head');
+        var trChildren = [];
+        for (var i=0; i<controller.fields.length; i++) {
+            var field = controller.fields[i];
+            trChildren.push(
+                field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div>'+columnHeadersMap[field]+'</div></th>'
+              :  field == 'cellLines' ? '<th class="matrix-dot"><div>'+columnHeadersMap[field]+'</div></th>'
+              : '<th><div>'+columnHeadersMap[field]+'</div></th>'
+            );
+        }
+        return trChildren;
+    };
+
+    this.compileRow = function() {
+        console.log('compiling row');
+        var trChildren = [];
+        for (var i=0; i<controller.fields.length; i++) {
+            var field = controller.fields[i];
+            var hitStr = 'hit['+i+']';
+            trChildren.push(
+                field == 'bioSamplesAccession' ? '<td class="biosamplesaccession matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/'+hitStr+'" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a></td>'
+              : field == 'cellLines' ? '<td class="cellLines matrix-dot" popover="{{'+hitStr+'.join(\', \')}}" popover-trigger="mouseenter" ng-bind="'+hitStr+'.length"></td>'
+              : field == 'name' ? '<td class="name"><a ng-href="#/donors/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
+              : '<td ng-bind="'+hitStr+'"></td>'
+            );
+        }
+        return trChildren;
+    };
+
+    this.processHitFields = function(hitFields) {
+        var processedFields = [];
+        for (var i=0; i<controller.fields.length; i++) {
+            var field = controller.fields[i];
+            processedFields[i] = ! hitFields.hasOwnProperty(field) ? undefined
+                    : field == 'cellLines' ? hitFields[field]
+                    : hitFields[field][0];
+        }
+        return processedFields;
+    };
+
+
 
 });
 
@@ -39,7 +93,6 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       controller.currentPage = 1;
       controller.numPages = 0;
       controller.hitsPerPage = 10;
-      controller.displayResults = [];
       controller.numHits = 0;
       controller.query = '';
       controller.fields = [];
@@ -158,19 +211,9 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
         }).then(function(resp) {
           controller.numHits = resp.hits.total;
           controller.numPages = Math.ceil(controller.numHits / controller.hitsPerPage);
-          var displayResults = [];
-          for (var i=0; i<resp.hits.hits.length; i++) {
-              var listItem = {};
-              for (var field in resp.hits.hits[i].fields) {
-                  listItem[field] = resp.hits.hits[i].fields[field][0];
-              }
-              displayResults.push(listItem);
-          }
           if (typeof controller.tableRespCallback != 'undefined') {
               controller.tableRespCallback(resp.hits.hits);
           }
-          controller.displayResults = displayResults;
-          cachedHits[controller.currentPage] = controller.displayResults;
 
           if (resp.hasOwnProperty('aggregations')) {
               var aggResps = resp['aggregations'];
@@ -233,17 +276,18 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
   
       controller.refreshSearch = function () {
         controller.currentPage = 1;
-        cachedHits.length = 0;
         search();
       };
       controller.setPage = function () {
-        var displayResults = cachedHits[controller.currentPage];
+          /*
         if (typeof displayResults == "undefined") {
           search();
         }
         else {
           controller.displayResults = displayResults
         }
+      */
+          search();
       };
       controller.registerFilter = function(filterName, filterReq, disableCallback) {
           if (typeof filterReq == 'undefined') {

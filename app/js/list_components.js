@@ -198,45 +198,41 @@ listComponents.directive('facetsClear', [function() {
 
 listComponents.directive('listTable', ['$compile', function($compile) {
   return {
-    restrict: 'AE',
+    restrict: 'E',
     scope: {
-        type: '@listTable'
+        type: '@type',
+        compileHead: '=',
+        compileRow: '=',
+        processHitFields: '='
     },
     require: '^listPanel',
     replace: false,
-    template: '<table class="matrix table table-striped"><thead ><tr class="slanted"></tr></thead><tbody></tbody></table>',
+    template: '<table><thead ><tr class="slanted"></tr></thead><tbody></tbody></table>',
     compile: function(tElement, tAttrs) {
       return {
         post: function(scope, iElement, iAttrs, listPanelCtrl) {
 
             scope.processedHits = [];
+            var tableEl = iElement.find('table');
+            tableEl.attr('class', iAttrs.class);
+            iElement.removeAttr('class');
 
             var compileTable = function () {
-                var tableEl = iElement.find('table');
+                console.log('compiling table');
                 var headEl = iElement.find('thead');
                 var bodyEl = iElement.find('tbody');
                 var headTrEl = headEl.find('tr');
-                for (var i=0; i<listPanelCtrl.fields.length; i++) {
-                    headTrEl.append(
-                        listPanelCtrl.fields[i] == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div>'+listPanelCtrl.columnHeaders[i]+'</div></th>'
-                      : listPanelCtrl.fields[i] == 'cellLines' ? '<th class="matrix-dot"><div>'+listPanelCtrl.columnHeaders[i]+'</div></th>'
-                      : '<th><div>'+listPanelCtrl.columnHeaders[i]+'</div></th>'
-                    );
-                }
+                var headTrChildren = scope.compileHead();
+                for (var i=0; i<headTrChildren.length; i++) {
+                    headTrEl.append(headTrChildren[i]);
+                };
 
                 bodyEl.append('<tr ng-repeat="hit in processedHits"></tr>');
                 var rowEl = bodyEl.find('tr');
-                for (var i=0; i<listPanelCtrl.fields.length; i++) {
-                    var hitStr = 'hit['+i+']';
-                    rowEl.append(
-                        listPanelCtrl.fields[i] == 'bioSamplesAccession' ? '<td class="biosamplesaccession matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/'+hitStr+'" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a></td>'
-                      : listPanelCtrl.fields[i] == 'cellLines' ? '<td class="cellLines matrix-dot" popover="{{'+hitStr+'.join(\', \')}}" popover-trigger="mouseenter" ng-bind="'+hitStr+'.length"></td>'
-                      : listPanelCtrl.fields[i] == 'name' ? '<td class="name"><a ng-href="#/donors/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
-                      : '<td ng-bind="'+hitStr+'"></td>'
-                    );
+                var rowTrChildren = scope.compileRow();
+                for (var i=0; i<rowTrChildren.length; i++) {
+                    rowEl.append(rowTrChildren[i]);
                 }
-
-
 
                 var linkFunc = $compile(tableEl);
                 linkFunc(scope);
@@ -245,14 +241,7 @@ listComponents.directive('listTable', ['$compile', function($compile) {
             var processHits = function(respHits) {
                 scope.processedHits = [];
                 for (var i=0; i<respHits.length; i++) {
-                    var hit = [];
-                    for (var j=0; j<listPanelCtrl.fields.length; j++) {
-                        var field = listPanelCtrl.fields[j];
-                        hit[j] = ! respHits[i].fields.hasOwnProperty(field) ? undefined
-                                : field == 'cellLines' ? respHits[i].fields[field]
-                                : respHits[i].fields[field][0];
-                    }
-                    scope.processedHits.push(hit);
+                    scope.processedHits.push(scope.processHitFields(respHits[i].fields));
                 }
             };
 
