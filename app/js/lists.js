@@ -28,19 +28,6 @@ listUtils.controller('LineCtrl', function() {
     this.assaysFields =  ['assays.exomeseq', 'assays.rnaseq', 'assays.gtarray', 'assays.gexarray', 'assays.mtarray'];
     this.assaysHeaders = ['exomeseq', 'rnaseq', 'gtarray', 'gexarray', 'mtarray'];
 
-    this.fieldType = function(field) {
-        if (field.match(/^assays/)) {
-            return 'assay';
-        }
-        return field;
-    };
-    this.fieldMatrixClass = function(field) {
-        var cssClass = this.fieldType(field).toLowerCase();
-        if (cssClass == 'assay' || cssClass == 'biosamplesaccession') {
-            cssClass = cssClass + ' matrix-dot';
-        }
-        return cssClass;
-    };
 });
 
 
