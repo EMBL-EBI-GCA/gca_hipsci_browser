@@ -69,6 +69,7 @@ listComponents.directive('aggsFilter', function() {
                 filterReq.term[scope.field] = filtTermsArr[0];
             }
             else {
+                filtTermsArr = filtTermsArr.sort(); // This is to help with caching
                 filterReq = {terms: {execution: 'or'}};
                 filterReq.terms[scope.field] = filtTermsArr;
             }
@@ -84,6 +85,7 @@ listComponents.directive('aggsFilter', function() {
                 filterReq = {exists: {field: filtTermsArr[0]}};
             }
             else if (filtTermsArr.length > 1) {
+                filtTermsArr = filtTermsArr.sort(); // This is to help with caching
                 filterReq = {and: []};
                 for (var i=0; i<filtTermsArr.length; i++) {
                     filterReq.and.push({exists: {field: filtTermsArr[i]}});

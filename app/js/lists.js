@@ -91,7 +91,10 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
         }, function(newValue) {
           if (newValue <= 0) {
               unbindWatch();
-              controller.ready();
+              if (typeof controller.tableInitCallback != 'undefined') {
+                  controller.tableInitCallback(controller.fields);
+              }
+              controller.refreshSearch();
           }
       });
 
@@ -108,6 +111,7 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       controller.exportHeadersMap = {};
 
       controller.delayedSearchActivated = false;
+      controller.cachedResps = [];
 
       var cachedHits = [];
       var filterReqs = {};
@@ -117,6 +121,32 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       var aggCallbacks = {};
       controller.tableInitCallback = undefined;
       controller.tableRespCallback = undefined;
+
+      var processResp = function(resp) {
+          controller.numHits = resp.hits.total;
+          controller.numPages = Math.ceil(controller.numHits / controller.hitsPerPage);
+          if (typeof controller.tableRespCallback != 'undefined') {
+              controller.tableRespCallback(resp.hits.hits, controller.fields);
+          }
+
+          if (resp.hasOwnProperty('aggregations')) {
+              var aggResps = resp['aggregations'];
+              var aggKeys = Object.keys(aggReqs);
+              for (var i=0; i<aggKeys.length; i++) {
+                  if (aggCallbacks.hasOwnProperty(aggKeys[i])) {
+                      var aggRespObjs = [];
+                      var aggRespTopObj = aggResps.hasOwnProperty(aggKeys[i]) ? aggResps[aggKeys[i]] : aggResps;
+                      for (var j=0; j<aggReqs[aggKeys[i]].length; j++) {
+                          var aggKey = aggKeys[i]+'.'+j;
+                          if (aggRespTopObj.hasOwnProperty(aggKey)) {
+                              aggRespObjs[j] = aggRespTopObj[aggKey];
+                          }
+                      }
+                  }
+                  aggCallbacks[aggKeys[i]](aggRespObjs);
+              }
+          }
+      };
   
       var search = function() {
         controller.delayedSearchActivated = false;
@@ -211,36 +241,35 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
             }
         }
 
+        var bodyStr = JSON.stringify(searchBody);
+        var cachedResp;
+        for (var i=controller.cachedResps.length-1; i>=0; i--) {
+            var cachedStrResp = controller.cachedResps[i];
+            if (cachedStrResp[0] == bodyStr) {
+                cachedResp = cachedStrResp[1];
+                controller.cachedResps.splice(i, 1);
+                controller.cachedResps.push(cachedStrResp);
+                break;
+            }
+        }
+        if (typeof cachedResp != 'undefined') {
+            processResp(cachedResp);
+        }
+        else {
+            esClient.search( {
+              index: 'hipsci',
+              type: controller.documentType,
+              body: searchBody,
+            }).then(function(resp) {
+                controller.cachedResps.push([bodyStr, resp]);
+                while (controller.cachedResps.length >10) {
+                    controller.cachedResps.shift();
+                }
+                processResp(resp);
+            });
 
-        return esClient.search( {
-          index: 'hipsci',
-          type: controller.documentType,
-          body: searchBody,
-        }).then(function(resp) {
-          controller.numHits = resp.hits.total;
-          controller.numPages = Math.ceil(controller.numHits / controller.hitsPerPage);
-          if (typeof controller.tableRespCallback != 'undefined') {
-              controller.tableRespCallback(resp.hits.hits, controller.fields);
-          }
+        }
 
-          if (resp.hasOwnProperty('aggregations')) {
-              var aggResps = resp['aggregations'];
-              var aggKeys = Object.keys(aggReqs);
-              for (var i=0; i<aggKeys.length; i++) {
-                  if (aggCallbacks.hasOwnProperty(aggKeys[i])) {
-                      var aggRespObjs = [];
-                      var aggRespTopObj = aggResps.hasOwnProperty(aggKeys[i]) ? aggResps[aggKeys[i]] : aggResps;
-                      for (var j=0; j<aggReqs[aggKeys[i]].length; j++) {
-                          var aggKey = aggKeys[i]+'.'+j;
-                          if (aggRespTopObj.hasOwnProperty(aggKey)) {
-                              aggRespObjs[j] = aggRespTopObj[aggKey];
-                          }
-                      }
-                  }
-                  aggCallbacks[aggKeys[i]](aggRespObjs);
-              }
-          }
-        });
       };
   
       controller.exportData = function(format) {
@@ -355,12 +384,6 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
           $timeout(function() {if (controller.delayedSearchActivated) {controller.refreshSearch();}}, 1000);
       };
 
-      controller.ready = function () {
-          if (typeof controller.tableInitCallback != 'undefined') {
-              controller.tableInitCallback(controller.fields);
-          }
-          controller.refreshSearch();
-      };
     }]
 
   };
