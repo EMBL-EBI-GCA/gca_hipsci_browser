@@ -27,7 +27,8 @@ listComponents.directive('aggsFilter', function() {
     scope: {
         title: '@',
         field: '@',
-        existsLabels: '@',
+        labelsMap: '@',
+        existsFields: '@',
         type: '@'
     },
     require: '^listPanel',
@@ -42,7 +43,14 @@ listComponents.directive('aggsFilter', function() {
         scope.buttonText = '+';
 
         var existsFields = scope.$parent.$eval(scope.existsFields);
-        var existsLabels = scope.$parent.$eval(scope.existsLabels);
+        var labelsMap = scope.$parent.$eval(scope.labelsMap);
+        var existsLabels = [];
+        if (typeof existsFields == 'undefined') {
+            existsFields = [];
+        }
+        for (var i=0; i<existsFields.length; i++) {
+            existsLabels[i] = labelsMap[existsFields[i]];
+        }
 
         var disableCallback = function() {
             scope.filteredTerms = {};
@@ -224,6 +232,7 @@ listComponents.directive('listTable', ['$compile', function($compile) {
                 var headEl = iElement.find('thead');
                 var bodyEl = iElement.find('tbody');
                 var headTrEl = headEl.find('tr');
+                console.log('compiling head');
                 var headTrChildren = scope.compileHead(fields);
                 for (var i=0; i<headTrChildren.length; i++) {
                     headTrEl.append(headTrChildren[i]);

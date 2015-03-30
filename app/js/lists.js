@@ -61,12 +61,63 @@ listUtils.controller('DonorCtrl', function() {
 });
 
 listUtils.controller('LineCtrl', function() {
+    var controller = this;
     this.documentType = 'cellLine';
-    this.fields =  ['name', 'diseaseStatus', 'sex', 'sourceMaterial', 'tissueProvider', 'bioSamplesAccession', 'assays.exomeseq', 'assays.rnaseq', 'assays.gtarray', 'assays.gexarray', 'assays.mtarray'];
-    this.columnHeaders = ['Name', 'Disease Status', 'Sex', 'Source Material', 'Tissue Provider', 'Biosample', 'exomeseq', 'rnaseq', 'gtarray', 'gexarray', 'mtarray'];
-
+    this.initFields =  ['name', 'diseaseStatus', 'sex', 'sourceMaterial', 'tissueProvider', 'bioSamplesAccession', 'assays.exomeseq', 'assays.rnaseq', 'assays.gtarray', 'assays.gexarray', 'assays.mtarray'];
     this.assaysFields =  ['assays.exomeseq', 'assays.rnaseq', 'assays.gtarray', 'assays.gexarray', 'assays.mtarray'];
-    this.assaysHeaders = ['exomeseq', 'rnaseq', 'gtarray', 'gexarray', 'mtarray'];
+
+    this.columnHeadersMap = {
+        name: 'Name',
+        diseaseStatus: 'Disease Status',
+        sex: 'Sex',
+        sourceMaterial: 'Source Material',
+        tissueProvider: 'TissueProvider',
+        bioSamplesAccession: 'Biosample',
+        'assays.exomeseq': 'exomeseq',
+        'assays.rnaseq': 'rnaseq',
+        'assays.gtarray': 'gtarray',
+        'assays.gexarray': 'gexarray',
+        'assays.mtarray': 'mtarray'
+    };
+
+    this.compileHead = function(fields) {
+        var trChildren = [];
+        for (var i=0; i<fields.length; i++) {
+            var field = fields[i];
+            trChildren.push(
+                field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div>'+controller.columnHeadersMap[field]+'</div></th>'
+              :  field.match(/^assays/) ? '<th class="matrix-dot"><div>'+controller.columnHeadersMap[field]+'</div></th>'
+              : '<th><div>'+controller.columnHeadersMap[field]+'</div></th>'
+            );
+        }
+        return trChildren;
+    };
+
+    this.compileRow = function(fields) {
+        var trChildren = [];
+        console.log(fields);
+        for (var i=0; i<fields.length; i++) {
+            var field = fields[i];
+            var hitStr = 'hit['+i+']';
+            trChildren.push(
+                field == 'bioSamplesAccession' ? '<td class="biosamplesaccession matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/'+hitStr+'" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a></td>'
+              : field == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
+              : field.match(/^assays/) ? '<td class="assay matrix-dot" popover="{{'+hitStr+'}}" popover-trigger="mouseenter" target="_blank">&#x25cf;</td>'
+              : '<td ng-bind="'+hitStr+'"></td>'
+            );
+        }
+        return trChildren;
+    };
+
+    this.processHitFields = function(hitFields, fields) {
+        var processedFields = [];
+        for (var i=0; i<fields.length; i++) {
+            var field = fields[i];
+            processedFields[i] = ! hitFields.hasOwnProperty(field) ? undefined
+                    : hitFields[field][0];
+        }
+        return processedFields;
+    };
 
 });
 
