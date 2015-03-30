@@ -173,6 +173,7 @@ listComponents.directive('aggsFilter', function() {
             scope.buttonText = scope.collapsed ? '+' : '-';
         };
 
+        iAttrs.$set('list-panel-registered', true);
     }
   };
 });
@@ -245,6 +246,7 @@ listComponents.directive('listTable', ['$compile', function($compile) {
             };
 
             listPanelCtrl.registerTable(compileTable, processHits);
+            iAttrs.$set('list-panel-registered', true);
     }};}
   };
 }]);
@@ -254,9 +256,9 @@ listComponents.directive('listInitFields', [function() {
     restrict: 'E',
     require: '^listPanel',
     scope: {exportHeadersMap : '=', fields: '=' },
-    link: function(scope, element, attrs, ListPanelController) {
-        console.log(scope.exportHeadersMap);
+    link: function(scope, iElement, iAttrs, ListPanelController) {
         ListPanelController.registerFields(scope.fields, scope.exportHeadersMap);
+        iAttrs.$set('list-panel-registered', true);
     },
   };
 }]);
