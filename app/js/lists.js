@@ -24,7 +24,7 @@ listUtils.controller('DonorCtrl', function() {
             trChildren.push(
                 field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
               :  field == 'cellLines' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
-              : '<th><div>'+controller.columnHeadersMap[field]+'</div></th>'
+              : '<th class="sort">'+controller.columnHeadersMap[field]+'</th>'
             );
         }
         return trChildren;
@@ -87,7 +87,7 @@ listUtils.controller('LineCtrl', function() {
             trChildren.push(
                 field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
               :  field.match(/^assays/) ? '<th class="matrix-dot assay"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
-              : '<th><div>'+controller.columnHeadersMap[field]+'</div></th>'
+              : '<th class="sort">'+controller.columnHeadersMap[field]+'</th>'
             );
         }
         return trChildren;
@@ -95,7 +95,6 @@ listUtils.controller('LineCtrl', function() {
 
     this.compileRow = function(fields) {
         var trChildren = [];
-        console.log(fields);
         for (var i=0; i<fields.length; i++) {
             var field = fields[i];
             var hitStr = 'hit['+i+']';
@@ -160,6 +159,8 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       controller.query = '';
       controller.fields = [];
       controller.exportHeadersMap = {};
+      controller.sortField = '';
+      controller.sortAscending = true;
 
       controller.delayedSearchActivated = false;
       controller.cachedResps = [];
@@ -206,6 +207,11 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
           size: controller.hitsPerPage,
           from: (controller.currentPage -1) * controller.hitsPerPage,
         };
+        if (typeof controller.sortField == 'string' && controller.sortField.length >0) {
+            var sortObj = {};
+            sortObj[controller.sortField] = controller.sortAscending ? 'asc' : 'desc';
+            searchBody.sort = [sortObj];
+        }
 
         var filterKeys = Object.keys(filterReqs);
         var aggExcludeFilterKeys = [];
@@ -335,6 +341,11 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
         from: 0,
         size: controller.numHits,
         };
+        if (typeof controller.sortField == 'string' && controller.sortField.length >0) {
+            var sortObj = {};
+            sortObj[controller.sortField] = controller.sortAscending ? 'asc' : 'desc';
+            searchBody.sort = [sortObj];
+        }
 
         var filterKeys = Object.keys(filterReqs);
         if (filterKeys.length >0) {
@@ -421,6 +432,12 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       controller.registerFields = function(fields, exportHeadersMap) {
           controller.fields = fields;
           controller.exportHeadersMap = exportHeadersMap;
+      };
+
+      controller.registerSortOrder = function(field, asc) {
+          controller.sortField = field;
+          controller.sortAscending = asc;
+          controller.refreshSearch();
       };
 
       controller.delayedSearch = function(event) {

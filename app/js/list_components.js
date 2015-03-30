@@ -214,7 +214,7 @@ listComponents.directive('listTable', ['$compile', function($compile) {
         type: '@type',
         compileHead: '=',
         compileRow: '=',
-        processHitFields: '='
+        processHitFields: '=',
     },
     require: '^listPanel',
     replace: false,
@@ -224,6 +224,8 @@ listComponents.directive('listTable', ['$compile', function($compile) {
         post: function(scope, iElement, iAttrs, listPanelCtrl) {
 
             scope.processedHits = [];
+            scope.sortField = '';
+            scope.sortAscending = true;
             var tableEl = iElement.find('table');
             tableEl.attr('class', iAttrs.class);
             iElement.removeAttr('class');
@@ -232,10 +234,15 @@ listComponents.directive('listTable', ['$compile', function($compile) {
                 var headEl = iElement.find('thead');
                 var bodyEl = iElement.find('tbody');
                 var headTrEl = headEl.find('tr');
-                console.log('compiling head');
                 var headTrChildren = scope.compileHead(fields);
                 for (var i=0; i<headTrChildren.length; i++) {
                     headTrEl.append(headTrChildren[i]);
+                    var appended = headTrEl.children().last();
+                    if (appended.hasClass('sort')) {
+                        var fieldsStr = "'"+fields[i]+"'";
+                        appended.attr('ng-class', '{sortAsc: (sortField=='+fieldsStr+' && sortAscending), sortDesc: (sortField=='+fieldsStr+' && !sortAscending)}');
+                        appended.attr('ng-click', 'registerSortOrder('+fieldsStr+')');
+                    }
                 };
 
                 bodyEl.append('<tr ng-repeat="hit in processedHits"></tr>');
@@ -254,6 +261,22 @@ listComponents.directive('listTable', ['$compile', function($compile) {
                 for (var i=0; i<respHits.length; i++) {
                     scope.processedHits.push(scope.processHitFields(respHits[i].fields, fields));
                 }
+            };
+
+            scope.registerSortOrder = function(field) {
+                if (scope.sortField == field) {
+                    if (scope.sortAscending) {
+                        scope.sortAscending = false
+                    }
+                    else {
+                        scope.sortField = '';
+                    }
+                }
+                else {
+                    scope.sortField = field;
+                    scope.sortAscending = true;
+                }
+                listPanelCtrl.registerSortOrder(scope.sortField, scope.sortAscending);
             };
 
             listPanelCtrl.registerTable(compileTable, processHits);
