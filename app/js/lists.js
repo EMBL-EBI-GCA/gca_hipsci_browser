@@ -77,24 +77,26 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
     restrict: 'E',
     transclude: false,
     scope: false,
-    link: function(scope, iElement, iAttrs, controller, transcludeFn) {
+    compile: function(tElement, tAttrs) { 
+    return {
+    post: function(scope, iElement, iAttrs, controller) {
       controller.documentType = scope.$eval(iAttrs.documentType);
 
-      iElement.find('aggs-filter').each(function() {controller.waitForComponents++;});
-      iElement.find('list-table').each(function() {controller.waitForComponents++;});
-      iElement.find('list-init-fields').each(function() {controller.waitForComponents++;});
-      if (controller.waitForComponents > 0) {
-          var unbindWatch = scope.$watch(function() {return controller.waitForComponents}, function(newValue) {
-              if (newValue <= 0) {
-                  unbindWatch();
-                  controller.ready();
-              }
-          });
-      }
-      else {
-          controller.ready();
-      }
-    },
+      var unbindWatch = scope.$watch(function() {
+          var unregisteredCounter = 0;
+          iElement.find('aggs-filter').each(function(index, el) {if ( ! el.attributes.hasOwnProperty('list-panel-registered')) {unregisteredCounter++;} });
+          iElement.find('list-table').each(function(index, el) {if ( ! el.attributes.hasOwnProperty('list-panel-registered')) {unregisteredCounter++;} });
+          iElement.find('list-init-fields').each(function(index, el) {if ( ! el.attributes.hasOwnProperty('list-panel-registered')) {unregisteredCounter++;} });
+          return unregisteredCounter;
+        }, function(newValue) {
+          if (newValue <= 0) {
+              unbindWatch();
+              controller.ready();
+          }
+      });
+
+    }
+    };},
     controller: ['$timeout', function ($timeout) {
       var controller = this;
       controller.currentPage = 1;
@@ -105,7 +107,6 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       controller.fields = [];
       controller.exportHeadersMap = {};
 
-      controller.waitForComponents = 0;
       controller.delayedSearchActivated = false;
 
       var cachedHits = [];
@@ -329,20 +330,17 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
           aggReqs[aggName] = aggReqArr;
           aggExcludeFilters[aggName] = excludeFilter;
           aggCallbacks[aggName] = processCallback;
-          controller.waitForComponents --;
 
       };
 
       controller.registerTable = function(tableInitCallback, tableRespCallback) {
           controller.tableInitCallback = tableInitCallback;
           controller.tableRespCallback = tableRespCallback;
-          controller.waitForComponents --;
       };
 
       controller.registerFields = function(fields, exportHeadersMap) {
           controller.fields = fields;
           controller.exportHeadersMap = exportHeadersMap;
-          controller.waitForComponents --;
       };
 
       controller.delayedSearch = function(event) {
