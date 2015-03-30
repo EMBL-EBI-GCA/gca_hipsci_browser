@@ -22,8 +22,8 @@ listUtils.controller('DonorCtrl', function() {
         for (var i=0; i<fields.length; i++) {
             var field = fields[i];
             trChildren.push(
-                field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div>'+controller.columnHeadersMap[field]+'</div></th>'
-              :  field == 'cellLines' ? '<th class="matrix-dot"><div>'+controller.columnHeadersMap[field]+'</div></th>'
+                field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
+              :  field == 'cellLines' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
               : '<th><div>'+controller.columnHeadersMap[field]+'</div></th>'
             );
         }
@@ -36,7 +36,7 @@ listUtils.controller('DonorCtrl', function() {
             var field = fields[i];
             var hitStr = 'hit['+i+']';
             trChildren.push(
-                field == 'bioSamplesAccession' ? '<td class="biosamplesaccession matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/'+hitStr+'" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a></td>'
+                field == 'bioSamplesAccession' ? '<td class="biosamplesaccession matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a></td>'
               : field == 'cellLines' ? '<td class="cellLines matrix-dot" popover="{{'+hitStr+'.join(\', \')}}" popover-trigger="mouseenter" ng-bind="'+hitStr+'.length"></td>'
               : field == 'name' ? '<td class="name"><a ng-href="#/donors/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
@@ -85,8 +85,8 @@ listUtils.controller('LineCtrl', function() {
         for (var i=0; i<fields.length; i++) {
             var field = fields[i];
             trChildren.push(
-                field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div>'+controller.columnHeadersMap[field]+'</div></th>'
-              :  field.match(/^assays/) ? '<th class="matrix-dot"><div>'+controller.columnHeadersMap[field]+'</div></th>'
+                field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
+              :  field.match(/^assays/) ? '<th class="matrix-dot assay"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
               : '<th><div>'+controller.columnHeadersMap[field]+'</div></th>'
             );
         }
@@ -100,9 +100,9 @@ listUtils.controller('LineCtrl', function() {
             var field = fields[i];
             var hitStr = 'hit['+i+']';
             trChildren.push(
-                field == 'bioSamplesAccession' ? '<td class="biosamplesaccession matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/'+hitStr+'" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a></td>'
+                field == 'bioSamplesAccession' ? '<td class="biosamplesaccession matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a></td>'
               : field == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
-              : field.match(/^assays/) ? '<td class="assay matrix-dot" popover="{{'+hitStr+'}}" popover-trigger="mouseenter" target="_blank">&#x25cf;</td>'
+              : field.match(/^assays/) ? '<td class="assay matrix-dot"><span class="assay" ng-class="{hasdata: '+hitStr+'}"><a ng-href="https://www.ebi.ac.uk/ega/studies/{{'+hitStr+'}}" popover="'+controller.columnHeadersMap[field]+'" popover-trigger="mouseenter" target="_blank">&#x25cf;</a></span></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
             );
         }
