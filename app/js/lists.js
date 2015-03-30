@@ -5,10 +5,9 @@ var listUtils = angular.module('hipsciBrowser.listUtils', []);
 listUtils.controller('DonorCtrl', function() {
     var controller=this;
     this.documentType = 'donor';
-    this.fields = ['name', 'sex', 'ethnicity', 'diseaseStatus', 'age', 'bioSamplesAccession', 'cellLines'];
-    this.columnHeaders = ['Name', 'Sex', 'Ethnicity', 'Disease Status', 'Age', 'Biosample', 'Cell Lines'];
+    this.initFields = ['name', 'sex', 'ethnicity', 'diseaseStatus', 'age', 'bioSamplesAccession', 'cellLines'];
 
-    var columnHeadersMap = {
+    this.columnHeadersMap = {
         name: 'Name',
         sex: 'Sex',
         ethnicity: 'Ethnicity',
@@ -18,25 +17,23 @@ listUtils.controller('DonorCtrl', function() {
         cellLines: 'Cell Lines'
     };
 
-    this.compileHead = function() {
-        console.log('compiling head');
+    this.compileHead = function(fields) {
         var trChildren = [];
-        for (var i=0; i<controller.fields.length; i++) {
-            var field = controller.fields[i];
+        for (var i=0; i<fields.length; i++) {
+            var field = fields[i];
             trChildren.push(
-                field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div>'+columnHeadersMap[field]+'</div></th>'
-              :  field == 'cellLines' ? '<th class="matrix-dot"><div>'+columnHeadersMap[field]+'</div></th>'
-              : '<th><div>'+columnHeadersMap[field]+'</div></th>'
+                field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div>'+controller.columnHeadersMap[field]+'</div></th>'
+              :  field == 'cellLines' ? '<th class="matrix-dot"><div>'+controller.columnHeadersMap[field]+'</div></th>'
+              : '<th><div>'+controller.columnHeadersMap[field]+'</div></th>'
             );
         }
         return trChildren;
     };
 
-    this.compileRow = function() {
-        console.log('compiling row');
+    this.compileRow = function(fields) {
         var trChildren = [];
-        for (var i=0; i<controller.fields.length; i++) {
-            var field = controller.fields[i];
+        for (var i=0; i<fields.length; i++) {
+            var field = fields[i];
             var hitStr = 'hit['+i+']';
             trChildren.push(
                 field == 'bioSamplesAccession' ? '<td class="biosamplesaccession matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/'+hitStr+'" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a></td>'
@@ -48,10 +45,10 @@ listUtils.controller('DonorCtrl', function() {
         return trChildren;
     };
 
-    this.processHitFields = function(hitFields) {
+    this.processHitFields = function(hitFields, fields) {
         var processedFields = [];
-        for (var i=0; i<controller.fields.length; i++) {
-            var field = controller.fields[i];
+        for (var i=0; i<fields.length; i++) {
+            var field = fields[i];
             processedFields[i] = ! hitFields.hasOwnProperty(field) ? undefined
                     : field == 'cellLines' ? hitFields[field]
                     : hitFields[field][0];
@@ -82,11 +79,21 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
     scope: false,
     link: function(scope, iElement, iAttrs, controller, transcludeFn) {
       controller.documentType = scope.$eval(iAttrs.documentType);
-      controller.columnHeaders = scope.$eval(iAttrs.columnHeaders);
-      controller.fields = scope.$eval(iAttrs.fields);
 
-      iElement.find('aggs-filter').each(function() {controller.waitForAggs++;});
-      controller.linkingFinish()
+      iElement.find('aggs-filter').each(function() {controller.waitForComponents++;});
+      iElement.find('list-table').each(function() {controller.waitForComponents++;});
+      iElement.find('list-init-fields').each(function() {controller.waitForComponents++;});
+      if (controller.waitForComponents > 0) {
+          var unbindWatch = scope.$watch(function() {return controller.waitForComponents}, function(newValue) {
+              if (newValue <= 0) {
+                  unbindWatch();
+                  controller.ready();
+              }
+          });
+      }
+      else {
+          controller.ready();
+      }
     },
     controller: ['$timeout', function ($timeout) {
       var controller = this;
@@ -96,9 +103,9 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       controller.numHits = 0;
       controller.query = '';
       controller.fields = [];
-      controller.columnHeaders = [];
+      controller.exportHeadersMap = {};
 
-      controller.waitForAggs = 0;
+      controller.waitForComponents = 0;
       controller.delayedSearchActivated = false;
 
       var cachedHits = [];
@@ -212,7 +219,7 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
           controller.numHits = resp.hits.total;
           controller.numPages = Math.ceil(controller.numHits / controller.hitsPerPage);
           if (typeof controller.tableRespCallback != 'undefined') {
-              controller.tableRespCallback(resp.hits.hits);
+              controller.tableRespCallback(resp.hits.hits, controller.fields);
           }
 
           if (resp.hasOwnProperty('aggregations')) {
@@ -237,9 +244,13 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
   
       controller.exportData = function(format) {
         var form = document.createElement('form');
+        var columnNames = [];
+        for (var i=0; i<controller.fields.length; i++) {
+            columnNames.push(controller.exportHeadersMap[controller.fields[i]]);
+        }
         var searchBody = {
         fields: controller.fields,
-        column_names: controller.columnHeaders,
+        column_names: columnNames,
         from: 0,
         size: controller.numHits,
         };
@@ -318,19 +329,20 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
           aggReqs[aggName] = aggReqArr;
           aggExcludeFilters[aggName] = excludeFilter;
           aggCallbacks[aggName] = processCallback;
-          controller.waitForAggs --;
-          if (controller.waitForAggs <= 0) {
-              controller.refreshSearch();
-          }
+          controller.waitForComponents --;
 
       };
 
       controller.registerTable = function(tableInitCallback, tableRespCallback) {
           controller.tableInitCallback = tableInitCallback;
           controller.tableRespCallback = tableRespCallback;
-          if (controller.fields.length >0) {
-              controller.tableInitCallback();
-          }
+          controller.waitForComponents --;
+      };
+
+      controller.registerFields = function(fields, exportHeadersMap) {
+          controller.fields = fields;
+          controller.exportHeadersMap = exportHeadersMap;
+          controller.waitForComponents --;
       };
 
       controller.delayedSearch = function(event) {
@@ -345,13 +357,11 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
           $timeout(function() {if (controller.delayedSearchActivated) {controller.refreshSearch();}}, 1000);
       };
 
-      controller.linkingFinish = function () {
+      controller.ready = function () {
           if (typeof controller.tableInitCallback != 'undefined') {
-              controller.tableInitCallback();
+              controller.tableInitCallback(controller.fields);
           }
-          if (controller.waitForAggs == 0) {
-              controller.refreshSearch();
-          }
+          controller.refreshSearch();
       };
     }]
 

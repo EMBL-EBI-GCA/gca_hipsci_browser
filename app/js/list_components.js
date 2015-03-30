@@ -217,19 +217,18 @@ listComponents.directive('listTable', ['$compile', function($compile) {
             tableEl.attr('class', iAttrs.class);
             iElement.removeAttr('class');
 
-            var compileTable = function () {
-                console.log('compiling table');
+            var compileTable = function (fields) {
                 var headEl = iElement.find('thead');
                 var bodyEl = iElement.find('tbody');
                 var headTrEl = headEl.find('tr');
-                var headTrChildren = scope.compileHead();
+                var headTrChildren = scope.compileHead(fields);
                 for (var i=0; i<headTrChildren.length; i++) {
                     headTrEl.append(headTrChildren[i]);
                 };
 
                 bodyEl.append('<tr ng-repeat="hit in processedHits"></tr>');
                 var rowEl = bodyEl.find('tr');
-                var rowTrChildren = scope.compileRow();
+                var rowTrChildren = scope.compileRow(fields);
                 for (var i=0; i<rowTrChildren.length; i++) {
                     rowEl.append(rowTrChildren[i]);
                 }
@@ -238,14 +237,26 @@ listComponents.directive('listTable', ['$compile', function($compile) {
                 linkFunc(scope);
             };
 
-            var processHits = function(respHits) {
+            var processHits = function(respHits, fields) {
                 scope.processedHits = [];
                 for (var i=0; i<respHits.length; i++) {
-                    scope.processedHits.push(scope.processHitFields(respHits[i].fields));
+                    scope.processedHits.push(scope.processHitFields(respHits[i].fields, fields));
                 }
             };
 
             listPanelCtrl.registerTable(compileTable, processHits);
     }};}
+  };
+}]);
+
+listComponents.directive('listInitFields', [function() {
+  return {
+    restrict: 'E',
+    require: '^listPanel',
+    scope: {exportHeadersMap : '=', fields: '=' },
+    link: function(scope, element, attrs, ListPanelController) {
+        console.log(scope.exportHeadersMap);
+        ListPanelController.registerFields(scope.fields, scope.exportHeadersMap);
+    },
   };
 }]);
