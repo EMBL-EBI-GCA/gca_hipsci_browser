@@ -135,7 +135,6 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       var unbindWatch = scope.$watch(function() {
           var unregisteredCounter = 0;
           iElement.find('aggs-filter').each(function(index, el) {if ( ! el.attributes.hasOwnProperty('list-panel-registered')) {unregisteredCounter++;} });
-          iElement.find('list-table').each(function(index, el) {if ( ! el.attributes.hasOwnProperty('list-panel-registered')) {unregisteredCounter++;} });
           iElement.find('list-init-fields').each(function(index, el) {if ( ! el.attributes.hasOwnProperty('list-panel-registered')) {unregisteredCounter++;} });
           return unregisteredCounter;
         }, function(newValue) {
@@ -171,8 +170,8 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       var aggReqs = {};
       var aggExcludeFilters = {};
       var aggCallbacks = {};
-      controller.tableInitCallback = undefined;
-      controller.tableRespCallback = undefined;
+      controller.tableInitCallback = function() {return;};
+      controller.tableRespCallback = function() {return;};
 
       var processResp = function(resp) {
           controller.numHits = resp.hits.total;
@@ -427,6 +426,10 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
       controller.registerTable = function(tableInitCallback, tableRespCallback) {
           controller.tableInitCallback = tableInitCallback;
           controller.tableRespCallback = tableRespCallback;
+          if (controller.cachedResps.length >0) {
+              controller.tableInitCallback(controller.fields);
+              controller.tableRespCallback(controller.cachedReps[controller.cachedResps.length-1]);
+          }
       };
 
       controller.registerFields = function(fields, exportHeadersMap) {
@@ -448,8 +451,7 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
           if (controller.delayedSearchActivated) {
               return;
           }
-          controller.delayedSearchActivated = true;
-          $timeout(function() {if (controller.delayedSearchActivated) {controller.refreshSearch();}}, 1000);
+          controller.delayedSearchActivated = true; $timeout(function() {if (controller.delayedSearchActivated) {controller.refreshSearch();}}, 1000);
       };
 
     }]
