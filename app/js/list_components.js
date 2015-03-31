@@ -42,6 +42,9 @@ listComponents.directive('aggsFilter', function() {
         scope.collapsed = true;
         scope.buttonText = '+';
 
+        scope.ulMaxHeight = 0;
+        scope.sortOrder = {};
+
         var existsFields = scope.$parent.$eval(scope.existsFields);
         var labelsMap = scope.$parent.$eval(scope.labelsMap);
         var existsLabels = [];
@@ -62,10 +65,15 @@ listComponents.directive('aggsFilter', function() {
             scope.aggsNoData = 0;
         };
         var registerTermsFilter = function() {
-            var filtTermsArr = Object.keys(scope.filteredTerms);
+            var filtTermsArr = [];
+            for (var key in scope.filteredTerms) {
+                if (key != '_noData') {
+                    filtTermsArr.push(key);
+                }
+            };
             var filterReq = {};
             if (filtTermsArr.length == 0) {
-                if (scope.filterNoData) {
+                if (scope.filteredTerms['_noData']) {
                     filterReq = {missing: {field: scope.field}};
                 }
                 else {
@@ -73,6 +81,9 @@ listComponents.directive('aggsFilter', function() {
                 }
             }
             else if (filtTermsArr.length == 1) {
+                if (scope.filteredTerms['_noData']) {
+                    filterReq = {missing: {field: scope.field}};
+                }
                 filterReq = {term: {}};
                 filterReq.term[scope.field] = filtTermsArr[0];
             }
@@ -81,7 +92,7 @@ listComponents.directive('aggsFilter', function() {
                 filterReq = {terms: {execution: 'or'}};
                 filterReq.terms[scope.field] = filtTermsArr;
             }
-            if (filtTermsArr.length >0 && scope.filterNoData) {
+            if (filtTermsArr.length >0 && scope.filteredTerms['_noData']) {
                 filterReq = {or: [filterReq, {missing: {field: scope.field}}]};
             }
             ListPanelCtrl.registerFilter(scope.field, filterReq, disableCallback);
@@ -103,39 +114,79 @@ listComponents.directive('aggsFilter', function() {
         };
 
         var processTermsAggResp = function(resps) {
-            scope.aggs = resps[0].buckets.sort(function(a,b) {
-                if (scope.filteredTerms.hasOwnProperty(b['key']) == scope.filteredTerms.hasOwnProperty(a['key'])) {
-                    return b['doc_count'] - a['doc_count'];
-                }
-                return scope.filteredTerms.hasOwnProperty(b['key']);
-            });
-            for (var i=0; i<scope.aggs.length; i++) {
-                scope.aggs[i].field = scope.aggs[i].key;
+            var aggs = {};
+            for (var i=0; i<resps[0].buckets.length; i++) {
+                var respAgg = resps[0].buckets[i];
+                respAgg.field = respAgg.key;
+                aggs[respAgg.key] = respAgg;
             }
-            if (scope.aggs.length == 0) {
-                for (var aggKey in scope.filteredTerms) {
-                    scope.aggs.push({key: aggKey, doc_count: 0, field: aggKey});
+            if (resps[1].doc_count) {
+                aggs['_noData'] = {key: 'No Data', doc_count: resps[1].doc_count, field: '_noData'};
+            }
+            for (var aggField in scope.filteredTerms) {
+                if (!aggs.hasOwnProperty(aggField)) {
+                    var aggKey = aggField == '_noData' ? 'No Data' : aggField;
+                    aggs[aggField] = {key: aggKey, doc_count: 0, field: aggField};
+                }
+            }
+
+            var sortedKeys = [];
+            var unsortedKeys = Object.keys(aggs);
+            if (Object.keys(scope.sortOrder).length === 0) {
+                sortedKeys = unsortedKeys.sort(function(a,b) {
+                    if (a=='_noData') {return a;}
+                    if (b=='_noData') {return b;}
+                    return aggs[b].doc_count - aggs[a].doc_count;
+                });
+                for (var i=0; i<sortedKeys.length; i++) {
+                    scope.sortOrder[sortedKeys[i]] = i;
+                }
+            }
+            else {
+                sortedKeys = unsortedKeys.sort(function(a,b) {
+                    return scope.sortOrder[a] - scope.sortOrder[b];
+                });
+            }
+            scope.aggs = [];
+            for (var i=0; i<sortedKeys.length; i++) {
+                if (aggs.hasOwnProperty(sortedKeys[i])) {
+                    scope.aggs.push(aggs[sortedKeys[i]]);
                 }
             }
             scope.aggsOther = resps[0].sum_other_doc_count;
-            scope.aggsNoData = resps[1].doc_count;
         };
         var processExistsAggResp = function(resps) {
-            scope.aggs = [];
             if (resps.length != existsFields.length) {
                 return;
             }
+            var aggs = {};
             for (var i=0; i<existsFields.length; i++) {
                 if (resps[i].value >0) {
-                    scope.aggs.push({key: existsLabels[i], doc_count: resps[i].value, field: existsFields[i]});
+                    aggs[existsFields[i]] = {key: existsLabels[i], doc_count: resps[i].value, field: existsFields[i]};
                 }
             }
-            scope.aggs = scope.aggs.sort(function(a,b) {
-                if (scope.filteredTerms.hasOwnProperty(b['field']) == scope.filteredTerms.hasOwnProperty(a['field'])) {
-                    return b['doc_count'] - a['doc_count'];
+
+            var sortedKeys = [];
+            var unsortedKeys = Object.keys(aggs);
+            if (Object.keys(scope.sortOrder).length === 0) {
+                sortedKeys = unsortedKeys.sort(function(a,b) {
+                    return aggs[b].doc_count - aggs[a].doc_count;
+                });
+                for (var i=0; i<sortedKeys.length; i++) {
+                    scope.sortOrder[sortedKeys[i]] = i;
                 }
-                return scope.filteredTerms.hasOwnProperty(b['field']);
-            });
+            }
+            else {
+                sortedKeys = unsortedKeys.sort(function(a,b) {
+                    return scope.sortOrder[a] - scope.sortOrder[b];
+                });
+            }
+            scope.aggs = [];
+            for (var i=0; i<sortedKeys.length; i++) {
+                if (aggs.hasOwnProperty(sortedKeys[i])) {
+                    scope.aggs.push(aggs[sortedKeys[i]]);
+                }
+            }
         };
         if (scope.type == 'terms') {
             var aggReq = { terms: {field: scope.field, size: 20}};
@@ -151,12 +202,19 @@ listComponents.directive('aggsFilter', function() {
         }
         var ulElem = iElement.find("ul").first();
         scope.buttonRequired = function() {
-            var buttonRequired = !scope.collapsed || (ulElem.prop('scrollHeight') > ulElem.height());
-            return buttonRequired;
+            var scrollHeight = ulElem.prop('scrollHeight');
+            if (scope.ulMaxHeight == 0  && (scrollHeight > ulElem.height())) {
+                scope.ulMaxHeight = ulElem.height();
+            }
+            if (scope.ulMaxHeight >0) {
+                var buttonRequired = scrollHeight > scope.ulMaxHeight ? true : false;
+                return buttonRequired;
+            }
+            return false;
         };
 
         scope.handleEvent = function(agg) {
-            var term = scope.type=='terms' ? agg['key'] : agg['field'];
+            var term = agg['field'];
             if (scope.filteredTerms.hasOwnProperty(term)) {
                 delete scope.filteredTerms[term];
             }
@@ -172,15 +230,34 @@ listComponents.directive('aggsFilter', function() {
             else return;
             ListPanelCtrl.refreshSearch();
         };
-        scope.handleNoDataEvent = function() {
-            scope.filterNoData = !scope.filterNoData;
-            registerTermsFilter();
-            ListPanelCtrl.refreshSearch();
-        }
 
         scope.toggleCollapse = function() {
             scope.collapsed = !scope.collapsed;
             scope.buttonText = scope.collapsed ? '+' : '-';
+            if (scope.collapsed) {
+                var unsortedKeys = Object.keys(scope.sortOrder);
+                var sortedKeys = unsortedKeys.sort(function(a,b) {
+                    if (scope.filteredTerms.hasOwnProperty(a) && scope.filteredTerms[a]) {
+                        if (scope.filteredTerms.hasOwnProperty(b) && scope.filteredTerms[b]) {
+                            return 1;
+                        }
+                        return -1;
+                    }
+                    if (scope.filteredTerms.hasOwnProperty(b) && scope.filteredTerms[b]) {
+                        if (scope.filteredTerms.hasOwnProperty(a) && scope.filteredTerms[a]) {
+                            return -1;
+                        }
+                        return 1;
+                    }
+                    return scope.sortOrder[a] - scope.sortOrder[b];
+                });
+                for (var i=0; i<sortedKeys.length; i++) {
+                    scope.sortOrder[sortedKeys[i]] = i;
+                }
+                scope.aggs = scope.aggs.sort(function(a,b) {
+                    return scope.sortOrder[a.field] - scope.sortOrder[b.field];
+                });
+            }
         };
 
         iAttrs.$set('list-panel-registered', true);
