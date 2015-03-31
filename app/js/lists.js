@@ -101,7 +101,7 @@ listUtils.controller('LineCtrl', function() {
             trChildren.push(
                 field == 'bioSamplesAccession' ? '<td class="biosamplesaccession matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a></td>'
               : field == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
-              : field.match(/^assays/) ? '<td class="assay matrix-dot"><span class="assay" ng-class="{hasdata: '+hitStr+'}"><a ng-href="https://www.ebi.ac.uk/ega/studies/{{'+hitStr+'}}" popover="'+controller.columnHeadersMap[field]+'" popover-trigger="mouseenter" target="_blank"><span ng-if="'+hitStr+'">&#x25cf;</span></a></span></td>'
+              : field.match(/^assays/) ? '<td class="assay matrix-dot"><span class="assay"><a ng-if="'+hitStr+'" ng-href="https://www.ebi.ac.uk/ega/studies/{{'+hitStr+'}}" popover="'+controller.columnHeadersMap[field]+'" popover-trigger="mouseenter" target="_blank"><span ng-if="'+hitStr+'">&#x25cf;</span></a></span></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
             );
         }
