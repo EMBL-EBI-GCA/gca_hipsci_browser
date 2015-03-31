@@ -4,13 +4,14 @@
 			<h3 class="panel-title" ng-bind="title"></h3>
 			<button type="button" class="btn btn-xs btn-primary" ng-show="buttonRequired()" ng-click="toggleCollapse()" ng-bind="buttonText"></button>
 		</li>
-		<li ng-repeat="agg in aggs" class="list-group-item facet-term" 
-			ng-class="{active: filteredTerms.hasOwnProperty(agg['field'])}"
+		<li ng-repeat="agg in aggs" class="list-group-item facet-term " 
+			ng-class="{'active': filteredTerms.hasOwnProperty(agg['field']), 'facet-disabled': !agg['doc_count']}"
 			ng-click="handleEvent(agg)" >
 			<span ng-bind="agg['key']"></span>
                         <span class="badge" ng-bind="agg['doc_count']"></span>
 		</li>
-                <li ng-if="aggsOther" class="list-group-item facet-term active:false">
+                <li ng-if="aggsOther" class="list-group-item facet-term active:false"
+			ng-class="{'facet-disabled': !aggsOther}">
 			<span>Other</span>
                         <span class="badge" ng-bind="aggsOther"></span>
                 </li>

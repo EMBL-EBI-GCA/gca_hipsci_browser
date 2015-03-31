@@ -113,6 +113,13 @@ p .left-image{
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5', endColorstr='#ffe8e8e8', GradientType=0);
 }
 /*make it clear that facet terms do something*/
+.facet .facet-disabled {
+  color:rgb(200, 200, 200);
+}
+.facet .facet-disabled .badge {
+  background-color:rgb(200, 200, 200);
+}
+
 .facet .facet-term:hover{
   color:rgb(107, 174, 214);
 }
