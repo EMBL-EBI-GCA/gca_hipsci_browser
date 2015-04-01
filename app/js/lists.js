@@ -437,6 +437,9 @@ listUtils.directive('listPanel', ['apiClient', function (apiClient) {
           if (controller.delayedSearchActivated) {
               return;
           }
+          if (controller.query.length <= 2) {
+              return;
+          }
           controller.delayedSearchActivated = true; $timeout(function() {if (controller.delayedSearchActivated) {controller.refreshSearch();}}, 1000);
       };
 
