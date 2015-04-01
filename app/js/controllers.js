@@ -4,26 +4,26 @@
 
 var controllers = angular.module('hipsciBrowser.controllers', []);
 
-controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'esClient',
-  function($scope, $routeParams, esClient) {
-    $scope.data = esClient.getSource({
-        index: 'hipsci',
+controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
+  function($scope, $routeParams, apiClient) {
+    $scope.data = apiClient.getSource({
         type: 'cellLine',
         id: $routeParams.ipscName
-    }).then(function(resp) {
-        $scope.data = resp;
+    }).success(function(resp) {
+        console.log(resp);
+        $scope.data = resp['_source'];
     });
   }
 ]);
 
-controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'esClient',
-  function($scope, $routeParams, esClient) {
-    $scope.data = esClient.getSource({
+controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient',
+  function($scope, $routeParams, apiClient) {
+    $scope.data = apiClient.getSource({
         index: 'hipsci',
         type: 'donor',
         id: $routeParams.donorName
-    }).then(function(resp) {
-        $scope.data = resp;
+    }).success(function(resp) {
+        $scope.data = resp['_source'];
     });
   }
 ]);

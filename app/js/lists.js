@@ -121,7 +121,7 @@ listUtils.controller('LineCtrl', function() {
 });
 
 
-listUtils.directive('listPanel', ['esClient', function (esClient) {
+listUtils.directive('listPanel', ['apiClient', function (apiClient) {
   return {
     controllerAs: 'ListPanelCtrl',
     restrict: 'E',
@@ -312,11 +312,10 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
             processResp(cachedResp);
         }
         else {
-            esClient.search( {
-              index: 'hipsci',
+            apiClient.search( {
               type: controller.documentType,
               body: searchBody,
-            }).then(function(resp) {
+            }).success(function(resp) {
                 controller.cachedResps.push([bodyStr, resp]);
                 while (controller.cachedResps.length >10) {
                     controller.cachedResps.shift();
@@ -360,20 +359,7 @@ listUtils.directive('listPanel', ['esClient', function (esClient) {
             }
         }
 
-        //form.action='http://vg-rs-dev1:8000/api/hipsci/' + this.documentType + '/_search.' +format;
-        //form.action='/api/hipsci/' + this.documentType + '/_search.' +format;
-        form.action='http://127.0.0.1:3000/hipsci/' + controller.documentType + '/_search.' +format;
-        form.method='POST';
-        form.target="_self";
-  
-        var input = document.createElement("textarea");
-        input.setAttribute('type', 'hidden');
-        input.setAttribute('name', 'json');
-        input.value = JSON.stringify(searchBody);
-        form.appendChild(input);
-        form.style.display = 'none';
-        document.body.appendChild(form);
-        form.submit();
+        return apiClient.exportData({type: controller.documentType, body: searchBody, format: format});
       };
   
       controller.refreshSearch = function () {
