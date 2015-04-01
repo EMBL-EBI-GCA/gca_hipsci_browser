@@ -112,16 +112,22 @@ p .left-image{
   background-image: linear-gradient(to bottom,#f5f5f5 0,#e8e8e8 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5', endColorstr='#ffe8e8e8', GradientType=0);
 }
+
 /*make it clear that facet terms do something*/
+.facet .facet-term:hover{
+  color:rgb(107, 174, 214);
+}
+
+/*make it clear that disabled facet terms do nothing*/
 .facet .facet-disabled {
   color:rgb(200, 200, 200);
+  
 }
 .facet .facet-disabled .badge {
   background-color:rgb(200, 200, 200);
 }
-
-.facet .facet-term:hover{
-  color:rgb(107, 174, 214);
+.facet .facet-disabled:hover{
+  color:rgb(200, 200, 200);
 }
 
 /*Download link symbol is a bit weedy, make it bigger and bolder*/
