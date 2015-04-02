@@ -6,7 +6,7 @@ var dependencies = [
   'hipsciBrowser.services',
   'hipsciBrowser.controllers',
   'hipsciBrowser.navigation',
-  'hipsciBrowser.listUtils',
+  'hipsciBrowser.listPanel',
   'hipsciBrowser.listComponents',
   'ui.bootstrap',
 ];
@@ -21,32 +21,22 @@ hipsciBrowser.config(['$routeProvider',
       templateUrl: 'partials/line-detail.html',
       controller: 'LineDetailCtrl'
     }).
-    when('/donors', {
-      templateUrl: 'partials/donor-list.html',
-      controller: 'DonorCtrl',
-      controllerAs: 'DonorCtrl',
-    }).
-    when('/lines', {
-      templateUrl: 'partials/line-list.html',
-      controller: 'LineCtrl',
-      controllerAs: 'LineCtrl',
-    }).
     when('/donors/:donorName', {
       templateUrl: 'partials/donor-detail.html',
       controller: 'DonorDetailCtrl'
+    }).
+    when('/lines', {
+      templateUrl: 'partials/line-list.html',
+      controller: 'LineListCtrl',
+      controllerAs: 'LineCtrl',
+    }).
+    when('/donors', {
+      templateUrl: 'partials/donor-list.html',
+      controller: 'DonorListCtrl',
+      controllerAs: 'DonorCtrl',
     }).
     otherwise({
       redirectTo: '/lines/'
     });
   }
 ]);
-
-/*
-hipsciBrowser.run(function($rootScope, $templateCache) {
-    $rootScope.$on('$routeChangeStart', function(event, next, current) {
-        if (typeof(current) !== 'undefined'){
-            $templateCache.remove(current.templateUrl);
-        }
-    });
-}); 
-*/
