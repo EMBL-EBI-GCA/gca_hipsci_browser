@@ -3,36 +3,43 @@
 
 <h1 ng-bind="data.name"></h1>
 
-    <h3>Available cell lines</h3>
-    <ul class="ipscs">
-        <li ng-repeat="ipsc in data.cellLines" class="ipsc">
-            <h4><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></h4>
-        </li>
-    </ul>
+    <div class="row">
+        <div class="col-md-12">
+        <dl class="dl-horizontal item-detail">
 
-    <div class="row item-detail" ng-if="data.diseaseStatus">
-        <div class="col-xs-6 col-sm-3 col-lg-2 col-sm-offset-1"><h3>Disease status:</h3></div>
-        <div class="col-xs-6 col-sm-7 col-lg-8"><h4 ng-bind="data.diseaseStatus"></h4></div>
-    </div>
+            <div>
+            <dt>Available cell lines ({{data.cellLines.length}}):</dt>
+            <dd ng-repeat="ipsc in data.cellLines"><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></dd>
+            </div>
 
-    <div class="row item-detail" ng-if="data.age">
-        <div class="col-xs-6 col-sm-3 col-lg-2 col-sm-offset-1"><h3>Age:</h3></div>
-        <div class="col-xs-6 col-sm-7 col-lg-8"><h4 ng-bind="data.age"></h4></div>
-    </div>
 
-    <div class="row item-detail" ng-if="data.ethnicity">
-        <div class="col-xs-6 col-sm-3 col-lg-2 col-sm-offset-1"><h3>Ethnicity:</h3></div>
-        <div class="col-xs-6 col-sm-7 col-lg-8"><h4 ng-bind="data.ethnicity"></h4></div>
-    </div>
+            <div ng-if="data.diseaseStatus">
+            <dt>Disease status:</dt>
+            <dd ng-bind="data.diseaseStatus"></dd>
+            </div>
 
-    <div class="row item-detail" ng-if="data.sex">
-        <div class="col-xs-6 col-sm-3 col-lg-2 col-sm-offset-1"><h3>Sex:</h3></div>
-        <div class="col-xs-6 col-sm-7 col-lg-8"><h4 ng-bind="data.sex"></h4></div>
-    </div>
+            <div ng-if="data.age">
+            <dt>Age:</dt>
+            <dd ng-bind="data.age"></dd>
+            </div>
 
-    <div class="row item-detail" ng-if="data.bioSamplesAccession">
-        <div class="col-xs-6 col-sm-3 col-lg-2 col-sm-offset-1"><h3>Biosample:</h3></div>
-        <div class="col-xs-6 col-sm-7 col-lg-8"><h4><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{data.bioSamplesAccession}}" ng-bind="data.bioSamplesAccession" target="_blank"></a></h4></div>
+            <div ng-if="data.ethnicity">
+            <dt>Ethnicity:</dt>
+            <dd ng-bind="data.ethnicity"></dd>
+            </div>
+
+            <div ng-if="data.sex">
+            <dt>Sex:</dt>
+            <dd ng-bind="data.sex"></dd>
+            </div>
+
+            <div ng-if="data.bioSamplesAccession">
+            <dt>Biosample:</dt>
+            <dd><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{data.bioSamplesAccession}}" ng-bind="data.bioSamplesAccession" target="_blank"></a></dd>
+            </div>
+
+        </dl>
+        </div>
     </div>
 
     </div>
