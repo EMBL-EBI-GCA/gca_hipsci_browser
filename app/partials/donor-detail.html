@@ -3,12 +3,14 @@
 
 <h1 ng-bind="data.name"></h1>
 
-    <h3>Available cell lines</h3>
-    <ul class="ipscs">
-        <li ng-repeat="ipsc in data.cellLines" class="ipsc">
-            <h4><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></h4>
-        </li>
-    </ul>
+    <div class="row item-detail">
+        <div class="col-xs-6 col-sm-3 col-lg-2 col-sm-offset-1"><h3>Available cell lines ({{data.cellLines.length}}):</h3></div>
+        <div class="col-xs-6 col-sm-7 col-lg-8">
+            <ul ng-repeat="ipsc in data.cellLines">
+                <li><h4><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></h4></li>
+            </ul>
+        </div>
+    </div>
 
     <div class="row item-detail" ng-if="data.diseaseStatus">
         <div class="col-xs-6 col-sm-3 col-lg-2 col-sm-offset-1"><h3>Disease status:</h3></div>
