@@ -5,33 +5,31 @@
 
     <div class="row item-detail">
         <div class="col-md-10 col-sm-offset-1">
-        <dl class="dl-horizontal" item-detail-dl="0.3">
-            <dt ng-style="itemDetailDl.dtStyle()">Available cell lines ({{data.cellLines.length}}):</dt>
-            <dd ng-style="itemDetailDl.ddStyle()"><div ng-repeat="ipsc in data.cellLines"><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></div></dd>
+        <dl item-detail-dl="0.3">
+            <dt>Available cell lines ({{data.cellLines.length}}):</dt>
+            <dd><div ng-repeat="ipsc in data.cellLines"><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></div></dd>
             
-            <div ng-if="data.diseaseStatus">
-                <dt ng-style="itemDetailDl.dtStyle()">Disease Status:</dt>
-                <dd ng-style="itemDetailDl.ddStyle()" ng-bind="data.diseaseStatus"></dd>
-            </div>
+                <dt ng-if="data.diseaseStatus">Disease Status:</dt>
+                <dd ng-if="data.diseaseStatus" ng-bind="data.diseaseStatus"></dd>
 
             <div ng-if="data.age">
-                <dt ng-style="itemDetailDl.dtStyle()">Age:</dt>
-                <dd ng-style="itemDetailDl.ddStyle()" ng-bind="data.age"></dd>
+                <dt>Age:</dt>
+                <dd ng-bind="data.age"></dd>
             </div>
 
             <div ng-if="data.ethnicity">
-                <dt ng-style="itemDetailDl.dtStyle()">Ethnicity:</dt>
-                <dd ng-style="itemDetailDl.ddStyle()" ng-bind="data.ethnicity"></dd>
+                <dt>Ethnicity:</dt>
+                <dd ng-bind="data.ethnicity"></dd>
             </div>
 
             <div ng-if="data.sex">
-                <dt ng-style="itemDetailDl.dtStyle()">Sex:</dt>
-                <dd ng-style="itemDetailDl.ddStyle()" ng-bind="data.sex"></dd>
+                <dt>Sex:</dt>
+                <dd ng-bind="data.sex"></dd>
             </div>
 
             <div ng-if="data.bioSamplesAccession">
-                <dt ng-style="itemDetailDl.dtStyle()">Biosample:</dt>
-                <dd ng-style="itemDetailDl.ddStyle()"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{data.bioSamplesAccession}}" ng-bind="data.bioSamplesAccession" target="_blank"></a></dd>
+                <dt>Biosample:</dt>
+                <dd><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{data.bioSamplesAccession}}" ng-bind="data.bioSamplesAccession" target="_blank"></a></dd>
             </div>
         </dl>
         </div>
