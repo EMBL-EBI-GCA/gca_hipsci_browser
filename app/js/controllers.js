@@ -10,7 +10,6 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
         type: 'cellLine',
         id: $routeParams.ipscName
     }).success(function(resp) {
-        console.log(resp);
         $scope.data = resp['_source'];
     });
   }

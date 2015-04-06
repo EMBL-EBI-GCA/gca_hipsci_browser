@@ -43,8 +43,9 @@ itemDetail.directive('itemDetailDl', ['$window', function($window) {
         var setProperties = function() {
             var dtEls = iElement.find('dt');
             var ddEls = iElement.find('dd');
-            console.log(dtEls.length);
-            console.log(ddEls.length);
+            if (! dtEls.length) {
+                return;
+            }
             if (dtEls.first().position().top === ddEls.first().position().top) {
                 var dtWidth = iElement.width() * 0.3;
                 dtEls.width(dtWidth);

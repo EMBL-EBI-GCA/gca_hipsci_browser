@@ -3,47 +3,52 @@
 
     <h1 ng-bind="data.name"></h1>
 
-    <div class="row" ng-if="data.sourceMaterial">
-        <div class="col-xs-6 col-sm-3 col-lg-2 col-sm-offset-1"><h3>Source Material:</h3></div>
-        <div class="col-xs-6 col-sm-7 col-lg-8"><h4 ng-bind="data.sourceMaterial"></h4></div>
+    <div class="row item-detail">
+        <div class="col-md-10 col-sm-offset-1">
+        <dl item-detail-dl="0.3">
+
+            <div ng-if="data.sourceMaterial">
+                <dt>Source Material:</dt>
+                <dd ng-bind="data.sourceMaterial"></dd>
+            </div>
+
+            <div ng-if="data.tissueProvider">
+                <dt>Tissue Provider:</dt>
+                <dd ng-bind="data.tissueProvider"></dd>
+            </div>
+
+            <div ng-if="data.dateOfDerivation">
+                <dt>Date of derivation:</dt>
+                <dd ng-bind="data.dateOfDerivation"></dd>
+            </div>
+
+            <div ng-if="data.growingConditions">
+                <dt>Growing conditions:</dt>
+                <dd ng-bind="data.growingConditions"></dd>
+            </div>
+
+            <div ng-if="data.donor">
+                <dt>Donor:</dt>
+                <dd><a ng-href="#/donors/{{data.donor}}" ng-bind="data.donor"></a></dd>
+            </div>
+
+            <div ng-if="data.donorAge">
+                <dt>Donor age:</dt>
+                <dd ng-bind="data.donorAge"></dd>
+            </div>
+
+            <div ng-if="data.diseaseStatus">
+                <dt>Disease status:</dt>
+                <dd ng-bind="data.diseaseStatus"></dd>
+            </div>
+
+            <div ng-if="data.bioSamplesAccession">
+                <dt>Biosample:</dt>
+                <dd><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{data.bioSamplesAccession}}" ng-bind="data.bioSamplesAccession" target="_blank"></a></dd>
+            </div>
+        </dl>
+        </div>
     </div>
-
-    <div class="row" ng-if="data.tissueProvider">
-        <div class="col-xs-6 col-sm-3 col-lg-2 col-sm-offset-1"><h3>Tissue Provider:</h3></div>
-        <div class="col-xs-6 col-sm-7 col-lg-8"><h4 ng-bind="data.tissueProvider"></h4></div>
-    </div>
-
-    <div class="row" ng-if="data.dateOfDerivation">
-        <div class="col-xs-6 col-sm-3 col-lg-2 col-sm-offset-1"><h3>Date of derivation:</h3></div>
-        <div class="col-xs-6 col-sm-7 col-lg-8"><h4 ng-bind="data.dateOfDerivation"></h4></div>
-    </div>
-
-    <div class="row" ng-if="data.growingConditions">
-        <div class="col-xs-6 col-sm-3 col-lg-2 col-sm-offset-1"><h3>Growing conditions:</h3></div>
-        <div class="col-xs-6 col-sm-7 col-lg-8"><h4 ng-bind="data.growingConditions"></h4></div>
-    </div>
-
-
-    <div class="row" ng-if="data.donor">
-        <div class="col-xs-6 col-sm-3 col-lg-2 col-sm-offset-1"><h3>Donor:</h3></div>
-        <div class="col-xs-6 col-sm-7 col-lg-8"><h4><a ng-href="#/donors/{{data.donor}}" ng-bind="data.donor"></a></h4></div>
-    </div>
-
-    <div class="row" ng-if="data.donorAge">
-        <div class="col-xs-6 col-sm-3 col-lg-2 col-sm-offset-1"><h3>Donor age:</h3></div>
-        <div class="col-xs-6 col-sm-7 col-lg-8"><h4 ng-bind="data.donorAge"></h4></div>
-    </div>
-
-    <div class="row" ng-if="data.diseaseStatus">
-        <div class="col-xs-6 col-sm-3 col-lg-2 col-sm-offset-1"><h3>Disease status:</h3></div>
-        <div class="col-xs-6 col-sm-7 col-lg-8"><h4 ng-bind="data.diseaseStatus"></h4></div>
-    </div>
-
-    <div class="row" ng-if="data.bioSamplesAccession">
-        <div class="col-xs-6 col-sm-3 col-lg-2 col-sm-offset-1"><h3>Biosample:</h3></div>
-        <div class="col-xs-6 col-sm-7 col-lg-8"><h4><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{data.bioSamplesAccession}}" ng-bind="data.bioSamplesAccession" target="_blank"></a></h4></div>
-    </div>
-
 
     </div>
 </div>
