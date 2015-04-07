@@ -1,6 +1,5 @@
 .list-group-item {
   padding-right: 50px;
-  cursor: pointer;
 }
 .list-group-item>.badge {
   float: none;

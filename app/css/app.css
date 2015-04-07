@@ -118,9 +118,14 @@ p .left-image{
   color:rgb(107, 174, 214);
 }
 
+.facet .facet-term {
+  cursor: pointer;
+}
+
 /*make it clear that disabled facet terms do nothing*/
 .facet .facet-disabled {
   color:rgb(200, 200, 200);
+  cursor: default;
   
 }
 .facet .facet-disabled .badge {
