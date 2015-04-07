@@ -2,7 +2,9 @@
     <div class="panel-body">
 
     <h1 ng-bind="data.name"></h1>
+    <hr/>
 
+        <section>
         <dl class="dl-horizontal">
 
             <div ng-if="data.sourceMaterial">
@@ -45,6 +47,62 @@
                 <dd><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{data.bioSamplesAccession}}" ng-bind="data.bioSamplesAccession" target="_blank"></a></dd>
             </div>
         </dl>
+        </section>
+
+        <section>
+        <h3>Genomic Assays</h3>
+        <dl class="dl-horizontal">
+            <div ng-if="data.assays.exomeseq">
+                <dt>Exome sequencing:</dt>
+                <dd><a ng-href="https://www.ebi.ac.uk/ega/studies/{{data.assays.exomeseq}}" ng-bind="data.assays.exomeseq" target="_blank"></a></dd>
+            </div>
+            <div ng-if="data.assays.rnaseq">
+                <dt>RNA sequencing:</dt>
+                <dd><a ng-href="https://www.ebi.ac.uk/ega/studies/{{data.assays.rnaseq}}" ng-bind="data.assays.rnaseq" target="_blank"></a></dd>
+            </div>
+            <div ng-if="data.assays.gtarray">
+                <dt>Genotyping microarray:</dt>
+                <dd ng-bind="data.assays.gtarray"></dd>
+            </div>
+            <div ng-if="data.assays.gexarray">
+                <dt>Gene expression microarray:</dt>
+                <dd ng-bind="data.assays.gexarray"></dd>
+            </div>
+            <div ng-if="data.assays.mtarray">
+                <dt>Methylation profiling microarray:</dt>
+                <dd ng-bind="data.assays.mtarray"></dd>
+            </div>
+        </dl>
+        </section>
+
+        <section ng-if="data.pluri_novelty">
+        <h3>Assessment for Pluripotency in iPSC</h3>
+        <dl class="dl-horizontal">
+            <div ng-if="data.pluri_novelty">
+                <dt>Pluritest novelty score:</dt>
+                <dd ng-bind="data.pluri_novelty"></dd>
+            </div>
+            <div ng-if="data.pluri_raw">
+                <dt>Pluritest pluripotency score:</dt>
+                <dd ng-bind="data.pluri_raw"></dd>
+            </div>
+        </dl>
+        </section>
+
+        <section>
+        <h3>Custom CNV check</h3>
+        <dl class="dl-horizontal">
+            <div ng-if="data.hasOwnProperty('cnv_num_different_regions')">
+                <dt>Number of different regions:</dt>
+                <dd ng-bind="data.cnv_num_different_regions"></dd>
+            </div>
+            <div ng-if="data.hasOwnProperty('cnv_length_different_regions_Mbp')">
+                <dt>Length of differences:</dt>
+                <dd><span ng-bind="data.cnv_length_different_regions_Mbp"></span> Mbp</dd>
+            </div>
+        </dl>
+        </section>
+
 
     </div>
 </div>
