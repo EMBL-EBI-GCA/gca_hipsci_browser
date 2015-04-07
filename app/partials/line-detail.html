@@ -3,9 +3,7 @@
 
     <h1 ng-bind="data.name"></h1>
 
-    <div class="row item-detail">
-        <div class="col-md-10 col-sm-offset-1">
-        <dl item-detail-dl="0.3">
+        <dl class="dl-horizontal">
 
             <div ng-if="data.sourceMaterial">
                 <dt>Source Material:</dt>
@@ -47,8 +45,6 @@
                 <dd><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{data.bioSamplesAccession}}" ng-bind="data.bioSamplesAccession" target="_blank"></a></dd>
             </div>
         </dl>
-        </div>
-    </div>
 
     </div>
 </div>

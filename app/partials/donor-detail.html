@@ -3,14 +3,14 @@
 
 <h1 ng-bind="data.name"></h1>
 
-    <div class="row item-detail">
-        <div class="col-md-10 col-sm-offset-1">
-        <dl item-detail-dl="0.3">
+        <dl class="dl-horizontal">
             <dt>Available cell lines ({{data.cellLines.length}}):</dt>
             <dd><div ng-repeat="ipsc in data.cellLines"><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></div></dd>
             
-                <dt ng-if="data.diseaseStatus">Disease Status:</dt>
-                <dd ng-if="data.diseaseStatus" ng-bind="data.diseaseStatus"></dd>
+            <div ng-if="data.diseaseStatus">
+                <dt>Disease Status:</dt>
+                <dd ng-bind="data.diseaseStatus"></dd>
+            </div>
 
             <div ng-if="data.age">
                 <dt>Age:</dt>
@@ -32,8 +32,6 @@
                 <dd><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{data.bioSamplesAccession}}" ng-bind="data.bioSamplesAccession" target="_blank"></a></dd>
             </div>
         </dl>
-        </div>
-    </div>
 
     </div>
 </div>

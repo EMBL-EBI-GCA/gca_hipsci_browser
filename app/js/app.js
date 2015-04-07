@@ -8,7 +8,6 @@ var dependencies = [
   'hipsciBrowser.navigation',
   'hipsciBrowser.listPanel',
   'hipsciBrowser.listComponents',
-  'hipsciBrowser.itemDetail',
   'ui.bootstrap',
 ];
 
