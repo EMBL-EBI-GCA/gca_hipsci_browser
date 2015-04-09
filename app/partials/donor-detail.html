@@ -1,9 +1,14 @@
 <div class="panel panel-default">
     <div class="panel-body">
 
-<h1 ng-bind="data.name"></h1>
+<h1 ng-bind="donorName"></h1>
 <hr/>
 
+        <div ng-if="apiError">
+            <span>API response: {{apiStatus}} {{apiStatusText}}</span>
+        </div>
+
+        <div ng-if="apiSuccess">
         <dl class="dl-horizontal">
             <dt>Available cell lines ({{data.cellLines.length}}):</dt>
             <dd><div ng-repeat="ipsc in data.cellLines"><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></div></dd>
@@ -33,6 +38,7 @@
                 <dd><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{data.bioSamplesAccession}}" ng-bind="data.bioSamplesAccession" target="_blank"></a></dd>
             </div>
         </dl>
+        </div>
 
     </div>
 </div>

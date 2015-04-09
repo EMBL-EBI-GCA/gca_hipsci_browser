@@ -1,9 +1,14 @@
 <div class="panel panel-default">
     <div class="panel-body">
 
-    <h1 ng-bind="data.name"></h1>
+    <h1 ng-bind="ipscName"></h1>
     <hr/>
 
+        <div ng-if="apiError">
+            <span>API response: {{apiStatus}} {{apiStatusText}}</span>
+        </div>
+
+        <div ng-if="apiSuccess">
         <section>
         <dl class="dl-horizontal">
 
@@ -102,6 +107,7 @@
             </div>
         </dl>
         </section>
+        </div>
 
 
     </div>

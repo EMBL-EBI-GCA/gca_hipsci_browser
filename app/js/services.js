@@ -11,7 +11,7 @@ services.service('apiClient', ['$http', function($http) {
             var id = searchObj.id;
             var url = 'api/';
             url = url.concat(type, '/', id);
-            return $http.get(url);
+            return $http.get(url, {cache: true});
         },
         search: function (searchObj) {
             var type = searchObj.hasOwnProperty('type') ? searchObj.type : '';

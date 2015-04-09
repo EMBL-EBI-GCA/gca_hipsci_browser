@@ -6,23 +6,40 @@ var controllers = angular.module('hipsciBrowser.controllers', []);
 
 controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
   function($scope, $routeParams, apiClient) {
+    $scope.ipscName = $routeParams.ipscName;
+    $scope.apiError = false;
+    $scope.apiSuccess = false;
     $scope.data = apiClient.getSource({
         type: 'cellLine',
         id: $routeParams.ipscName
-    }).success(function(resp) {
-        $scope.data = resp['_source'];
+    }).then(function(resp) {
+        $scope.apiSuccess = true;
+        $scope.data = resp.data['_source'];
+    }, function(resp) {
+        console.log(resp);
+        $scope.apiError = true;
+        $scope.apiStatus = resp.status;
+        $scope.apiStatusText = resp.statusText;
     });
   }
 ]);
 
 controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient',
   function($scope, $routeParams, apiClient) {
+    $scope.donorName = $routeParams.donorName;
+    $scope.apiError = false;
+    $scope.apiSuccess = false;
     $scope.data = apiClient.getSource({
         index: 'hipsci',
         type: 'donor',
         id: $routeParams.donorName
-    }).success(function(resp) {
-        $scope.data = resp['_source'];
+    }).then(function(resp) {
+        $scope.apiSuccess = true;
+        $scope.data = resp.data['_source'];
+    }, function(resp) {
+        $scope.apiError = true;
+        $scope.apiStatus = resp.status;
+        $scope.apiStatusText = resp.statusText;
     });
   }
 ]);
