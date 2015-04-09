@@ -41,6 +41,7 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
       controller.exportHeadersMap = {};
       controller.sortField = '';
       controller.sortAscending = true;
+      controller.apiError = false;
 
       controller.delayedSearchActivated = false;
       controller.cachedResps = [];
@@ -196,12 +197,17 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
             apiClient.search( {
               type: controller.documentType,
               body: searchBody,
-            }).success(function(resp) {
-                controller.cachedResps.push([bodyStr, resp]);
+            }).then(function(resp) {
+                controller.apiError = false;
+                controller.cachedResps.push([bodyStr, resp.data]);
                 while (controller.cachedResps.length >10) {
                     controller.cachedResps.shift();
                 }
-                processResp(resp);
+                processResp(resp.data);
+            }, function(resp) {
+                controller.apiError = true;
+                controller.apiStatus = resp.status;
+                controller.apiStatusText = resp.statusText;
             });
 
         }

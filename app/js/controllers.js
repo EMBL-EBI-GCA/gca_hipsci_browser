@@ -16,7 +16,6 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
         $scope.apiSuccess = true;
         $scope.data = resp.data['_source'];
     }, function(resp) {
-        console.log(resp);
         $scope.apiError = true;
         $scope.apiStatus = resp.status;
         $scope.apiStatusText = resp.statusText;

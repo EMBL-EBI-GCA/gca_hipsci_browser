@@ -13,6 +13,10 @@
                 <aggs-filter title="Tissue Provider" field="tissueProvider" type="terms"></aggs-filter>
             </div>
             <div class="col-md-9 fixd-width-rhs">
+                <div class="alert alert-danger" role="alert" ng-if="ListPanelCtrl.apiError">
+                    <span class="glyphicon glyphicon-exclamation-sign" ></span>
+                    <span>Server error: {{ListPanelCtrl.apiStatus}} {{ListPanelCtrl.apiStatusText}}</span>
+                </div>
     		<list-pagination></list-pagination>
 
                 <div class="export-button btn-group pull-right" dropdown="">
