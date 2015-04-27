@@ -3,32 +3,116 @@
         "properties": {
             "assays": {
                 "properties": {
+                    "cellbiol-fn": {
+                        "properties": {
+                            "archive": {
+                                "type": "string",
+                                "index": "not_analyzed"
+                            },
+                            "path": {
+                                "type": "string",
+                                "index": "not_analyzed"
+                            }
+                        }
+                    },
                     "exomeseq": {
-                        "type": "string",
-                        "index": "not_analyzed"
+                        "properties": {
+                            "archive": {
+                                "type": "string",
+                                "index": "not_analyzed"
+                            },
+                            "study": {
+                                "type": "string",
+                                "index": "not_analyzed"
+                            }
+                        }
+                    },
+                    "gexarray": {
+                        "properties": {
+                            "archive": {
+                                "type": "string",
+                                "index": "not_analyzed"
+                            },
+                            "study": {
+                                "type": "string",
+                                "index": "not_analyzed"
+                            }
+                        }
+                    },
+                    "gtarray": {
+                        "properties": {
+                            "archive": {
+                                "type": "string",
+                                "index": "not_analyzed"
+                            },
+                            "study": {
+                                "type": "string",
+                                "index": "not_analyzed"
+                            }
+                        }
+                    },
+                    "mtarray": {
+                        "properties": {
+                            "archive": {
+                                "type": "string",
+                                "index": "not_analyzed"
+                            },
+                            "study": {
+                                "type": "string",
+                                "index": "not_analyzed"
+                            }
+                        }
+                    },
+                    "proteomics": {
+                        "properties": {
+                            "archive": {
+                                "type": "string",
+                                "index": "not_analyzed"
+                            },
+                            "path": {
+                                "type": "string",
+                                "index": "not_analyzed"
+                            }
+                        }
                     },
                     "rnaseq": {
-                        "type": "string",
-                        "index": "not_analyzed"
+                        "properties": {
+                            "archive": {
+                                "type": "string",
+                                "index": "not_analyzed"
+                            },
+                            "study": {
+                                "type": "string",
+                                "index": "not_analyzed"
+                            }
+                        }
                     }
                 }
+            },
+            "bankingStatus": {
+                "type": "string",
+                "index": "not_analyzed"
             },
             "bioSamplesAccession": {
                 "type": "string",
                 "index": "not_analyzed"
             },
-            "cellType": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "cnv_length_different_regions_Mbp": {
-                "type": "float"
-            },
-            "cnv_length_shared_differences_Mbp": {
-                "type": "float"
-            },
-            "cnv_num_different_regions": {
-                "type": "float"
+            "cnv": {
+                "properties": {
+                    "aberrant_images": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    },
+                    "length_different_regions_Mbp": {
+                        "type": "float"
+                    },
+                    "length_shared_differences": {
+                        "type": "float"
+                    },
+                    "num_different_regions": {
+                        "type": "integer"
+                    }
+                }
             },
             "dateOfDerivation": {
                 "format": "dateOptionalTime",
@@ -46,10 +130,18 @@
                 "type": "string",
                 "index": "not_analyzed"
             },
-            "donorEthnicity": {
+            "ethnicity": {
                 "type": "string"
             },
-            "growingConditions": {
+            "growingConditionsQC1": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "growingConditionsQC2": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "methodOfDerivation": {
                 "type": "string",
                 "index": "not_analyzed"
             },
@@ -57,20 +149,23 @@
                 "type": "string",
                 "index": "not_analyzed"
             },
-            "pluri_logit_p": {
-                "type": "float"
-            },
-            "pluri_novelty": {
-                "type": "float"
-            },
-            "pluri_novelty_logit_p": {
-                "type": "float"
-            },
-            "pluri_raw": {
-                "type": "float"
-            },
-            "pluri_rmsd": {
-                "type": "float"
+            "pluritest": {
+                "properties": {
+                    "novelty": {
+                        "type": "float"
+                    },
+                    "novelty_image": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    },
+                    "pluripotency": {
+                        "type": "float"
+                    },
+                    "pluripotency_image": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    }
+                }
             },
             "sex": {
                 "type": "string",
