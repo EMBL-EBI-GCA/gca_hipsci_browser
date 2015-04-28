@@ -34,13 +34,12 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
       var controller = this;
       controller.currentPage = 1;
       controller.numPages = 0;
-      controller.hitsPerPage = 10;
+      controller.hitsPerPage = 15;
       controller.numHits = 0;
       controller.query = '';
       controller.fields = [];
       controller.exportHeadersMap = {};
-      controller.sortField = '';
-      controller.sortAscending = true;
+      controller.sortFields = [];
       controller.apiError = false;
 
       controller.delayedSearchActivated = false;
@@ -86,12 +85,13 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
         var searchBody = {
           fields: controller.fields,
           size: controller.hitsPerPage,
-          from: (controller.currentPage -1) * controller.hitsPerPage,
+          from: (controller.currentPage -1) * controller.hitsPerPage
         };
-        if (typeof controller.sortField == 'string' && controller.sortField.length >0) {
+        for (var i=0; i<controller.sortFields.length; i++) {
+            searchBody.sort = searchBody.sort || [];
             var sortObj = {};
-            sortObj[controller.sortField] = controller.sortAscending ? 'asc' : 'desc';
-            searchBody.sort = [sortObj];
+            sortObj[controller.sortFields[i][0]] = controller.sortFields[i][1] ? 'asc':'desc';
+            searchBody.sort.push(sortObj);
         }
 
         var filterKeys = Object.keys(filterReqs);
@@ -226,10 +226,11 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
         from: 0,
         size: controller.numHits,
         };
-        if (typeof controller.sortField == 'string' && controller.sortField.length >0) {
+        for (var i=0; i<controller.sortFields.length; i++) {
+            searchBody.sort = searchBody.sort || [];
             var sortObj = {};
-            sortObj[controller.sortField] = controller.sortAscending ? 'asc' : 'desc';
-            searchBody.sort = [sortObj];
+            sortObj[controller.sortFields[i][0]] = controller.sortFields[i][1] ? 'asc':'desc';
+            searchBody.sort.push(sortObj);
         }
 
         var filterKeys = Object.keys(filterReqs);
@@ -296,9 +297,10 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
 
       };
 
-      controller.registerTable = function(tableInitCallback, tableRespCallback) {
+      controller.registerTable = function(tableInitCallback, tableRespCallback, sortFields) {
           controller.tableInitCallback = tableInitCallback;
           controller.tableRespCallback = tableRespCallback;
+          controller.sortFields = sortFields;
           if (controller.cachedResps.length >0) {
               controller.tableInitCallback(controller.fields);
               controller.tableRespCallback(controller.cachedReps[controller.cachedResps.length-1]);
@@ -310,9 +312,8 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
           controller.exportHeadersMap = exportHeadersMap;
       };
 
-      controller.registerSortOrder = function(field, asc) {
-          controller.sortField = field;
-          controller.sortAscending = asc;
+      controller.registerSortOrders = function(sortFields) {
+          controller.sortFields = sortFields;
           controller.refreshSearch();
       };
 

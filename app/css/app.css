@@ -187,6 +187,11 @@ table.matrix td.matrix-dot {
   overflow: hidden;
 }
 
+table.matrix td.name {
+  white-space: nowrap;
+}
+
+
 table.matrix td.matrix-dot a {
   color: #058dc7;
   font-size: 20px;
@@ -211,12 +216,12 @@ table.matrix td.assay a{
 /* layout for matrix and files page with fixed width lhs column */
 @media (min-width: 992px) { /* @screen-md-min */
   .fixd-width-lhs {
-    width: 350px;
+    width: 320px;
   }
 
   .fixd-width-rhs {
     float: none;
-    margin-left: 350px;
+    margin-left: 320px;
     width: auto;
   }
 }
@@ -243,3 +248,14 @@ table.matrix td.assay a{
   }
 }
 
+
+
+
+div.item-detail-img {
+    padding-top: 25px;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+h3.item-detail-section {
+    padding-top: 40px;
+}

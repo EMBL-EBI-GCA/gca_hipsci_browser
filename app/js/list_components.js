@@ -29,7 +29,8 @@ listComponents.directive('aggsFilter', function() {
         field: '@',
         labelsMap: '@',
         existsFields: '@',
-        type: '@'
+        type: '@',
+        preSelected: '@'
     },
     require: '^listPanel',
     templateUrl: 'partials/uiFacet.html',
@@ -47,6 +48,7 @@ listComponents.directive('aggsFilter', function() {
 
         var existsFields = scope.$parent.$eval(scope.existsFields);
         var labelsMap = scope.$parent.$eval(scope.labelsMap);
+        var preSelected = scope.$parent.$eval(scope.preSelected) || [];
         var existsLabels = [];
         if (typeof existsFields == 'undefined') {
             existsFields = [];
@@ -166,7 +168,7 @@ listComponents.directive('aggsFilter', function() {
                 var newFieldsArr = [];
                 for (var field in aggs) {
                     if (!oldFields[field]) {
-                        newFields.push(field);
+                        newFieldsArr.push(field);
                     }
                 }
                 fieldsArr.concat(newFieldsArr.sort(function(a,b) {
@@ -188,18 +190,7 @@ listComponents.directive('aggsFilter', function() {
             }
 
         };
-        if (scope.type == 'terms') {
-            var aggReq = { terms: {field: scope.field, size: 20}};
-            var aggMissingReq = {missing: {field: scope.field}};
-            ListPanelCtrl.registerAggregate(scope.field, [aggReq,aggMissingReq], true, processAggResp);
-        }
-        else if (scope.type == 'exists') {
-            var aggReqs = [];
-            for (var i=0; i<existsFields.length; i++) {
-                aggReqs.push({value_count: {field: existsFields[i]}});
-            }
-            ListPanelCtrl.registerAggregate(scope.field, aggReqs, false, processAggResp);
-        }
+
         var ulElem = iElement.find("ul").first();
         scope.buttonRequired = function() {
             var scrollHeight = ulElem.prop('scrollHeight');
@@ -263,6 +254,29 @@ listComponents.directive('aggsFilter', function() {
             }
         };
 
+        for (var i=0; i<preSelected.length; i++) {
+            scope.filteredTerms[preSelected[i]] = true;
+        }
+
+        if (scope.type == 'terms') {
+            var aggReq = { terms: {field: scope.field, size: 20}};
+            var aggMissingReq = {missing: {field: scope.field}};
+            ListPanelCtrl.registerAggregate(scope.field, [aggReq,aggMissingReq], true, processAggResp);
+            if (preSelected.length >0) {
+                registerTermsFilter();
+            }
+        }
+        else if (scope.type == 'exists') {
+            var aggReqs = [];
+            for (var i=0; i<existsFields.length; i++) {
+                aggReqs.push({value_count: {field: existsFields[i]}});
+            }
+            ListPanelCtrl.registerAggregate(scope.field, aggReqs, false, processAggResp);
+            if (preSelected.length >0) {
+                registerExistsFilter();
+            }
+        }
+
         iAttrs.$set('list-panel-registered', true);
     }
   };
@@ -295,6 +309,7 @@ listComponents.directive('listTable', ['$compile', function($compile) {
         compileHead: '=',
         compileRow: '=',
         processHitFields: '=',
+        defaultSortFields: '@',
     },
     require: '^listPanel',
     replace: false,
@@ -304,6 +319,7 @@ listComponents.directive('listTable', ['$compile', function($compile) {
         post: function(scope, iElement, iAttrs, listPanelCtrl) {
 
             scope.processedHits = [];
+            var defaultSortFields = scope.$eval(scope.defaultSortFields) || [];
             scope.sortField = '';
             scope.sortAscending = true;
             var tableEl = iElement.find('table');
@@ -350,16 +366,30 @@ listComponents.directive('listTable', ['$compile', function($compile) {
                     }
                     else {
                         scope.sortField = '';
+                        scope.sortAscending = true;
                     }
                 }
                 else {
                     scope.sortField = field;
                     scope.sortAscending = true;
                 }
-                listPanelCtrl.registerSortOrder(scope.sortField, scope.sortAscending);
+                
+                if (scope.sortField.length >0) {
+                    var sortFields = [[scope.sortField, scope.sortAscending]];
+                    for (var i=0; i<defaultSortFields.length; i++) {
+                        if (defaultSortFields[i][0] != scope.sortField) {
+                            sortFields.push(defaultSortFields[i]);
+                        }
+                    }
+                    listPanelCtrl.registerSortOrders(sortFields);
+                }
+                else {
+                    listPanelCtrl.registerSortOrders(defaultSortFields);
+                }
             };
 
-            listPanelCtrl.registerTable(compileTable, processHits);
+            console.log(defaultSortFields);
+            listPanelCtrl.registerTable(compileTable, processHits, defaultSortFields);
             iAttrs.$set('list-panel-registered', true);
     }};}
   };

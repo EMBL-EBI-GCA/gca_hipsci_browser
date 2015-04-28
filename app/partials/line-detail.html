@@ -2,6 +2,7 @@
     <div class="panel-body">
 
     <h1 ng-bind="ipscName"></h1>
+    <h2>HipSci cell line</h2>
     <hr/>
 
         <div ng-if="apiError">
@@ -12,13 +13,28 @@
         <section>
         <dl class="dl-horizontal">
 
+            <div ng-if="data.bankingStatus">
+                <dt>Banking status:</dt>
+                <dd ng-bind="data.bankingStatus"></dd>
+            </div>
+
+            <div ng-if="data.donor">
+                <dt>Donor:</dt>
+                <dd><a ng-href="#/donors/{{data.donor}}" ng-bind="data.donor"></a></dd>
+            </div>
+
+            <div ng-if="data.diseaseStatus">
+                <dt>Disease status:</dt>
+                <dd ng-bind="data.diseaseStatus"></dd>
+            </div>
+
             <div ng-if="data.sourceMaterial">
-                <dt>Source Material:</dt>
+                <dt>Source material:</dt>
                 <dd ng-bind="data.sourceMaterial"></dd>
             </div>
 
             <div ng-if="data.tissueProvider">
-                <dt>Tissue Provider:</dt>
+                <dt>Tissue provider:</dt>
                 <dd ng-bind="data.tissueProvider"></dd>
             </div>
 
@@ -32,19 +48,19 @@
                 <dd ng-bind="data.growingConditions"></dd>
             </div>
 
-            <div ng-if="data.donor">
-                <dt>Donor:</dt>
-                <dd><a ng-href="#/donors/{{data.donor}}" ng-bind="data.donor"></a></dd>
-            </div>
-
             <div ng-if="data.donorAge">
                 <dt>Donor age:</dt>
                 <dd ng-bind="data.donorAge"></dd>
             </div>
 
-            <div ng-if="data.diseaseStatus">
-                <dt>Disease status:</dt>
-                <dd ng-bind="data.diseaseStatus"></dd>
+            <div ng-if="data.ethnicity">
+                <dt>Donor ethnicity:</dt>
+                <dd ng-bind="data.ethnicity"></dd>
+            </div>
+
+            <div ng-if="data.sex">
+                <dt>Donor sex:</dt>
+                <dd ng-bind="data.sex"></dd>
             </div>
 
             <div ng-if="data.bioSamplesAccession">
@@ -54,59 +70,91 @@
         </dl>
         </section>
 
-        <section>
-        <h3>Genomic Assays</h3>
+        <section ng-if="data.assays.count">
+        <h3 class="item-detail-section">Genomic Assays</h3>
+        <hr/>
         <dl class="dl-horizontal">
-            <div ng-if="data.assays.exomeseq">
-                <dt>Exome sequencing:</dt>
-                <dd><a ng-href="https://www.ebi.ac.uk/ega/studies/{{data.assays.exomeseq}}" ng-bind="data.assays.exomeseq" target="_blank"></a></dd>
-            </div>
-            <div ng-if="data.assays.rnaseq">
-                <dt>RNA sequencing:</dt>
-                <dd><a ng-href="https://www.ebi.ac.uk/ega/studies/{{data.assays.rnaseq}}" ng-bind="data.assays.rnaseq" target="_blank"></a></dd>
-            </div>
             <div ng-if="data.assays.gtarray">
                 <dt>Genotyping microarray:</dt>
-                <dd ng-bind="data.assays.gtarray"></dd>
+                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.gtarray)}}" ng-bind="data.assays.gtarray.study" target="_blank"></a></dd>
             </div>
             <div ng-if="data.assays.gexarray">
                 <dt>Gene expression microarray:</dt>
-                <dd ng-bind="data.assays.gexarray"></dd>
+                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.gexarray)}}" ng-bind="data.assays.gexarray.study" target="_blank"></a></dd>
+            </div>
+            <div ng-if="data.assays.exomeseq">
+                <dt>Exome sequencing:</dt>
+                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.exomeseq)}}" ng-bind="data.assays.exomeseq.study" target="_blank"></a></dd>
+            </div>
+            <div ng-if="data.assays.rnaseq">
+                <dt>RNA sequencing:</dt>
+                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.rnaseq)}}" ng-bind="data.assays.rnaseq.study" target="_blank"></a></dd>
             </div>
             <div ng-if="data.assays.mtarray">
                 <dt>Methylation profiling microarray:</dt>
-                <dd ng-bind="data.assays.mtarray"></dd>
+                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.mtarray)}}" ng-bind="data.assays.mtarray.study" target="_blank"></a></dd>
+            </div>
+            <div ng-if="data.assays.proteomics">
+                <dt>Proteomics:</dt>
+                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.proteomics)}}" target="_blank">unarchived data</a></dd>
+            </div>
+            <div ng-if="data.assays['cellbiol-fn']">
+                <dt>Cellular phenotyping:</dt>
+                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays['cellbiol-fn'])}}" target="_blank">unarchived data</a></dd>
             </div>
         </dl>
         </section>
 
-        <section ng-if="data.pluri_novelty">
-        <h3>Assessment for Pluripotency in iPSC</h3>
+        <section ng-if="data.pluritest">
+        <h3 class="item-detail-section">Pluritest assessment for pluripotency</h3>
+        <hr/>
         <dl class="dl-horizontal">
-            <div ng-if="data.pluri_novelty">
-                <dt>Pluritest novelty score:</dt>
-                <dd ng-bind="data.pluri_novelty"></dd>
+            <div ng-if="data.pluritest.hasOwnProperty('pluripotency')">
+                <dt>Pluripotency score:</dt>
+                <dd ng-bind="data.pluritest.pluripotency"></dd>
             </div>
-            <div ng-if="data.pluri_raw">
-                <dt>Pluritest pluripotency score:</dt>
-                <dd ng-bind="data.pluri_raw"></dd>
+            <div ng-if="data.pluritest.hasOwnProperty('novelty')">
+                <dt>Novelty score:</dt>
+                <dd ng-bind="data.pluritest.novelty"></dd>
+            </div>
+
+            <div class="row">
+            <div class="col-md-6" ng-if="data.pluritest.hasOwnProperty('pluripotency_image')">
+                <div class="item-detail-img">
+                <a ng-href="ftp://ftp.hipsci.ebi.ac.uk{{data.pluritest.pluripotency_image}}"><img class="img-responsive center-block" ng-src="http://ftp.hipsci.ebi.ac.uk{{data.pluritest.pluripotency_image}}" alt="Pluritest pluripotency plot"></img></a>
+                </div>
+            </div>
+            <div class="col-md-6" ng-if="data.pluritest.hasOwnProperty('novelty_image')">
+                <div class="item-detail-img">
+                <a ng-href="ftp://ftp.hipsci.ebi.ac.uk{{data.pluritest.novelty_image}}"><img class="img-responsive center-block" ng-src="http://ftp.hipsci.ebi.ac.uk{{data.pluritest.novelty_image}}" alt="Pluritest novelty plot"></img></a>
+                </div>
+            </div>
             </div>
         </dl>
         </section>
 
-        <section>
-        <h3>Custom CNV check</h3>
+        <section ng-if="data.cnv">
+        <h3 class="item-detail-section">Custom CNV check</h3>
+        <hr/>
         <dl class="dl-horizontal">
-            <div ng-if="data.hasOwnProperty('cnv_num_different_regions')">
-                <dt>Number of different regions:</dt>
-                <dd ng-bind="data.cnv_num_different_regions"></dd>
+            <div ng-if="data.cnv.hasOwnProperty('num_different_regions')">
+                <dt>Number of regions different from primary tissue:</dt>
+                <dd ng-bind="data.cnv.num_different_regions"></dd>
             </div>
-            <div ng-if="data.hasOwnProperty('cnv_length_different_regions_Mbp')">
-                <dt>Length of differences:</dt>
-                <dd><span ng-bind="data.cnv_length_different_regions_Mbp"></span> Mbp</dd>
+            <div ng-if="data.cnv.hasOwnProperty('length_different_regions_Mbp')">
+                <dt>Length of differences from primary tissue:</dt>
+                <dd><span ng-bind="data.cnv.length_different_regions_Mbp"></span> Mbp</dd>
+            </div>
+            <div class="row">
+            <div class="col-md-6" ng-repeat="image in data.cnv.aberrant_images">
+                <div class="item-detail-img">
+                <a ng-href="ftp://ftp.hipsci.ebi.ac.uk{{image}}"><img class="img-responsive center-block" ng-src="http://ftp.hipsci.ebi.ac.uk{{image}}" alt="Pluritest novelty plot"></img></a>
+                </div>
+            </div>
             </div>
         </dl>
         </section>
+
         </div>
 
 

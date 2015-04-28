@@ -19,7 +19,8 @@ hipsciBrowser.config(['$routeProvider',
     $routeProvider.
     when('/lines/:ipscName', {
       templateUrl: 'partials/line-detail.html',
-      controller: 'LineDetailCtrl'
+      controller: 'LineDetailCtrl',
+      controllerAs: 'LineCtrl',
     }).
     when('/donors/:donorName', {
       templateUrl: 'partials/donor-detail.html',

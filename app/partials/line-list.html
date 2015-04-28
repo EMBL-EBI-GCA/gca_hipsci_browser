@@ -1,16 +1,17 @@
 <div class="panel panel-default">
     <div class="panel-body">
     <list-panel document-type="LineCtrl.documentType" >
-    <list-init-fields fields="LineCtrl.initFields" export-headers-map="LineCtrl.columnHeadersMap"></list-init-fields>
+    <list-init-fields fields="LineCtrl.initEsFields" export-headers-map="LineCtrl.columnHeadersMap"></list-init-fields>
         <h1>Cell Lines</h1>
         <hr/>
         <div class="row list-panel">
             <div class="col-md-3 fixd-width-lhs">
                 <facets-clear text="Clear filters"></facets-clear>
-                <aggs-filter title="Assays" field="assays" type="exists" exists-fields="LineCtrl.assaysFields" labels-map="LineCtrl.columnHeadersMap"></aggs-filter>
+                <aggs-filter title="Assays" field="assays" type="exists" exists-fields="LineCtrl.assaysFields" labels-map="LineCtrl.filterFieldsMap"></aggs-filter>
                 <aggs-filter title="Source Material" field="sourceMaterial" type="terms"></aggs-filter>
                 <aggs-filter title="Disease Status" field="diseaseStatus" type="terms"></aggs-filter>
                 <aggs-filter title="Tissue Provider" field="tissueProvider" type="terms"></aggs-filter>
+                <aggs-filter title="Banked Status" field="bankingStatus" type="terms"></aggs-filter>
             </div>
             <div class="col-md-9 fixd-width-rhs">
                 <div class="alert alert-danger" role="alert" ng-if="ListPanelCtrl.apiError">
@@ -33,7 +34,8 @@
                 </div>
 
             <div class="matrix-wrapper table-responsive">
-                <list-table class="matrix table table-striped" compile-head="LineCtrl.compileHead" compile-row="LineCtrl.compileRow" process-hit-fields="LineCtrl.processHitFields">
+                <list-table class="matrix table table-striped" compile-head="LineCtrl.compileHead" compile-row="LineCtrl.compileRow" process-hit-fields="LineCtrl.processHitFields"
+                        default-sort-fields="[['_score', false],['assays.count',false]]">
                 </list-table>
             </div>
 

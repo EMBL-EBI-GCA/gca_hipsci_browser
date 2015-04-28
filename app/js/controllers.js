@@ -20,6 +20,18 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
         $scope.apiStatus = resp.status;
         $scope.apiStatusText = resp.statusText;
     });
+
+    this.assayToHref = function(assayObj) {
+        if (assayObj.hasOwnProperty('archive') && assayObj.archive == 'EGA') {
+            return 'https://www.ebi.ac.uk/ega/studies/'+assayObj.study;
+        }
+        if (assayObj.hasOwnProperty('archive') && assayObj.archive == 'ENA') {
+            return 'http://www.ebi.ac.uk/ena/data/view/'+assayObj.study;
+        }
+        if (assayObj.hasOwnProperty('archive') && assayObj.archive == 'FTP') {
+            return 'ftp://ftp.hipsci.ebi.ac.uk'+assayObj.path;
+        }
+    };
   }
 ]);
 
@@ -47,7 +59,7 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient'
 controllers.controller('DonorListCtrl', function() {
     var controller=this;
     this.documentType = 'donor';
-    this.initFields = ['name', 'sex', 'ethnicity', 'diseaseStatus', 'age', 'bioSamplesAccession', 'cellLines'];
+    this.initFields = ['name', 'sex', 'ethnicity', 'diseaseStatus', 'age', 'tissueProvider', 'bioSamplesAccession', 'cellLines'];
 
     this.columnHeadersMap = {
         name: 'Name',
@@ -55,6 +67,7 @@ controllers.controller('DonorListCtrl', function() {
         ethnicity: 'Ethnicity',
         diseaseStatus: 'Disease Status',
         age: 'Age',
+        tissueProvider: 'Tissue Provider',
         bioSamplesAccession: 'Biosample',
         cellLines: 'Cell Lines'
     };
@@ -105,57 +118,134 @@ controllers.controller('DonorListCtrl', function() {
 controllers.controller('LineListCtrl', function() {
     var controller = this;
     this.documentType = 'cellLine';
-    this.initFields =  ['name', 'diseaseStatus', 'sex', 'sourceMaterial', 'tissueProvider', 'bioSamplesAccession', 'assays.exomeseq', 'assays.rnaseq', 'assays.gtarray', 'assays.gexarray', 'assays.mtarray'];
-    this.assaysFields =  ['assays.exomeseq', 'assays.rnaseq', 'assays.gtarray', 'assays.gexarray', 'assays.mtarray'];
+    this.initHtmlFields =  ['name', 'diseaseStatus', 'sex', 'sourceMaterial', 'tissueProvider', 'bankingStatus', 'bioSamplesAccession',
+        'gtarray', 'gexarray', 'exomeseq', 'rnaseq', 'mtarray', 'proteomics', 'cellbiol-fn' ];
+
+    var assaysLocations = {'gtarray':'archive', 'gexarray':'archive', 'exomeseq':'archive', 'rnaseq':'archive', 'mtarray':'archive', 'proteomics':'ftp', 'cellbiol-fn':'ftp'};
+    this.assaysFields = [];
+    for (var field in assaysLocations) {
+        if (assaysLocations[field] == 'archive') {
+            this.assaysFields.push('assays.'+field+'.archive');
+        }
+        else if (assaysLocations[field] == 'ftp') {
+            this.assaysFields.push('assays.'+field+'.archive');
+        }
+    }
+
+    this.htmlFieldsToEsFields = function(htmlFields) {
+        var esFields = [];
+        for (var i=0; i<htmlFields.length; i++) {
+            var field = htmlFields[i];
+            if (assaysLocations.hasOwnProperty(field)) {
+                if (assaysLocations[field] == 'archive') {
+                    esFields.push('assays.' + field + '.archive');
+                    esFields.push('assays.' + field + '.study');
+                }
+                else if (assaysLocations[field] == 'ftp') {
+                    esFields.push('assays.' + field + '.path');
+                }
+            }
+            else {
+                esFields.push(field);
+            }
+        }
+        return esFields;
+    };
+
+    this.initEsFields = this.htmlFieldsToEsFields(this.initHtmlFields);
+    this.htmlFields = this.initHtmlFields;
 
     this.columnHeadersMap = {
         name: 'Name',
         diseaseStatus: 'Disease Status',
         sex: 'Sex',
         sourceMaterial: 'Source Material',
-        tissueProvider: 'TissueProvider',
+        tissueProvider: 'Tissue Provider',
         bioSamplesAccession: 'Biosample',
-        'assays.exomeseq': 'exomeseq',
-        'assays.rnaseq': 'rnaseq',
-        'assays.gtarray': 'gtarray',
-        'assays.gexarray': 'gexarray',
-        'assays.mtarray': 'mtarray'
+        bankingStatus: 'Bank status',
+        'assays.gtarray.archive': 'gtarray archive',
+        'assays.gtarray.study': 'gtarray study accession',
+        'assays.gexarray.archive': 'gexarray archive',
+        'assays.gexarray.study': 'gexarray study accession',
+        'assays.exomeseq.archive': 'exomeseq archive',
+        'assays.exomeseq.study': 'exomeseq study accession',
+        'assays.rnaseq.archive': 'rnaseq archive',
+        'assays.rnaseq.study': 'rnaseq study accession',
+        'assays.mtarray.archive': 'mtarray archive',
+        'assays.mtarray.study': 'mtarray study accession',
+        'assays.proteomics.path': 'proteomics ftp path',
+        'assays.cellbiol-fn.path': 'cellbiol-fn ftp path',
+
+        'assays.proteomics.archive': 'FIX',
+        'assays.cellbiol-fn.archive': 'FIX'
     };
 
-    this.compileHead = function(fields) {
+    this.filterFieldsMap = {
+        'assays.gtarray.archive': 'gtarray',
+        'assays.gexarray.archive': 'gexarray',
+        'assays.exomeseq.archive': 'exomeseq',
+        'assays.rnaseq.archive': 'rnaseq',
+        'assays.mtarray.archive': 'mtarray',
+        'assays.proteomics.archive': 'proteomics',
+        'assays.cellbiol-fn.archive': 'cellbiol-fn',
+    };
+
+    this.compileHead = function(esFields) {
         var trChildren = [];
-        for (var i=0; i<fields.length; i++) {
-            var field = fields[i];
+        for (var i=0; i<controller.htmlFields.length; i++) {
+            var field = controller.htmlFields[i];
             trChildren.push(
                 field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
-              :  field.match(/^assays/) ? '<th class="matrix-dot assay"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
+              :  field == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
+              :  assaysLocations.hasOwnProperty(field) ? '<th class="matrix-dot assay"><div><span>'+field+'</span></div></th>'
               : '<th class="sort">'+controller.columnHeadersMap[field]+'</th>'
             );
         }
         return trChildren;
     };
 
-    this.compileRow = function(fields) {
+    this.compileRow = function(esFields) {
         var trChildren = [];
-        for (var i=0; i<fields.length; i++) {
-            var field = fields[i];
+        for (var i=0; i<controller.htmlFields.length; i++) {
+            var field = controller.htmlFields[i];
             var hitStr = 'hit['+i+']';
             trChildren.push(
                 field == 'bioSamplesAccession' ? '<td class="biosamplesaccession matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a></td>'
+              : field == 'bankingStatus' ? '<td class="cellLines matrix-dot"><span popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter" ng-bind="'+hitStr+'.letter"></span></td>'
               : field == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
-              : field.match(/^assays/) ? '<td class="assay matrix-dot"><span class="assay"><a ng-if="'+hitStr+'" ng-href="https://www.ebi.ac.uk/ega/studies/{{'+hitStr+'}}" popover="'+controller.columnHeadersMap[field]+'" popover-trigger="mouseenter" target="_blank"><span ng-if="'+hitStr+'">&#x25cf;</span></a></span></td>'
+              : assaysLocations.hasOwnProperty(field) ? '<td class="assay matrix-dot"><span class="assay"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" popover="'+field+'" popover-trigger="mouseenter" target="_blank"><span ng-if="'+hitStr+'">&#x25cf;</span></a></span></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
             );
         }
         return trChildren;
     };
 
-    this.processHitFields = function(hitFields, fields) {
+    this.processHitFields = function(hitFields, esFields) {
         var processedFields = [];
-        for (var i=0; i<fields.length; i++) {
-            var field = fields[i];
-            processedFields[i] = ! hitFields.hasOwnProperty(field) ? undefined
-                    : hitFields[field][0];
+        for (var i=0; i<controller.htmlFields.length; i++) {
+            var field = controller.htmlFields[i];
+            if (hitFields.hasOwnProperty('assays.'+field+'.archive') && assaysLocations[field] == 'archive') {
+                var archive = hitFields['assays.'+field+'.archive'][0];
+                var study = hitFields['assays.'+field+'.study'][0];
+                processedFields[i] = archive == 'EGA' ? 'https://www.ebi.ac.uk/ega/studies/'+study
+                                : archive == 'ENA' ? 'http://www.ebi.ac.uk/ena/data/view/'+study
+                                : undefined;
+            }
+            else if (hitFields.hasOwnProperty('assays.'+field+'.path') && assaysLocations[field] == 'ftp') {
+                var path = hitFields['assays.'+field+'.path'][0];
+                processedFields[i] = 'ftp://ftp.hipsci.ebi.ac.uk'+path;
+            }
+            else if (field == 'bankingStatus') {
+                processedFields[i] = {letter: '', text: ''};
+                if (hitFields.hasOwnProperty(field)) {
+                    processedFields[i].text = hitFields[field][0];
+                    processedFields[i].letter = hitFields[field][0].substr(0,1);
+                }
+            }
+            else {
+                processedFields[i] = ! hitFields.hasOwnProperty(field) ? undefined
+                        : hitFields[field][0];
+            }
         }
         return processedFields;
     };

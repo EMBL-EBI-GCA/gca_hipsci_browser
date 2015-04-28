@@ -35,7 +35,8 @@
                 </div>
 
             <div class="matrix-wrapper table-responsive">
-                <list-table class="matrix table table-striped" compile-head="DonorCtrl.compileHead" compile-row="DonorCtrl.compileRow" process-hit-fields="DonorCtrl.processHitFields">
+                <list-table class="matrix table table-striped" compile-head="DonorCtrl.compileHead" compile-row="DonorCtrl.compileRow" process-hit-fields="DonorCtrl.processHitFields"
+                        default-sort-fields="[['_score', false],['assays.count',false]]">
                 </list-table>
             </div>
 
