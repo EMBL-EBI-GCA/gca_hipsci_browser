@@ -175,9 +175,6 @@ controllers.controller('LineListCtrl', function() {
         'assays.mtarray.study': 'mtarray study accession',
         'assays.proteomics.path': 'proteomics ftp path',
         'assays.cellbiol-fn.path': 'cellbiol-fn ftp path',
-
-        'assays.proteomics.archive': 'FIX',
-        'assays.cellbiol-fn.archive': 'FIX'
     };
 
     this.filterFieldsMap = {
