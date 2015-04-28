@@ -3,6 +3,9 @@
         "properties": {
             "assays": {
                 "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
                     "cellbiol-fn": {
                         "properties": {
                             "archive": {
