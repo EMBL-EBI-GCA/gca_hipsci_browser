@@ -262,51 +262,82 @@ h3.item-detail-section {
 }
 
 
+
+/* sum HipSci branding with colours */
 .navbar {
-    min-height: 80px;
     background: linear-gradient(to bottom, #E8F5FA 0%, #DBE6EA 100%) repeat scroll 0% 0% transparent;
-    border-bottom: 0px;
-}
-.navbar-brand {
-    height: auto;
-    margin-left: 5px;
-    padding-top: 10px;
-    padding-bottom: 10px
-}
-.navbar-nav a{
-    color: #6D6E71;
 }
 .navbar-nav > .active >a {
     background-image: linear-gradient(to bottom, #E8F5FA 0px, #DBE6EA 10%);
     color: black;
     outline: none;
 }
-
-.nav >li >a {
-    padding-top: 11px;
-    padding-bottom: 11px;
-}
 .nav >li > a:hover {
     background-image: linear-gradient(to bottom, #E8F5FA 0px, #DBE6EA 10%);
 }
-.navbar-brand img {
-    height: 60px;
-    padding-right: 20px;
-}
-.navbar-tagline {
-    margin-top:10px;
+.navbar-nav a{
+    color: #6D6E71;
 }
 .navbar-tagline h3 {
     color: #6D6E71;
     font-weight: normal;
-    margin-top: 3px;
-    margin-bottom: 3px;
-    padding-left: 15px;
 }
-.container-fluid > .navbar-collapse{
-    margin-top:10px;
-    height: auto;
+.navbar .icon-bar {
+    background-color: #6D6E71;
 }
-.view-container {
-    margin-top: 30px;
+
+
+
+
+
+@media (min-width: 992px) { /* @screen-md-min */
+    .navbar {
+        min-height: 60px;
+        border-bottom: 0px;
+    }
+    .navbar-brand {
+        height: auto;
+        margin-left: 5px;
+        margin-right: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px
+    }
+    .nav >li >a {
+        padding-top: 11px;
+        padding-bottom: 11px;
+    }
+    .navbar-brand img {
+        height: 60px;
+    }
+    .navbar-tagline {
+        margin-top:10px;
+    }
+    .navbar-tagline h3 {
+        margin-top: 3px;
+        margin-bottom: 3px;
+        padding-left: 15px;
+    }
+    .container-fluid > .navbar-collapse{
+        margin-top:10px;
+        height: auto;
+    }
+    .view-container {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 991px) { /* @screen-md-min */
+    .navbar-tagline {
+        display: none;
+    }
+    .navbar-brand {
+        height: auto;
+        margin-left: 5px;
+        margin-right: 20px;
+        padding-top: 5px;
+        padding-bottom: 5px
+    }
+    .navbar-brand img {
+        height: 40px;
+    }
 }
