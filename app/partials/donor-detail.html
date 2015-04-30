@@ -34,7 +34,7 @@
 
             <div ng-if="data.bioSamplesAccession">
                 <dt>Biosample:</dt>
-                <dd><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{data.bioSamplesAccession}}" ng-bind="data.bioSamplesAccession" target="_blank"></a></dd>
+                <dd><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{data.bioSamplesAccession}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="data.bioSamplesAccession"></span></a></dd>
             </div>
 
             <div ng-if="data.tissueProvider">

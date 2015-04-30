@@ -65,7 +65,7 @@
 
             <div ng-if="data.bioSamplesAccession">
                 <dt>Biosample:</dt>
-                <dd><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{data.bioSamplesAccession}}" ng-bind="data.bioSamplesAccession" target="_blank"></a></dd>
+                <dd><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{data.bioSamplesAccession}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="data.bioSamplesAccession"></span></a></dd>
             </div>
         </dl>
         </section>
@@ -76,31 +76,31 @@
         <dl class="dl-horizontal">
             <div ng-if="data.assays.gtarray">
                 <dt>Genotyping microarray:</dt>
-                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.gtarray)}}" ng-bind="data.assays.gtarray.study" target="_blank"></a></dd>
+                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.gtarray)}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="data.assays.gtarray.study"></span></a></dd>
             </div>
             <div ng-if="data.assays.gexarray">
                 <dt>Gene expression microarray:</dt>
-                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.gexarray)}}" ng-bind="data.assays.gexarray.study" target="_blank"></a></dd>
+                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.gexarray)}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="data.assays.gexarray.study"></span></a></dd>
             </div>
             <div ng-if="data.assays.exomeseq">
                 <dt>Exome sequencing:</dt>
-                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.exomeseq)}}" ng-bind="data.assays.exomeseq.study" target="_blank"></a></dd>
+                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.exomeseq)}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="data.assays.exomeseq.study"></span></a></dd>
             </div>
             <div ng-if="data.assays.rnaseq">
                 <dt>RNA sequencing:</dt>
-                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.rnaseq)}}" ng-bind="data.assays.rnaseq.study" target="_blank"></a></dd>
+                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.rnaseq)}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="data.assays.rnaseq.study"></span></a></dd>
             </div>
             <div ng-if="data.assays.mtarray">
                 <dt>Methylation profiling microarray:</dt>
-                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.mtarray)}}" ng-bind="data.assays.mtarray.study" target="_blank"></a></dd>
+                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.mtarray)}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="data.assays.mtarray.study"></span></a></dd>
             </div>
             <div ng-if="data.assays.proteomics">
                 <dt>Proteomics:</dt>
-                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.proteomics)}}" target="_blank">unarchived data</a></dd>
+                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.proteomics)}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> Data on FTP site</a></dd>
             </div>
             <div ng-if="data.assays['cellbiol-fn']">
                 <dt>Cellular phenotyping:</dt>
-                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays['cellbiol-fn'])}}" target="_blank">unarchived data</a></dd>
+                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays['cellbiol-fn'])}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> Data on FTP site</a></dd>
             </div>
         </dl>
         </section>
