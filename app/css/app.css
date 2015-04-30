@@ -192,26 +192,29 @@ table.matrix td.name {
   white-space: nowrap;
 }
 
+table.matrix td.matrix-dot .matrix-dot-item:hover {
+  background-color: #b3d4fc;
+}
 
-table.matrix td.matrix-dot a {
-  color: #058dc7;
-  font-size: 20px;
-  text-decoration:none;
+table.matrix td.matrix-dot .matrix-dot-item {
   text-align: center;
   margin: -8px -8px -108px;
   padding-bottom: 100px;
   line-height: 36px;
   display: block;
 }
-table.matrix td.matrix-dot a:hover {
-  background-color: #b3d4fc;
+table.matrix td.matrix-dot a{
+  color: #333;
+  text-decoration:none;
 }
 
-table.matrix td.biosamplesaccession a{
-  color: #99B397;
-}
-table.matrix td.assay a{
+table.matrix td.matrix-dot .assay{
   color: #B67E9C;
+  font-size: 20px;
+}
+table.matrix td.matrix-dot .biosample{
+  color: #99B397;
+  font-size: 20px;
 }
 
 /* layout for matrix and files page with fixed width lhs column */

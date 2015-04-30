@@ -91,8 +91,8 @@ controllers.controller('DonorListCtrl', function() {
             var field = fields[i];
             var hitStr = 'hit['+i+']';
             trChildren.push(
-                field == 'bioSamplesAccession' ? '<td class="biosamplesaccession matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a></td>'
-              : field == 'cellLines' ? '<td class="cellLines matrix-dot" popover="{{'+hitStr+'.join(\', \')}}" popover-trigger="mouseenter" ng-bind="'+hitStr+'.length"></td>'
+                field == 'bioSamplesAccession' ? '<td class="matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item biosample" popover="Biosample" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
+              : field == 'cellLines' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.join(\', \')}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.length"></span></div></td>'
               : field == 'name' ? '<td class="name"><a ng-href="#/donors/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
             );
@@ -207,10 +207,10 @@ controllers.controller('LineListCtrl', function() {
             var field = controller.htmlFields[i];
             var hitStr = 'hit['+i+']';
             trChildren.push(
-                field == 'bioSamplesAccession' ? '<td class="biosamplesaccession matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" popover="Biosample" popover-trigger="mouseenter" target="_blank">&#x25cf;</a></td>'
-              : field == 'bankingStatus' ? '<td class="cellLines matrix-dot"><span popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter" ng-bind="'+hitStr+'.letter"></span></td>'
+                field == 'bioSamplesAccession' ? '<td class="matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item biosample" popover="Biosample" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
+              : field == 'bankingStatus' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
-              : assaysLocations.hasOwnProperty(field) ? '<td class="assay matrix-dot"><span class="assay"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" popover="'+field+'" popover-trigger="mouseenter" target="_blank"><span ng-if="'+hitStr+'">&#x25cf;</span></a></span></td>'
+              : assaysLocations.hasOwnProperty(field) ? '<td class="matrix-dot"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item assay" popover="'+field+'" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
             );
         }
