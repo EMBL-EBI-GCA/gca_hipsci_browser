@@ -261,6 +261,10 @@ h3.item-detail-section {
     padding-top: 40px;
 }
 
+div.search-box > input {
+    margin-left: 10px;
+}
+
 
 
 /* sum HipSci branding with colours */
