@@ -388,7 +388,6 @@ listComponents.directive('listTable', ['$compile', function($compile) {
                 }
             };
 
-            console.log(defaultSortFields);
             listPanelCtrl.registerTable(compileTable, processHits, defaultSortFields);
             iAttrs.$set('list-panel-registered', true);
     }};}

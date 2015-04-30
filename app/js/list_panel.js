@@ -170,7 +170,7 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
             }
         }
 
-        if (controller.query.length >0) {
+        if (controller.query.length >3) {
             if (globalFilterKeys.length >0) {
                 searchBody.query.filtered['query'] = {fuzzy: {_all: controller.query}};
             }
@@ -325,10 +325,11 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
           if (controller.delayedSearchActivated) {
               return;
           }
-          if (controller.query.length <= 2) {
-              return;
-          }
-          controller.delayedSearchActivated = true; $timeout(function() {if (controller.delayedSearchActivated) {controller.refreshSearch();}}, 1000);
+          controller.delayedSearchActivated = true;
+          $timeout(function() {
+              if (controller.delayedSearchActivated)
+                {controller.refreshSearch();}
+            }, 1000);
       };
 
     }]
