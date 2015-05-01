@@ -171,11 +171,18 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
         }
 
         if (controller.query.length >0) {
+            var queryObj = {multi_match: {
+                query: controller.query,
+                fields: ['searchable.*'],
+                fuzziness: 'AUTO',
+                type: "most_fields",
+                zero_terms_query: "all"
+            }};
             if (globalFilterKeys.length >0) {
-                searchBody.query.filtered['query'] = {fuzzy: {_all: controller.query}};
+                searchBody.query.filtered['query'] = queryObj;
             }
             else {
-                searchBody['query'] = {fuzzy: {_all: controller.query}};
+                searchBody['query'] = queryObj;
             }
         }
 

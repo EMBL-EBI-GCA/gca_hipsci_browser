@@ -1,6 +1,63 @@
 {
     "cellLine": {
+        "_all": {"enabled": false},
         "properties": {
+            "searchable": {
+                "properties": {
+                    "_other": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "index_analyzer": "lowercase_whitespace",
+                        "search_analyzer": "hipsci_words"
+                    },
+                    "donorShortName": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "index_analyzer": "hipsci_long_name",
+                        "search_analyzer": "standard"
+                    },
+                    "donorFullName": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "analyzer": "hipsci_long_name"
+                    },
+                    "diseaseStatusPrefix": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "analyzer": "prefix_only",
+                        "search_analyzer": "max_length"
+                    },
+                    "ethnicityPrefix": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "analyzer": "prefix_only",
+                        "search_analyzer": "max_length"
+                    },
+                    "nameShortName": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "index_analyzer": "hipsci_long_to_short",
+                        "search_analyzer": "lowercase_whitespace"
+                    },
+                    "nameFullName": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "analyzer": "hipsci_long_name"
+                    },
+                    "sourceMaterialPrefix": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "analyzer": "prefix_only",
+                        "search_analyzer": "max_length"
+                    },
+                    "tissueProviderPrefix": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "analyzer": "prefix_only",
+                        "search_analyzer": "max_length"
+                    }
+                }
+            },
             "assays": {
                 "properties": {
                     "count": {
@@ -26,7 +83,8 @@
                             },
                             "study": {
                                 "type": "string",
-                                "index": "not_analyzed"
+                                "index": "not_analyzed",
+                                "copy_to": "searchable._other"
                             }
                         }
                     },
@@ -38,7 +96,8 @@
                             },
                             "study": {
                                 "type": "string",
-                                "index": "not_analyzed"
+                                "index": "not_analyzed",
+                                "copy_to": "searchable._other"
                             }
                         }
                     },
@@ -50,7 +109,8 @@
                             },
                             "study": {
                                 "type": "string",
-                                "index": "not_analyzed"
+                                "index": "not_analyzed",
+                                "copy_to": "searchable._other"
                             }
                         }
                     },
@@ -62,7 +122,8 @@
                             },
                             "study": {
                                 "type": "string",
-                                "index": "not_analyzed"
+                                "index": "not_analyzed",
+                                "copy_to": "searchable._other"
                             }
                         }
                     },
@@ -86,7 +147,8 @@
                             },
                             "study": {
                                 "type": "string",
-                                "index": "not_analyzed"
+                                "index": "not_analyzed",
+                                "copy_to": "searchable._other"
                             }
                         }
                     }
@@ -98,7 +160,8 @@
             },
             "bioSamplesAccession": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": "searchable._other"
             },
             "cnv": {
                 "properties": {
@@ -123,34 +186,43 @@
             },
             "diseaseStatus": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": "searchable.diseaseStatusPrefix"
             },
             "donor": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": ["searchable.donorShortName", "searchable.donorFullName"]
             },
             "donorAge": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": "searchable._other"
             },
             "ethnicity": {
-                "type": "string"
+                "type": "string",
+                "index": "analyzed",
+                "copy_to": "searchable.ethnicityPrefix"
             },
             "growingConditionsQC1": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": "searchable._other"
             },
             "growingConditionsQC2": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": "searchable._other"
             },
             "methodOfDerivation": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": "searchable._other"
             },
             "name": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": ["searchable.nameShortName", "searchable.nameFullName"]
             },
             "pluritest": {
                 "properties": {
@@ -172,15 +244,18 @@
             },
             "sex": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": "searchable._other"
             },
             "sourceMaterial": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": "searchable.sourceMaterialPrefix"
             },
             "tissueProvider": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": "searchable.tissueProviderPrefix"
             }
         }
     }

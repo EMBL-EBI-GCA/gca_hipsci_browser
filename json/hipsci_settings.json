@@ -1,0 +1,81 @@
+{
+    "index": {
+        "analysis": {
+            "analyzer": {
+                "hipsci_words": {
+                    "type": "custom",
+                    "tokenizer": "whitespace",
+                    "filter": ["hipsci_word_delimiter", "lowercase", "hipsci_stopwords", "english_stopwords"]
+                },
+                "hipsci_long_name": {
+                    "type": "custom",
+                    "tokenizer": "hipsci_long_name_finder",
+                    "filter": ["hpsi_long_name_capture", "lowercase"]
+                },
+                "hipsci_long_to_short": {
+                    "type": "custom",
+                    "tokenizer": "hipsci_long_name_finder",
+                    "filter": ["hipsci_short_name_capture", "lowercase"]
+                },
+                "prefix_only": {
+                    "type": "custom",
+                    "tokenizer": "standard",
+                    "filter": ["lowercase", "prefix_filter"]
+                },
+                "max_length": {
+                    "type": "custom",
+                    "tokenizer": "standard",
+                    "filter": ["prefix_max_length_filter", "lowercase"]
+                },
+                "lowercase_whitespace": {
+                    "type": "custom",
+                    "tokenizer": "whitespace",
+                    "filter": ["lowercase"]
+                }
+            },
+            "tokenizer": {
+                "hipsci_long_name_finder": {
+                    "type": "pattern",
+                    "pattern": "[HPSIhpsi]{3,5}[0-9]*[a-zA-Z]*[-_][a-zA-Z]{3,5}[-_]?[0-9]*",
+                    "group": 0
+                }
+            },
+            "filter": {
+                "prefix_filter": {
+                    "type": "edgeNGram",
+                    "min_gram": 5,
+                    "max_gram": 8
+                },
+                "prefix_max_length_filter": {
+                    "type": "length",
+                    "max": 8
+                },
+                "hipsci_word_delimiter": {
+                    "type": "word_delimiter",
+                    "preserve_original": true,
+                    "split_on_numerics": false
+                },
+                "hipsci_stopwords": {
+                    "type": "stop",
+                    "stopwords": ["hpsi"],
+                    "ignore_case": true
+                },
+                "english_stopwords": {
+                    "type": "stop",
+                    "stopwords": ["_english_"],
+                    "ignore_case": true
+                },
+                "hpsi_long_name_capture": {
+                    "type": "pattern_replace",
+                    "pattern": "[HPSIhpsi]{3,5}([0-9]*)[a-zA-Z]*[-_]([a-zA-Z]{3,5})[-_]?([0-9]*)",
+                    "replacement": "$1$2$3"
+                },
+                "hipsci_short_name_capture": {
+                    "type": "pattern_capture",
+                    "preserve_original": false,
+                    "patterns": ["...([A-Za-z]{3,5}.*)"]
+                }
+            }
+        }
+    }
+}

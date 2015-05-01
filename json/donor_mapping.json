@@ -1,9 +1,61 @@
 {
     "donor": {
+        "_all": {"enabled": false},
         "properties": {
+            "searchable": {
+                "properties": {
+                    "_other": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "index_analyzer": "lowercase_whitespace",
+                        "search_analyzer": "hipsci_words"
+                    },
+                    "cellLineShortNames": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "index_analyzer": "hipsci_long_name",
+                        "search_analyzer": "standard"
+                    },
+                    "cellLineFullNames": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "analyzer": "hipsci_long_name"
+                    },
+                    "diseaseStatusPrefix": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "analyzer": "prefix_only",
+                        "search_analyzer": "max_length"
+                    },
+                    "ethnicityPrefix": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "analyzer": "prefix_only",
+                        "search_analyzer": "max_length"
+                    },
+                    "nameShortName": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "index_analyzer": "hipsci_long_to_short",
+                        "search_analyzer": "lowercase_whitespace"
+                    },
+                    "nameFullName": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "analyzer": "hipsci_long_name"
+                    },
+                    "tissueProviderPrefix": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "analyzer": "prefix_only",
+                        "search_analyzer": "max_length"
+                    }
+                }
+            },
             "age": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": "searchable._other"
             },
             "assays": {
                 "properties": {
@@ -14,30 +66,38 @@
             },
             "bioSamplesAccession": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": "searchable._other"
             },
             "cellLines": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": ["searchable.cellLineShortNames", "searchable.cellLineFullNames"]
             },
             "diseaseStatus": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": "searchable.diseaseStatusPrefix"
             },
             "ethnicity": {
-                "type": "string"
+                "type": "string",
+                "index": "analyzed",
+                "copy_to": "searchable.ethnicityPrefix"
             },
             "name": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": ["searchable.nameShortName", "searchable.nameFullName"]
             },
             "sex": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": "searchable._other"
             },
             "tissueProvider": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": "searchable.tissueProviderPrefix"
             }
         }
     }
