@@ -10,12 +10,17 @@
                 "hipsci_long_name": {
                     "type": "custom",
                     "tokenizer": "hipsci_long_name_finder",
-                    "filter": ["hpsi_long_name_capture", "lowercase"]
+                    "filter": ["hpsi_long_name_capture", "lowercase", "reverse"]
                 },
                 "hipsci_long_to_short": {
                     "type": "custom",
                     "tokenizer": "hipsci_long_name_finder",
-                    "filter": ["hipsci_short_name_capture", "lowercase"]
+                    "filter": ["hipsci_short_name_capture", "lowercase", "reverse"]
+                },
+                "find_short_name": {
+                    "type": "custom",
+                    "tokenizer": "whitespace",
+                    "filter": ["prefix_max_length_filter", "lowercase", "reverse", "short_name_strip"]
                 },
                 "prefix_only": {
                     "type": "custom",
@@ -71,9 +76,14 @@
                     "replacement": "$1$2$3"
                 },
                 "hipsci_short_name_capture": {
-                    "type": "pattern_capture",
-                    "preserve_original": false,
-                    "patterns": ["...([A-Za-z]{3,5}.*)"]
+                    "type": "pattern_replace",
+                    "pattern": "[HPSIhpsi]{3,5}[0-9]*[a-zA-Z]*[-_]([a-zA-Z]{3,5})[-_]?([0-9]*)",
+                    "replacement": "$1$2"
+                },
+                "short_name_strip": {
+                    "type": "pattern_replace",
+                    "pattern": "([0-9]+)[-_]?([a-z]+)",
+                    "replacement": "$1$2"
                 }
             }
         }

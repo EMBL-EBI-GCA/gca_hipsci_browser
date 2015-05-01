@@ -13,8 +13,8 @@
                     "cellLineShortNames": {
                         "type": "string",
                         "index": "analyzed",
-                        "index_analyzer": "hipsci_long_name",
-                        "search_analyzer": "standard"
+                        "index_analyzer": "hipsci_long_to_short",
+                        "search_analyzer": "find_short_name"
                     },
                     "cellLineFullNames": {
                         "type": "string",
@@ -37,7 +37,7 @@
                         "type": "string",
                         "index": "analyzed",
                         "index_analyzer": "hipsci_long_to_short",
-                        "search_analyzer": "lowercase_whitespace"
+                        "search_analyzer": "find_short_name"
                     },
                     "nameFullName": {
                         "type": "string",

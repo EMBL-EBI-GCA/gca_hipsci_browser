@@ -176,7 +176,8 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
                 fields: ['searchable.*'],
                 fuzziness: 'AUTO',
                 type: "most_fields",
-                zero_terms_query: "all"
+                zero_terms_query: "all",
+                prefix_length: 2
             }};
             if (globalFilterKeys.length >0) {
                 searchBody.query.filtered['query'] = queryObj;
