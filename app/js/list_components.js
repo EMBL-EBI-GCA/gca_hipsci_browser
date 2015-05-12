@@ -133,9 +133,7 @@ listComponents.directive('aggsFilter', function() {
                     return;
                 }
                 for (var i=0; i<existsFields.length; i++) {
-                    if (resps[i].value >0) {
-                        aggs[existsFields[i]] = {key: existsLabels[i], doc_count: resps[i].value, field: existsFields[i]};
-                    }
+                    aggs[existsFields[i]] = {key: existsLabels[i], doc_count: resps[i].value, field: existsFields[i]};
                 }
             }
             else {return;}
