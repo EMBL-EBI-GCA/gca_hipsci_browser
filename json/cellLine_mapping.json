@@ -233,7 +233,7 @@
                 "index": "not_analyzed"
             },
             "openAccess": {
-                "type": "boolean",
+                "type": "boolean"
             }
         }
     }
