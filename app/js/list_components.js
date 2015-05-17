@@ -47,7 +47,7 @@ listComponents.directive('aggsFilter', function() {
         scope.sortOrder = {};
 
         var existsFields = scope.$parent.$eval(scope.existsFields);
-        var labelsMap = scope.$parent.$eval(scope.labelsMap);
+        var labelsMap = scope.$parent.$eval(scope.labelsMap) || {};
         var preSelected = scope.$parent.$eval(scope.preSelected) || [];
         var existsLabels = [];
         if (typeof existsFields == 'undefined') {
@@ -121,8 +121,13 @@ listComponents.directive('aggsFilter', function() {
                 scope.aggsOther = resps[0].sum_other_doc_count;
                 for (var i=0; i<resps[0].buckets.length; i++) {
                     var respAgg = resps[0].buckets[i];
-                    respAgg.field = respAgg.key;
-                    aggs[respAgg.key] = respAgg;
+                    if (labelsMap.hasOwnProperty(respAgg.key)) {
+                        aggs[respAgg.key] = {key: labelsMap[respAgg.key], doc_count: respAgg.doc_count, field: respAgg.key };
+                    }
+                    else {
+                        respAgg.field = respAgg.key;
+                        aggs[respAgg.key] = respAgg;
+                    }
                 }
                 if (resps[1].doc_count) {
                     aggs['_noData'] = {key: 'No Data', doc_count: resps[1].doc_count, field: '_noData'};

@@ -186,6 +186,10 @@ controllers.controller('LineListCtrl', function() {
         'assays.proteomics.archive': 'proteomics',
         'assays.cellbiol-fn.archive': 'cellbiol-fn',
     };
+    this.openAccessMap = {
+        'T': 'Open access',
+        'F': 'Managed access',
+    };
 
     this.compileHead = function(esFields) {
         var trChildren = [];

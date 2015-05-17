@@ -9,6 +9,9 @@
                 <facets-clear text="Clear filters"></facets-clear>
                 <div class="row">
                 <div class="col-sm-6 col-md-12">
+                <aggs-filter title="Data Access" field="openAccess" type="terms" labels-map="LineCtrl.openAccessMap"></aggs-filter>
+                </div>
+                <div class="col-sm-6 col-md-12">
                 <aggs-filter title="Assays" field="assays" type="exists" exists-fields="LineCtrl.assaysFields" labels-map="LineCtrl.filterFieldsMap"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
