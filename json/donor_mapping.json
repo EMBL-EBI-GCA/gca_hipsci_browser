@@ -10,41 +10,18 @@
                         "index_analyzer": "lowercase_whitespace",
                         "search_analyzer": "hipsci_words"
                     },
-                    "cellLineShortNames": {
+                    "hipsciShortName": {
                         "type": "string",
                         "index": "analyzed",
                         "index_analyzer": "hipsci_long_to_short",
                         "search_analyzer": "find_short_name"
                     },
-                    "cellLineFullNames": {
+                    "hipsciFullName": {
                         "type": "string",
                         "index": "analyzed",
                         "analyzer": "hipsci_long_name"
                     },
-                    "diseaseStatusPrefix": {
-                        "type": "string",
-                        "index": "analyzed",
-                        "analyzer": "prefix_only",
-                        "search_analyzer": "max_length"
-                    },
-                    "ethnicityPrefix": {
-                        "type": "string",
-                        "index": "analyzed",
-                        "analyzer": "prefix_only",
-                        "search_analyzer": "max_length"
-                    },
-                    "nameShortName": {
-                        "type": "string",
-                        "index": "analyzed",
-                        "index_analyzer": "hipsci_long_to_short",
-                        "search_analyzer": "find_short_name"
-                    },
-                    "nameFullName": {
-                        "type": "string",
-                        "index": "analyzed",
-                        "analyzer": "hipsci_long_name"
-                    },
-                    "tissueProviderPrefix": {
+                    "prefixes": {
                         "type": "string",
                         "index": "analyzed",
                         "analyzer": "prefix_only",
@@ -72,22 +49,22 @@
             "cellLines": {
                 "type": "string",
                 "index": "not_analyzed",
-                "copy_to": ["searchable.cellLineShortNames", "searchable.cellLineFullNames"]
+                "copy_to": ["searchable.hipsciShortName", "searchable.hipsciFullName"]
             },
             "diseaseStatus": {
                 "type": "string",
                 "index": "not_analyzed",
-                "copy_to": "searchable.diseaseStatusPrefix"
+                "copy_to": "searchable.prefixes"
             },
             "ethnicity": {
                 "type": "string",
                 "index": "analyzed",
-                "copy_to": "searchable.ethnicityPrefix"
+                "copy_to": "searchable.prefixes"
             },
             "name": {
                 "type": "string",
                 "index": "not_analyzed",
-                "copy_to": ["searchable.nameShortName", "searchable.nameFullName"]
+                "copy_to": ["searchable.hipsciShortName", "searchable.hipsciFullName"]
             },
             "sex": {
                 "type": "string",
@@ -97,7 +74,7 @@
             "tissueProvider": {
                 "type": "string",
                 "index": "not_analyzed",
-                "copy_to": "searchable.tissueProviderPrefix"
+                "copy_to": "searchable.prefixes"
             }
         }
     }
