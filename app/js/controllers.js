@@ -118,7 +118,7 @@ controllers.controller('DonorListCtrl', function() {
 controllers.controller('LineListCtrl', function() {
     var controller = this;
     this.documentType = 'cellLine';
-    this.initHtmlFields =  ['name', 'diseaseStatus', 'sex', 'sourceMaterial', 'tissueProvider', 'bankingStatus', 'bioSamplesAccession',
+    this.initHtmlFields =  ['name', 'diseaseStatus', 'sex', 'sourceMaterial', 'tissueProvider', 'openAccess', 'bankingStatus', 'bioSamplesAccession',
         'gtarray', 'gexarray', 'exomeseq', 'rnaseq', 'mtarray', 'proteomics', 'cellbiol-fn' ];
 
     var assaysLocations = {'gtarray':'archive', 'gexarray':'archive', 'exomeseq':'archive', 'rnaseq':'archive', 'mtarray':'archive', 'proteomics':'ftp', 'cellbiol-fn':'ftp'};
@@ -162,6 +162,7 @@ controllers.controller('LineListCtrl', function() {
         sourceMaterial: 'Source Material',
         tissueProvider: 'Tissue Provider',
         bioSamplesAccession: 'Biosample',
+        openAccess: 'Data access',
         bankingStatus: 'Bank status',
         'assays.gtarray.archive': 'gtarray archive',
         'assays.gtarray.study': 'gtarray study accession',
@@ -198,6 +199,7 @@ controllers.controller('LineListCtrl', function() {
             trChildren.push(
                 field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
               :  field == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
+              :  field == 'openAccess' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
               :  assaysLocations.hasOwnProperty(field) ? '<th class="matrix-dot assay"><div><span>'+field+'</span></div></th>'
               : '<th class="sort">'+controller.columnHeadersMap[field]+'</th>'
             );
@@ -213,6 +215,7 @@ controllers.controller('LineListCtrl', function() {
             trChildren.push(
                 field == 'bioSamplesAccession' ? '<td class="matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item biosample" popover="Biosample" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
               : field == 'bankingStatus' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
+              : field == 'openAccess' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
               : assaysLocations.hasOwnProperty(field) ? '<td class="matrix-dot"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item assay" popover="'+field+'" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
@@ -241,6 +244,13 @@ controllers.controller('LineListCtrl', function() {
                 if (hitFields.hasOwnProperty(field)) {
                     processedFields[i].text = hitFields[field][0];
                     processedFields[i].letter = hitFields[field][0].substr(0,1);
+                }
+            }
+            else if (field == 'openAccess') {
+                processedFields[i] = {letter: '', text: ''};
+                if (hitFields.hasOwnProperty(field)) {
+                    processedFields[i].text = hitFields[field][0] ? 'Open access' : 'Managed access';
+                    processedFields[i].letter = hitFields[field][0] ? 'O' : 'M';
                 }
             }
             else {
