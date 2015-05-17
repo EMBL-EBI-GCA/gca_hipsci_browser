@@ -30,7 +30,8 @@ listComponents.directive('aggsFilter', function() {
         labelsMap: '@',
         existsFields: '@',
         type: '@',
-        preSelected: '@'
+        preSelected: '@',
+        showNoData: '@',
     },
     require: '^listPanel',
     templateUrl: 'partials/uiFacet.html',
@@ -49,6 +50,7 @@ listComponents.directive('aggsFilter', function() {
         var existsFields = scope.$parent.$eval(scope.existsFields);
         var labelsMap = scope.$parent.$eval(scope.labelsMap) || {};
         var preSelected = scope.$parent.$eval(scope.preSelected) || [];
+        var showNoData = scope.$parent.$eval(scope.showNoData) || false;
         var existsLabels = [];
         if (typeof existsFields == 'undefined') {
             existsFields = [];
@@ -129,7 +131,7 @@ listComponents.directive('aggsFilter', function() {
                         aggs[respAgg.key] = respAgg;
                     }
                 }
-                if (resps[1].doc_count) {
+                if (showNoData && resps[1].doc_count) {
                     aggs['_noData'] = {key: 'No Data', doc_count: resps[1].doc_count, field: '_noData'};
                 }
             }
@@ -264,7 +266,8 @@ listComponents.directive('aggsFilter', function() {
         if (scope.type == 'terms') {
             var aggReq = { terms: {field: scope.field, size: 20}};
             var aggMissingReq = {missing: {field: scope.field}};
-            ListPanelCtrl.registerAggregate(scope.field, [aggReq,aggMissingReq], true, processAggResp);
+            var aggReqsArr = showNoData ? [aggReq, aggMissingReq] : [aggReq];
+            ListPanelCtrl.registerAggregate(scope.field, aggReqsArr, true, processAggResp);
             if (preSelected.length >0) {
                 registerTermsFilter();
             }
