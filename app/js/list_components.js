@@ -188,7 +188,9 @@ listComponents.directive('aggsFilter', function() {
                         scope.aggs.push(aggs[field]);
                     }
                     else {
-                        var key = field == '_noData'? 'No Data' : field;
+                        var key = field == '_noData'? 'No Data'
+                                : labelsMap.hasOwnProperty(field) ? labelsMap[field]
+                                : field;
                         scope.aggs.push({key: key, doc_count: 0, field: field});
                     }
                 }
