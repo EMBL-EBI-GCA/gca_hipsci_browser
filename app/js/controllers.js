@@ -162,7 +162,7 @@ controllers.controller('LineListCtrl', function() {
         sourceMaterial: 'Source Material',
         tissueProvider: 'Tissue Provider',
         bioSamplesAccession: 'Biosample',
-        openAccess: 'Data access',
+        openAccess: 'Open access data',
         bankingStatus: 'Bank status',
         'assays.gtarray.archive': 'gtarray archive',
         'assays.gtarray.study': 'gtarray study accession',
@@ -199,7 +199,7 @@ controllers.controller('LineListCtrl', function() {
             trChildren.push(
                 field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
               :  field == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
-              :  field == 'openAccess' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
+              :  field == 'openAccess' ? '<th class="matrix-dot"><div><span>Data access</span></div></th>'
               :  assaysLocations.hasOwnProperty(field) ? '<th class="matrix-dot assay"><div><span>'+field+'</span></div></th>'
               : '<th class="sort">'+controller.columnHeadersMap[field]+'</th>'
             );
