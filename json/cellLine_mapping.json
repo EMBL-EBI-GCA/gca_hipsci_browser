@@ -234,6 +234,22 @@
             },
             "openAccess": {
                 "type": "boolean"
+            },
+            "hlaTyping": {
+                "properties": {
+                    "archive": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    },
+                    "path": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    },
+                    "study": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    }
+                }
             }
         }
     }

@@ -70,7 +70,7 @@
         </dl>
         </section>
 
-        <section ng-if="data.assays.count">
+        <section ng-if="data.assays.count || data.hlaTyping">
         <h3 class="item-detail-section">Genomic Assays</h3>
         <hr/>
         <dl class="dl-horizontal">
@@ -103,7 +103,20 @@
                 <dd><a ng-href="{{LineCtrl.assayToHref(data.assays['cellbiol-fn'])}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> Data on FTP site</a></dd>
             </div>
         </dl>
+        <div ng-if="data.hlaTyping">
+            <dl class="dl-horizontal">
+                <dt>HLA typing from imputed genotypes:</dt>
+                <dd><a ng-href="{{LineCtrl.assayToHref(data.hlaTyping)}}" target="_blank">
+                    <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+                    <span ng-switch="data.hlaTyping.archive">
+                    <span ng-switch-when="FTP">Data on FTP site</span>
+                    <span ng-switch-default ng-bind="data.hlaTyping.study"></span>
+                    </span>
+                    </a></dd>
+            </dl>
+        </div>
         </section>
+
 
         <section ng-if="data.pluritest">
         <h3 class="item-detail-section">Pluritest assessment for pluripotency</h3>
