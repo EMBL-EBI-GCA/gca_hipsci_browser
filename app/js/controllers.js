@@ -70,14 +70,6 @@ controllers.controller('DonorListCtrl', function() {
         tissueProvider: 'Tissue Provider',
         bioSamplesAccession: 'Biosample',
         cellLines: 'Cell Lines',
-        rnaseq : 'RNA-seq',
-        exomeseq : 'Exome-seq',
-        chipseq : 'ChIP-seq',
-        gexarray : 'Expression array',
-        gtarray : 'Genotyping array',
-        mtarray : 'Methylation array',
-        proteomics : 'Proteomics',
-        'cellbiol-fn' : 'Cellular phenotyping'
     };
 
     this.compileHead = function(fields) {
@@ -163,15 +155,7 @@ controllers.controller('LineListCtrl', function() {
     this.initEsFields = this.htmlFieldsToEsFields(this.initHtmlFields);
     this.htmlFields = this.initHtmlFields;
 
-    this.columnHeadersMap = {
-        name: 'Name',
-        'diseaseStatus.value': 'Disease Status',
-        'sex.value': 'Sex',
-        'sourceMaterial.value': 'Source Material',
-        tissueProvider: 'Tissue Provider',
-        bioSamplesAccession: 'Biosample',
-        openAccess: 'Open access data',
-        bankingStatus: 'Bank status',
+    var assayNamesMap = {
         gtarray: 'Genotyping array',
         gexarray: 'Expression array',
         exomeseq: 'Exome-seq',
@@ -181,15 +165,23 @@ controllers.controller('LineListCtrl', function() {
         'cellbiol-fn': 'Cellular phenotyping',
     };
 
-    this.filterFieldsMap = {
-        'assays.gtarray.archive': 'Genotyping array',
-        'assays.gexarray.archive': 'Expression array',
-        'assays.exomeseq.archive': 'Exome-seq',
-        'assays.rnaseq.archive': 'RNA-seq',
-        'assays.mtarray.archive': 'Methylation array',
-        'assays.proteomics.archive': 'Proteomics',
-        'assays.cellbiol-fn.archive': 'Cellular phenotyping',
+    this.columnHeadersMap = {
+        name: 'Name',
+        'diseaseStatus.value': 'Disease Status',
+        'sex.value': 'Sex',
+        'sourceMaterial.value': 'Source Material',
+        tissueProvider: 'Tissue Provider',
+        bioSamplesAccession: 'Biosample',
+        openAccess: 'Open access data',
+        bankingStatus: 'Bank status',
     };
+    this.filterFieldsMap = {};
+
+    for (var assay in assayNamesMap) {
+        this.columnHeadersMap[concat('assays.', assay, '.archive')] = assayNamesMap[assay]
+        this.filterFieldsMap[concat('assays.', assay, '.archive')] = assayNamesMap[assay]
+    }
+
     this.openAccessMap = {
         'T': 'Open access',
         'F': 'Managed access',
@@ -203,7 +195,7 @@ controllers.controller('LineListCtrl', function() {
                 field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
               :  field == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
               :  field == 'openAccess' ? '<th class="matrix-dot"><div><span>Data access</span></div></th>'
-              :  assaysLocations.hasOwnProperty(field) ? '<th class="matrix-dot assay"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
+              :  assaysLocations.hasOwnProperty(field) ? '<th class="matrix-dot assay"><div><span>'+controller.assayNamesMap[field]+'</span></div></th>'
               : '<th class="sort">'+controller.columnHeadersMap[field]+'</th>'
             );
         }
