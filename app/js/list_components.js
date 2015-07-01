@@ -32,6 +32,7 @@ listComponents.directive('aggsFilter', function() {
         type: '@',
         preSelected: '@',
         showNoData: '@',
+        capitalise: '@',
     },
     require: '^listPanel',
     templateUrl: 'partials/uiFacet.html',
@@ -51,6 +52,7 @@ listComponents.directive('aggsFilter', function() {
         var labelsMap = scope.$parent.$eval(scope.labelsMap) || {};
         var preSelected = scope.$parent.$eval(scope.preSelected) || [];
         var showNoData = scope.$parent.$eval(scope.showNoData) || false;
+        var capitalise = scope.$parent.$eval(scope.capitalise) || false;
         var existsLabels = [];
         if (typeof existsFields == 'undefined') {
             existsFields = [];
@@ -125,6 +127,11 @@ listComponents.directive('aggsFilter', function() {
                     var respAgg = resps[0].buckets[i];
                     if (labelsMap.hasOwnProperty(respAgg.key)) {
                         aggs[respAgg.key] = {key: labelsMap[respAgg.key], doc_count: respAgg.doc_count, field: respAgg.key };
+                    }
+                    else if (if capitalise) {
+                        var key = respAgg.key;
+                        key = key.charAt(0).toUpperCase() + key.slice(1);
+                        aggs[respAgg.key] = {key: key, doc_count: respAgg.doc_count, field: respAgg.key };
                     }
                     else {
                         respAgg.field = respAgg.key;
