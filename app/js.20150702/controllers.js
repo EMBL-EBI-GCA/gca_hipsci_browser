@@ -59,17 +59,17 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient'
 controllers.controller('DonorListCtrl', function() {
     var controller=this;
     this.documentType = 'donor';
-    this.initFields = ['name', 'sex', 'ethnicity', 'diseaseStatus', 'age', 'tissueProvider', 'bioSamplesAccession', 'cellLines'];
+    this.initFields = ['name', 'sex.value', 'ethnicity', 'diseaseStatus.value', 'age', 'tissueProvider', 'bioSamplesAccession', 'cellLines'];
 
     this.columnHeadersMap = {
         name: 'Name',
-        sex: 'Sex',
+        'sex.value': 'Sex',
         ethnicity: 'Ethnicity',
-        diseaseStatus: 'Disease Status',
+        'diseaseStatus.value': 'Disease Status',
         age: 'Age',
         tissueProvider: 'Tissue Provider',
         bioSamplesAccession: 'Biosample',
-        cellLines: 'Cell Lines'
+        cellLines: 'Cell Lines',
     };
 
     this.compileHead = function(fields) {
@@ -118,7 +118,7 @@ controllers.controller('DonorListCtrl', function() {
 controllers.controller('LineListCtrl', function() {
     var controller = this;
     this.documentType = 'cellLine';
-    this.initHtmlFields =  ['name', 'diseaseStatus', 'sex', 'sourceMaterial', 'tissueProvider', 'openAccess', 'bankingStatus', 'bioSamplesAccession',
+    this.initHtmlFields =  ['name', 'diseaseStatus.value', 'sex.value', 'sourceMaterial.value', 'tissueProvider', 'openAccess', 'bankingStatus', 'bioSamplesAccession',
         'gtarray', 'gexarray', 'exomeseq', 'rnaseq', 'mtarray', 'proteomics', 'cellbiol-fn' ];
 
     var assaysLocations = {'gtarray':'archive', 'gexarray':'archive', 'exomeseq':'archive', 'rnaseq':'archive', 'mtarray':'archive', 'proteomics':'ftp', 'cellbiol-fn':'ftp'};
@@ -128,7 +128,7 @@ controllers.controller('LineListCtrl', function() {
             this.assaysFields.push('assays.'+field+'.archive');
         }
         else if (assaysLocations[field] == 'ftp') {
-            this.assaysFields.push('assays.'+field+'.archive');
+            this.assaysFields.push('assays.'+field+'.path');
         }
     }
 
@@ -155,38 +155,40 @@ controllers.controller('LineListCtrl', function() {
     this.initEsFields = this.htmlFieldsToEsFields(this.initHtmlFields);
     this.htmlFields = this.initHtmlFields;
 
+    this.assayNamesMap = {
+        gtarray: 'Genotyping array',
+        gexarray: 'Expression array',
+        exomeseq: 'Exome-seq',
+        rnaseq: 'RNA-seq',
+        mtarray: 'Methylation array',
+        proteomics: 'Proteomics',
+        'cellbiol-fn': 'Cellular phenotyping',
+    };
+
     this.columnHeadersMap = {
         name: 'Name',
-        diseaseStatus: 'Disease Status',
-        sex: 'Sex',
-        sourceMaterial: 'Source Material',
+        'diseaseStatus.value': 'Disease Status',
+        'sex.value': 'Sex',
+        'sourceMaterial.value': 'Source Material',
         tissueProvider: 'Tissue Provider',
         bioSamplesAccession: 'Biosample',
         openAccess: 'Open access data',
         bankingStatus: 'Bank status',
-        'assays.gtarray.archive': 'gtarray archive',
-        'assays.gtarray.study': 'gtarray study accession',
-        'assays.gexarray.archive': 'gexarray archive',
-        'assays.gexarray.study': 'gexarray study accession',
-        'assays.exomeseq.archive': 'exomeseq archive',
-        'assays.exomeseq.study': 'exomeseq study accession',
-        'assays.rnaseq.archive': 'rnaseq archive',
-        'assays.rnaseq.study': 'rnaseq study accession',
-        'assays.mtarray.archive': 'mtarray archive',
-        'assays.mtarray.study': 'mtarray study accession',
-        'assays.proteomics.path': 'proteomics ftp path',
-        'assays.cellbiol-fn.path': 'cellbiol-fn ftp path',
     };
+    this.filterFieldsMap = {};
 
-    this.filterFieldsMap = {
-        'assays.gtarray.archive': 'gtarray',
-        'assays.gexarray.archive': 'gexarray',
-        'assays.exomeseq.archive': 'exomeseq',
-        'assays.rnaseq.archive': 'rnaseq',
-        'assays.mtarray.archive': 'mtarray',
-        'assays.proteomics.archive': 'proteomics',
-        'assays.cellbiol-fn.archive': 'cellbiol-fn',
-    };
+    for (var assay in this.assayNamesMap) {
+        if (assaysLocations[assay] == 'archive') {
+            this.columnHeadersMap['assays.'+ assay+ '.archive'] = this.assayNamesMap[assay] + ' archive';
+            this.columnHeadersMap['assays.'+ assay+ '.study'] = this.assayNamesMap[assay] + ' study accession';
+            this.filterFieldsMap['assays.'+ assay+ '.archive'] = this.assayNamesMap[assay];
+        }
+        else if (assaysLocations[assay] == 'ftp') {
+            this.columnHeadersMap['assays.'+ assay+ '.path'] = this.assayNamesMap[assay] + ' ftp path';
+            this.filterFieldsMap['assays.'+ assay+ '.path'] = this.assayNamesMap[assay];
+        }
+    }
+
     this.openAccessMap = {
         'T': 'Open access',
         'F': 'Managed access',
@@ -217,7 +219,7 @@ controllers.controller('LineListCtrl', function() {
               : field == 'bankingStatus' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field == 'openAccess' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
-              : assaysLocations.hasOwnProperty(field) ? '<td class="matrix-dot"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item assay" popover="'+field+'" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
+              : assaysLocations.hasOwnProperty(field) ? '<td class="matrix-dot"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item assay" popover="'+controller.assayNamesMap[field]+'" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
             );
         }

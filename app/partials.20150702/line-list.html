@@ -15,10 +15,10 @@
                 <aggs-filter title="Assays" field="assays" type="exists" exists-fields="LineCtrl.assaysFields" labels-map="LineCtrl.filterFieldsMap"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
-                <aggs-filter title="Source Material" field="sourceMaterial" type="terms"></aggs-filter>
+                <aggs-filter title="Source Material" field="sourceMaterial.value" type="terms"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
-                <aggs-filter title="Disease Status" field="diseaseStatus" type="terms"></aggs-filter>
+                <aggs-filter title="Disease Status" field="diseaseStatus.value" type="terms"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
                 <aggs-filter title="Banked Status" field="bankingStatus" type="terms"></aggs-filter>

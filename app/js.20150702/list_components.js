@@ -32,9 +32,10 @@ listComponents.directive('aggsFilter', function() {
         type: '@',
         preSelected: '@',
         showNoData: '@',
+        capitalise: '@',
     },
     require: '^listPanel',
-    templateUrl: 'partials/uiFacet.html',
+    templateUrl: 'partials.20150702/uiFacet.html',
     link: function(scope, iElement, iAttrs, ListPanelCtrl) {
         scope.filteredTerms = {};
         scope.filterNoData = false;
@@ -51,6 +52,7 @@ listComponents.directive('aggsFilter', function() {
         var labelsMap = scope.$parent.$eval(scope.labelsMap) || {};
         var preSelected = scope.$parent.$eval(scope.preSelected) || [];
         var showNoData = scope.$parent.$eval(scope.showNoData) || false;
+        var capitalise = scope.$parent.$eval(scope.capitalise) || false;
         var existsLabels = [];
         if (typeof existsFields == 'undefined') {
             existsFields = [];
@@ -126,13 +128,18 @@ listComponents.directive('aggsFilter', function() {
                     if (labelsMap.hasOwnProperty(respAgg.key)) {
                         aggs[respAgg.key] = {key: labelsMap[respAgg.key], doc_count: respAgg.doc_count, field: respAgg.key };
                     }
+                    else if (capitalise) {
+                        var key = respAgg.key;
+                        key = key.charAt(0).toUpperCase() + key.slice(1);
+                        aggs[respAgg.key] = {key: key, doc_count: respAgg.doc_count, field: respAgg.key };
+                    }
                     else {
                         respAgg.field = respAgg.key;
                         aggs[respAgg.key] = respAgg;
                     }
                 }
                 if (showNoData && resps[1].doc_count) {
-                    aggs['_noData'] = {key: 'No Data', doc_count: resps[1].doc_count, field: '_noData'};
+                    aggs['_noData'] = {key: 'No data', doc_count: resps[1].doc_count, field: '_noData'};
                 }
             }
             else if (scope.type == 'exists') {
@@ -147,7 +154,7 @@ listComponents.directive('aggsFilter', function() {
             
             for (var aggField in scope.filteredTerms) {
                 if (!aggs.hasOwnProperty(aggField)) {
-                    var aggKey = aggField == '_noData' ? 'No Data' : aggField;
+                    var aggKey = aggField == '_noData' ? 'No data' : aggField;
                     aggs[aggField] = {key: aggKey, doc_count: 0, field: aggField};
                 }
             }
@@ -188,7 +195,7 @@ listComponents.directive('aggsFilter', function() {
                         scope.aggs.push(aggs[field]);
                     }
                     else {
-                        var key = field == '_noData'? 'No Data'
+                        var key = field == '_noData'? 'No data'
                                 : labelsMap.hasOwnProperty(field) ? labelsMap[field]
                                 : field;
                         scope.aggs.push({key: key, doc_count: 0, field: field});

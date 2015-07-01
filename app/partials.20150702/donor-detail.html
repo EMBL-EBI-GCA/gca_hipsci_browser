@@ -12,9 +12,9 @@
         <div ng-if="apiSuccess">
         <dl class="dl-horizontal">
             
-            <div ng-if="data.diseaseStatus">
+            <div ng-if="data.diseaseStatus.value">
                 <dt>Disease status:</dt>
-                <dd ng-bind="data.diseaseStatus"></dd>
+                <dd ng-bind="data.diseaseStatus.value"></dd>
             </div>
 
             <div ng-if="data.age">
@@ -27,9 +27,9 @@
                 <dd ng-bind="data.ethnicity"></dd>
             </div>
 
-            <div ng-if="data.sex">
+            <div ng-if="data.sex.value">
                 <dt>Sex:</dt>
-                <dd ng-bind="data.sex"></dd>
+                <dd ng-bind="data.sex.value"></dd>
             </div>
 
             <div ng-if="data.bioSamplesAccession">
