@@ -178,7 +178,7 @@ controllers.controller('LineListCtrl', function() {
     this.filterFieldsMap = {};
 
     for (var assay in this.assayNamesMap) {
-        this.columnHeadersMap['assays.'+ assay+ '.archive'] = this.assayNamesMap[assay]
+        this.columnHeadersMap[assay] = this.assayNamesMap[assay]
         this.filterFieldsMap['assays.'+ assay+ '.archive'] = this.assayNamesMap[assay]
     }
 
