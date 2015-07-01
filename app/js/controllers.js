@@ -182,13 +182,13 @@ controllers.controller('LineListCtrl', function() {
     };
 
     this.filterFieldsMap = {
-        'assays.gtarray.archive': 'gtarray',
-        'assays.gexarray.archive': 'gexarray',
-        'assays.exomeseq.archive': 'exomeseq',
-        'assays.rnaseq.archive': 'rnaseq',
-        'assays.mtarray.archive': 'mtarray',
-        'assays.proteomics.archive': 'proteomics',
-        'assays.cellbiol-fn.archive': 'cellbiol-fn',
+        'assays.gtarray.archive': 'Genotyping array',
+        'assays.gexarray.archive': 'Expression array',
+        'assays.exomeseq.archive': 'Exome-seq',
+        'assays.rnaseq.archive': 'RNA-seq',
+        'assays.mtarray.archive': 'Methylation array',
+        'assays.proteomics.archive': 'Proteomics',
+        'assays.cellbiol-fn.archive': 'Cellular phenotyping',
     };
     this.openAccessMap = {
         'T': 'Open access',
