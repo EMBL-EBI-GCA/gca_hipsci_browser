@@ -40,7 +40,7 @@
                 "ethnicity_analyzer": {
                     "type": "custom",
                     "tokenizer": "standard",
-                    "char_filter": ["caucasion"],
+                    "char_filter": ["caucasian"],
                     "filter": ["lowercase", "ethnicity_stopwords", "english_stopwords"]
                 }
             },
