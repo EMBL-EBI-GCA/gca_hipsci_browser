@@ -132,7 +132,7 @@ listComponents.directive('aggsFilter', function() {
                     }
                 }
                 if (showNoData && resps[1].doc_count) {
-                    aggs['_noData'] = {key: 'No Data', doc_count: resps[1].doc_count, field: '_noData'};
+                    aggs['_noData'] = {key: 'No data', doc_count: resps[1].doc_count, field: '_noData'};
                 }
             }
             else if (scope.type == 'exists') {
@@ -147,7 +147,7 @@ listComponents.directive('aggsFilter', function() {
             
             for (var aggField in scope.filteredTerms) {
                 if (!aggs.hasOwnProperty(aggField)) {
-                    var aggKey = aggField == '_noData' ? 'No Data' : aggField;
+                    var aggKey = aggField == '_noData' ? 'No data' : aggField;
                     aggs[aggField] = {key: aggKey, doc_count: 0, field: aggField};
                 }
             }
@@ -188,7 +188,7 @@ listComponents.directive('aggsFilter', function() {
                         scope.aggs.push(aggs[field]);
                     }
                     else {
-                        var key = field == '_noData'? 'No Data'
+                        var key = field == '_noData'? 'No data'
                                 : labelsMap.hasOwnProperty(field) ? labelsMap[field]
                                 : field;
                         scope.aggs.push({key: key, doc_count: 0, field: field});

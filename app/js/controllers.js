@@ -70,6 +70,14 @@ controllers.controller('DonorListCtrl', function() {
         tissueProvider: 'Tissue Provider',
         bioSamplesAccession: 'Biosample',
         cellLines: 'Cell Lines'
+        rnaseq : 'RNA-seq',
+        exomeseq : 'Exome-seq',
+        chipseq : 'ChIP-seq',
+        gexarray : 'Expression array',
+        gtarray : 'Genotyping array',
+        mtarray : 'Methylation array',
+        proteomics : 'Proteomics',
+        'cellbiol-fn' : 'Cellular phenotyping'
     };
 
     this.compileHead = function(fields) {
@@ -200,7 +208,7 @@ controllers.controller('LineListCtrl', function() {
                 field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
               :  field == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
               :  field == 'openAccess' ? '<th class="matrix-dot"><div><span>Data access</span></div></th>'
-              :  assaysLocations.hasOwnProperty(field) ? '<th class="matrix-dot assay"><div><span>'+field+'</span></div></th>'
+              :  assaysLocations.hasOwnProperty(field) ? '<th class="matrix-dot assay"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
               : '<th class="sort">'+controller.columnHeadersMap[field]+'</th>'
             );
         }
