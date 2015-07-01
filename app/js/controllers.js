@@ -69,7 +69,7 @@ controllers.controller('DonorListCtrl', function() {
         age: 'Age',
         tissueProvider: 'Tissue Provider',
         bioSamplesAccession: 'Biosample',
-        cellLines: 'Cell Lines'
+        cellLines: 'Cell Lines',
         rnaseq : 'RNA-seq',
         exomeseq : 'Exome-seq',
         chipseq : 'ChIP-seq',
