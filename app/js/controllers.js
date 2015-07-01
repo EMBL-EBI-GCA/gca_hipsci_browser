@@ -181,6 +181,7 @@ controllers.controller('LineListCtrl', function() {
         this.columnHeadersMap['assays.'+ assay+ '.archive'] = this.assayNamesMap[assay];
         this.filterFieldsMap['assays.'+ assay+ '.archive'] = this.assayNamesMap[assay];
     }
+    console.log(this.columnHeadersMap);
 
     this.openAccessMap = {
         'T': 'Open access',
