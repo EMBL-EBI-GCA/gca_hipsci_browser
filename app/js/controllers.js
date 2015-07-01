@@ -178,11 +178,11 @@ controllers.controller('LineListCtrl', function() {
     this.filterFieldsMap = {};
 
     for (var assay in this.assayNamesMap) {
-        if (assaysLocations[field] == 'archive') {
+        if (assaysLocations[assay] == 'archive') {
             this.columnHeadersMap['assays.'+ assay+ '.archive'] = this.assayNamesMap[assay] + ' archive';
             this.columnHeadersMap['assays.'+ assay+ '.study'] = this.assayNamesMap[assay] + ' study accession';
         }
-        else if (assaysLocations[field] == 'ftp') {
+        else if (assaysLocations[assay] == 'ftp') {
             this.assaysFields.push('assays.'+field+'.archive');
             this.columnHeadersMap['assays.'+ assay+ '.path'] = this.assayNamesMap[assay] + ' ftp path';
         }
