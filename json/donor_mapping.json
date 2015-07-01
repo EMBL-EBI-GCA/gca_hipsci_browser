@@ -67,6 +67,7 @@
             "ethnicity": {
                 "type": "string",
                 "index": "analyzed",
+                "analyzer": "ethnicity_analyzer",
                 "copy_to": "searchable.prefixes"
             },
             "name": {
