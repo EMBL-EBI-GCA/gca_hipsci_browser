@@ -128,7 +128,7 @@ listComponents.directive('aggsFilter', function() {
                     if (labelsMap.hasOwnProperty(respAgg.key)) {
                         aggs[respAgg.key] = {key: labelsMap[respAgg.key], doc_count: respAgg.doc_count, field: respAgg.key };
                     }
-                    else if (if capitalise) {
+                    else if (capitalise) {
                         var key = respAgg.key;
                         key = key.charAt(0).toUpperCase() + key.slice(1);
                         aggs[respAgg.key] = {key: key, doc_count: respAgg.doc_count, field: respAgg.key };
