@@ -237,7 +237,7 @@
             "ethnicity": {
                 "type": "string",
                 "index": "analyzed",
-                "analyzer": "ethnicity_analyzier",
+                "analyzer": "ethnicity_analyzer",
                 "copy_to": "searchable.prefixes"
             },
             "growingConditionsQC1": {
