@@ -178,8 +178,8 @@ controllers.controller('LineListCtrl', function() {
     this.filterFieldsMap = {};
 
     for (var assay in assayNamesMap) {
-        this.columnHeadersMap[concat('assays.', assay, '.archive')] = assayNamesMap[assay]
-        this.filterFieldsMap[concat('assays.', assay, '.archive')] = assayNamesMap[assay]
+        this.columnHeadersMap['assays.'+ assay+ '.archive'] = assayNamesMap[assay]
+        this.filterFieldsMap['assays.'+ assay+ '.archive'] = assayNamesMap[assay]
     }
 
     this.openAccessMap = {
