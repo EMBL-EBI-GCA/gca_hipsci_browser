@@ -155,7 +155,7 @@ controllers.controller('LineListCtrl', function() {
     this.initEsFields = this.htmlFieldsToEsFields(this.initHtmlFields);
     this.htmlFields = this.initHtmlFields;
 
-    var assayNamesMap = {
+    this.assayNamesMap = {
         gtarray: 'Genotyping array',
         gexarray: 'Expression array',
         exomeseq: 'Exome-seq',
@@ -177,9 +177,9 @@ controllers.controller('LineListCtrl', function() {
     };
     this.filterFieldsMap = {};
 
-    for (var assay in assayNamesMap) {
-        this.columnHeadersMap['assays.'+ assay+ '.archive'] = assayNamesMap[assay]
-        this.filterFieldsMap['assays.'+ assay+ '.archive'] = assayNamesMap[assay]
+    for (var assay in this.assayNamesMap) {
+        this.columnHeadersMap['assays.'+ assay+ '.archive'] = this.assayNamesMap[assay]
+        this.filterFieldsMap['assays.'+ assay+ '.archive'] = this.assayNamesMap[assay]
     }
 
     this.openAccessMap = {
