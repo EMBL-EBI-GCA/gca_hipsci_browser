@@ -23,14 +23,14 @@
                 <dd><a ng-href="#/donors/{{data.donor}}" ng-bind="data.donor"></a></dd>
             </div>
 
-            <div ng-if="data.diseaseStatus">
+            <div ng-if="data.diseaseStatus.value">
                 <dt>Disease status:</dt>
-                <dd ng-bind="data.diseaseStatus"></dd>
+                <dd ng-bind="data.diseaseStatus.value"></dd>
             </div>
 
-            <div ng-if="data.sourceMaterial">
+            <div ng-if="data.sourceMaterial.value">
                 <dt>Source material:</dt>
-                <dd ng-bind="data.sourceMaterial"></dd>
+                <dd ng-bind="data.sourceMaterial.value"></dd>
             </div>
 
             <div ng-if="data.tissueProvider">
@@ -58,9 +58,9 @@
                 <dd ng-bind="data.ethnicity"></dd>
             </div>
 
-            <div ng-if="data.sex">
+            <div ng-if="data.sex.value">
                 <dt>Donor sex:</dt>
-                <dd ng-bind="data.sex"></dd>
+                <dd ng-bind="data.sex.value"></dd>
             </div>
 
             <div ng-if="data.bioSamplesAccession">

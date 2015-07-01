@@ -59,13 +59,13 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient'
 controllers.controller('DonorListCtrl', function() {
     var controller=this;
     this.documentType = 'donor';
-    this.initFields = ['name', 'sex', 'ethnicity', 'diseaseStatus', 'age', 'tissueProvider', 'bioSamplesAccession', 'cellLines'];
+    this.initFields = ['name', 'sex.value', 'ethnicity', 'diseaseStatus.value', 'age', 'tissueProvider', 'bioSamplesAccession', 'cellLines'];
 
     this.columnHeadersMap = {
         name: 'Name',
-        sex: 'Sex',
+        'sex.value': 'Sex',
         ethnicity: 'Ethnicity',
-        diseaseStatus: 'Disease Status',
+        'diseaseStatus.value': 'Disease Status',
         age: 'Age',
         tissueProvider: 'Tissue Provider',
         bioSamplesAccession: 'Biosample',
@@ -118,7 +118,7 @@ controllers.controller('DonorListCtrl', function() {
 controllers.controller('LineListCtrl', function() {
     var controller = this;
     this.documentType = 'cellLine';
-    this.initHtmlFields =  ['name', 'diseaseStatus', 'sex', 'sourceMaterial', 'tissueProvider', 'openAccess', 'bankingStatus', 'bioSamplesAccession',
+    this.initHtmlFields =  ['name', 'diseaseStatus.value', 'sex.value', 'sourceMaterial', 'tissueProvider', 'openAccess', 'bankingStatus', 'bioSamplesAccession',
         'gtarray', 'gexarray', 'exomeseq', 'rnaseq', 'mtarray', 'proteomics', 'cellbiol-fn' ];
 
     var assaysLocations = {'gtarray':'archive', 'gexarray':'archive', 'exomeseq':'archive', 'rnaseq':'archive', 'mtarray':'archive', 'proteomics':'ftp', 'cellbiol-fn':'ftp'};
@@ -157,9 +157,9 @@ controllers.controller('LineListCtrl', function() {
 
     this.columnHeadersMap = {
         name: 'Name',
-        diseaseStatus: 'Disease Status',
-        sex: 'Sex',
-        sourceMaterial: 'Source Material',
+        'diseaseStatus.value': 'Disease Status',
+        'sex.value': 'Sex',
+        'sourceMaterial.value': 'Source Material',
         tissueProvider: 'Tissue Provider',
         bioSamplesAccession: 'Biosample',
         openAccess: 'Open access data',

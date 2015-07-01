@@ -156,9 +156,17 @@
                 "type": "date"
             },
             "diseaseStatus": {
-                "type": "string",
-                "index": "not_analyzed",
-                "copy_to": "searchable.prefixes"
+                "properties": {
+                    "value": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.prefixes"
+                    },
+                    "ontologyPURL": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                    }
+                }
             },
             "donor": {
                 "type": "string",
@@ -214,14 +222,35 @@
                 }
             },
             "sex": {
-                "type": "string",
-                "index": "not_analyzed",
-                "copy_to": "searchable._other"
+                "properties": {
+                    "value": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable._other"
+                    },
+                    "ontologyPURL": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                    }
+                }
             },
             "sourceMaterial": {
-                "type": "string",
-                "index": "not_analyzed",
-                "copy_to": "searchable.prefixes"
+                "properties": {
+                    "value": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.prefixes"
+                    },
+                    "cellType": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.prefixes"
+                    },
+                    "ontologyPURL": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                    }
+                }
             },
             "tissueProvider": {
                 "type": "string",

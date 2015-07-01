@@ -52,9 +52,17 @@
                 "copy_to": ["searchable.hipsciShortName", "searchable.hipsciFullName"]
             },
             "diseaseStatus": {
-                "type": "string",
-                "index": "not_analyzed",
-                "copy_to": "searchable.prefixes"
+                "properties": {
+                    "value": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.prefixes"
+                    },
+                    "ontologyPURL": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                    }
+                }
             },
             "ethnicity": {
                 "type": "string",
@@ -67,9 +75,17 @@
                 "copy_to": ["searchable.hipsciShortName", "searchable.hipsciFullName"]
             },
             "sex": {
-                "type": "string",
-                "index": "not_analyzed",
-                "copy_to": "searchable._other"
+                "properties": {
+                    "value": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable._other"
+                    },
+                    "ontologyPURL": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                    }
+                }
             },
             "tissueProvider": {
                 "type": "string",
