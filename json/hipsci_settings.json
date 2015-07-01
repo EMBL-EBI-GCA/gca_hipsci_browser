@@ -30,7 +30,7 @@
                 "max_length": {
                     "type": "custom",
                     "tokenizer": "standard",
-                    "filter": ["prefix_max_length_filter", "lowercase"]
+                    "filter": ["lowercase"]
                 },
                 "lowercase_whitespace": {
                     "type": "custom",
