@@ -60,7 +60,7 @@
                     },
                     "ontologyPURL": {
                         "type": "string",
-                        "index": "not_analyzed",
+                        "index": "not_analyzed"
                     }
                 }
             },
@@ -83,7 +83,7 @@
                     },
                     "ontologyPURL": {
                         "type": "string",
-                        "index": "not_analyzed",
+                        "index": "not_analyzed"
                     }
                 }
             },
