@@ -40,8 +40,7 @@
                 "ethnicity_analyzer": {
                     "type": "custom",
                     "tokenizer": "standard",
-                    "char_filter": ["caucasian"],
-                    "filter": ["lowercase", "ethnicity_stopwords", "english_stopwords"]
+                    "filter": ["lowercase", "ethnicity_stopwords", "english_stopwords", "caucasian"]
                 }
             },
             "tokenizer": {
@@ -49,13 +48,6 @@
                     "type": "pattern",
                     "pattern": "[HPSIhpsi]{3,5}[0-9]*[a-zA-Z]*[-_][a-zA-Z]{3,5}[-_]?[0-9]*",
                     "group": 0
-                }
-            },
-            "char_filter": {
-                "caucasian": {
-                    "type": "pattern_replace",
-                    "pattern": "cauc(asian)?",
-                    "replacement": "caucasian"
                 }
             },
             "filter": {
@@ -102,6 +94,11 @@
                     "type": "pattern_replace",
                     "pattern": "([0-9]+)[-_]?([a-z]+)",
                     "replacement": "$1$2"
+                },
+                "caucasian": {
+                    "type": "pattern_replace",
+                    "pattern": "^cauc(asian)?$",
+                    "replacement": "caucasian"
                 }
             }
         }
