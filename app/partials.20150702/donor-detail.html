@@ -43,10 +43,18 @@
             </div>
         </dl>
 
-        <dl class="dl-horizontal">
-            <dt>Derived cell lines ({{data.cellLines.length}}):</dt>
-            <dd><div ng-repeat="ipsc in data.cellLines | orderBy:identity "><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc.name"></a></div></dd>
-        </dl>
+        <section>
+        <h3 class="item-detail-section">Derived iPS Cell Lines</h3>
+        <hr/>
+        <div class="row">
+            <div class="col-md-4" ng-if="data.bankingStatus.hasOwnProperty('banked')">
+            <dl class="dl-horizontal">
+                <dt>Banked lines ({{data.bankingStatus.banked}}):</dt>
+                <dd><div ng-repeat="ipsc in data.bankingStatus.banked | orderBy:identity "><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc.name"></a></div></dd>
+            </dl>
+            </div>
+            </div>
+        </div>
         </div>
 
     </div>
