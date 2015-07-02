@@ -54,7 +54,7 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient'
             if (! $scope.data.bankingStatus.hasOwnProperty(bankingStatus)) {
                 $scope.data.bankingStatus[bankingStatus] = [];
             }
-            $scope.data.bankingStatus[cellLine.bankingStatus].push(cellLine.name);            
+            $scope.data.bankingStatus[bankingStatus].push(cellLine.name);            
         }
         console.log($scope.data);
     }, function(resp) {
