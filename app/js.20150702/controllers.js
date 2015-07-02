@@ -128,7 +128,7 @@ controllers.controller('LineListCtrl', function() {
             this.assaysFields.push('assays.'+field+'.archive');
         }
         else if (assaysLocations[field] == 'ftp') {
-            this.assaysFields.push('assays.'+field+'.ftp');
+            this.assaysFields.push('assays.'+field+'.path');
         }
     }
 
@@ -185,7 +185,7 @@ controllers.controller('LineListCtrl', function() {
         }
         else if (assaysLocations[assay] == 'ftp') {
             this.columnHeadersMap['assays.'+ assay+ '.path'] = this.assayNamesMap[assay] + ' ftp path';
-            this.filterFieldsMap['assays.'+ assay+ '.ftp'] = this.assayNamesMap[assay];
+            this.filterFieldsMap['assays.'+ assay+ '.path'] = this.assayNamesMap[assay];
         }
     }
 
