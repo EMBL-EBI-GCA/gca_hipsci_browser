@@ -43,10 +43,34 @@
             </div>
         </dl>
 
-        <dl class="dl-horizontal">
-            <dt>Derived cell lines ({{data.cellLines.length}}):</dt>
-            <dd><div ng-repeat="ipsc in data.cellLines | orderBy:identity "><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></div></dd>
-        </dl>
+        <section>
+        <h3 class="item-detail-section">Derived iPS Cell Lines</h3>
+        <hr/>
+            <div ng-if="data.bankingStatus.hasOwnProperty('banked')">
+            <dl class="dl-horizontal">
+                <dt>Banked lines ({{data.bankingStatus.banked.length}}):</dt>
+                <dd><div ng-repeat="ipsc in data.bankingStatus.banked | orderBy:identity "><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></div></dd>
+            </dl>
+            </div>
+            <div ng-if="data.bankingStatus.hasOwnProperty('selected')">
+            <dl class="dl-horizontal">
+                <dt>Selected for banking ({{data.bankingStatus.selected.length}}):</dt>
+                <dd><div ng-repeat="ipsc in data.bankingStatus.selected | orderBy:identity "><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></div></dd>
+            </dl>
+            </div>
+            <div ng-if="data.bankingStatus.hasOwnProperty('pending')">
+            <dl class="dl-horizontal">
+                <dt>Pending decision on selection ({{data.bankingStatus.pending.length}}):</dt>
+                <dd><div ng-repeat="ipsc in data.bankingStatus.pending | orderBy:identity "><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></div></dd>
+            </dl>
+            </div>
+            <div ng-if="data.bankingStatus.hasOwnProperty('notselected')">
+            <dl class="dl-horizontal">
+                <dt>Not selected for banking ({{data.bankingStatus.notselected.length}}):</dt>
+                <dd><div ng-repeat="ipsc in data.bankingStatus.notselected | orderBy:identity "><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></div></dd>
+            </dl>
+            </div>
+        </div>
         </div>
 
     </div>

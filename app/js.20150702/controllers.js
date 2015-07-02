@@ -47,6 +47,15 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient'
     }).then(function(resp) {
         $scope.apiSuccess = true;
         $scope.data = resp.data['_source'];
+        $scope.data.bankingStatus = {};
+        for (var i=0; i<$scope.data.cellLines.length; i++) {
+            var cellLine = $scope.data.cellLines[i];
+            var bankingStatus = cellLine.bankingStatus.toLowerCase().replace(/\s+/g, '');
+            if (! $scope.data.bankingStatus.hasOwnProperty(bankingStatus)) {
+                $scope.data.bankingStatus[bankingStatus] = [];
+            }
+            $scope.data.bankingStatus[bankingStatus].push(cellLine.name);            
+        }
     }, function(resp) {
         $scope.apiError = true;
         $scope.apiStatus = resp.status;
@@ -59,7 +68,7 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient'
 controllers.controller('DonorListCtrl', function() {
     var controller=this;
     this.documentType = 'donor';
-    this.initFields = ['name', 'sex.value', 'ethnicity', 'diseaseStatus.value', 'age', 'tissueProvider', 'bioSamplesAccession', 'cellLines'];
+    this.initFields = ['name', 'sex.value', 'ethnicity', 'diseaseStatus.value', 'age', 'tissueProvider', 'bioSamplesAccession', 'cellLines.name'];
 
     this.columnHeadersMap = {
         name: 'Name',
@@ -69,7 +78,7 @@ controllers.controller('DonorListCtrl', function() {
         age: 'Age',
         tissueProvider: 'Tissue Provider',
         bioSamplesAccession: 'Biosample',
-        cellLines: 'Cell Lines',
+        'cellLines.name': 'Cell Lines',
     };
 
     this.compileHead = function(fields) {
@@ -78,7 +87,7 @@ controllers.controller('DonorListCtrl', function() {
             var field = fields[i];
             trChildren.push(
                 field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
-              :  field == 'cellLines' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
+              :  field == 'cellLines.name' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
               : '<th class="sort">'+controller.columnHeadersMap[field]+'</th>'
             );
         }
@@ -92,7 +101,7 @@ controllers.controller('DonorListCtrl', function() {
             var hitStr = 'hit['+i+']';
             trChildren.push(
                 field == 'bioSamplesAccession' ? '<td class="matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item biosample" popover="Biosample" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
-              : field == 'cellLines' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.join(\', \')}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.length"></span></div></td>'
+              : field == 'cellLines.name' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.join(\', \')}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.length"></span></div></td>'
               : field == 'name' ? '<td class="name"><a ng-href="#/donors/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
             );

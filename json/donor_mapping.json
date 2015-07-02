@@ -47,9 +47,17 @@
                 "copy_to": "searchable._other"
             },
             "cellLines": {
-                "type": "string",
-                "index": "not_analyzed",
-                "copy_to": ["searchable.hipsciShortName", "searchable.hipsciFullName"]
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": ["searchable.hipsciShortName", "searchable.hipsciFullName"]
+                    },
+                    "bankingStatus": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    }
+                }
             },
             "diseaseStatus": {
                 "properties": {
