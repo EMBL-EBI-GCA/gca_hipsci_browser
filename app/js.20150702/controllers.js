@@ -59,7 +59,7 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient'
 controllers.controller('DonorListCtrl', function() {
     var controller=this;
     this.documentType = 'donor';
-    this.initFields = ['name', 'sex.value', 'ethnicity', 'diseaseStatus.value', 'age', 'tissueProvider', 'bioSamplesAccession', 'cellLines'];
+    this.initFields = ['name', 'sex.value', 'ethnicity', 'diseaseStatus.value', 'age', 'tissueProvider', 'bioSamplesAccession', 'cellLines.name'];
 
     this.columnHeadersMap = {
         name: 'Name',
@@ -69,7 +69,7 @@ controllers.controller('DonorListCtrl', function() {
         age: 'Age',
         tissueProvider: 'Tissue Provider',
         bioSamplesAccession: 'Biosample',
-        cellLines: 'Cell Lines',
+        'cellLines.name': 'Cell Lines',
     };
 
     this.compileHead = function(fields) {

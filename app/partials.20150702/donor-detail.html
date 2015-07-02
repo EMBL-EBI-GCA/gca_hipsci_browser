@@ -45,7 +45,7 @@
 
         <dl class="dl-horizontal">
             <dt>Derived cell lines ({{data.cellLines.length}}):</dt>
-            <dd><div ng-repeat="ipsc in data.cellLines | orderBy:identity "><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></div></dd>
+            <dd><div ng-repeat="ipsc in data.cellLines | orderBy:identity "><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc.name"></a></div></dd>
         </dl>
         </div>
 
