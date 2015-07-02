@@ -78,7 +78,7 @@ controllers.controller('DonorListCtrl', function() {
             var field = fields[i];
             trChildren.push(
                 field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
-              :  field == 'cellLines' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
+              :  field == 'cellLines.name' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
               : '<th class="sort">'+controller.columnHeadersMap[field]+'</th>'
             );
         }
