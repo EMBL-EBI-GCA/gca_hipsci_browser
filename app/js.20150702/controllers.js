@@ -50,13 +50,12 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient'
         $scope.data.bankingStatus = {};
         for (var i=0; i<$scope.data.cellLines.length; i++) {
             var cellLine = $scope.data.cellLines[i];
-            var bankingStatus = cellLine.bankingStatus.toLowerCase().replace(/\s+/g);
+            var bankingStatus = cellLine.bankingStatus.toLowerCase().replace(/\s+//g);
             if (! $scope.data.bankingStatus.hasOwnProperty(bankingStatus)) {
                 $scope.data.bankingStatus[bankingStatus] = [];
             }
             $scope.data.bankingStatus[bankingStatus].push(cellLine.name);            
         }
-        console.log($scope.data);
     }, function(resp) {
         $scope.apiError = true;
         $scope.apiStatus = resp.status;
