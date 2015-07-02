@@ -202,7 +202,7 @@ controllers.controller('LineListCtrl', function() {
                 field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
               :  field == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
               :  field == 'openAccess' ? '<th class="matrix-dot"><div><span>Data access</span></div></th>'
-              :  assaysLocations.hasOwnProperty(field) ? '<th class="matrix-dot assay"><div popover="'+this.assayNamesMap[field]+'" popover-trigger="mouseenter"><span>'+field+'</span></div></th>'
+              :  assaysLocations.hasOwnProperty(field) ? '<th class="matrix-dot assay"><div popover="'+controller.assayNamesMap[field]+'" popover-trigger="mouseenter"><span>'+field+'</span></div></th>'
               : '<th class="sort">'+controller.columnHeadersMap[field]+'</th>'
             );
         }
@@ -219,7 +219,7 @@ controllers.controller('LineListCtrl', function() {
               : field == 'bankingStatus' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field == 'openAccess' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
-              : assaysLocations.hasOwnProperty(field) ? '<td class="matrix-dot"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item assay" popover="'+this.assayNamesMap[field]+'" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
+              : assaysLocations.hasOwnProperty(field) ? '<td class="matrix-dot"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item assay" popover="'+controller.assayNamesMap[field]+'" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
             );
         }
