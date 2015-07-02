@@ -181,11 +181,12 @@ controllers.controller('LineListCtrl', function() {
         if (assaysLocations[assay] == 'archive') {
             this.columnHeadersMap['assays.'+ assay+ '.archive'] = this.assayNamesMap[assay] + ' archive';
             this.columnHeadersMap['assays.'+ assay+ '.study'] = this.assayNamesMap[assay] + ' study accession';
+            this.filterFieldsMap['assays.'+ assay+ '.archive'] = this.assayNamesMap[assay];
         }
         else if (assaysLocations[assay] == 'ftp') {
             this.columnHeadersMap['assays.'+ assay+ '.path'] = this.assayNamesMap[assay] + ' ftp path';
+            this.filterFieldsMap['assays.'+ assay+ '.ftp'] = this.assayNamesMap[assay];
         }
-        this.filterFieldsMap['assays.'+ assay+ '.archive'] = this.assayNamesMap[assay];
     }
 
     this.openAccessMap = {
