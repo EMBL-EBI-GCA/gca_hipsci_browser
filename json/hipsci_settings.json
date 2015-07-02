@@ -85,7 +85,7 @@
                 },
                 "ethnicity_stopwords": {
                     "type": "stop",
-                    "stopwords": ["east", "north", "west", "south"],
+                    "stopwords": ["east", "north", "west", "south", "mixed", "middle", "other"],
                     "ignore_case": true
                 },
                 "hpsi_long_name_capture": {
