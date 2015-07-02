@@ -55,6 +55,7 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient'
             }
             $scope.data.bankingStatus[cellLine.bankingStatus].push(cellLine.name);            
         }
+        console.log($scope.data);
     }, function(resp) {
         $scope.apiError = true;
         $scope.apiStatus = resp.status;
