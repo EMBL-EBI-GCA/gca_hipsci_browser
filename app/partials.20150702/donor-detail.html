@@ -46,14 +46,24 @@
         <section>
         <h3 class="item-detail-section">Derived iPS Cell Lines</h3>
         <hr/>
-        <div class="row">
-            <div class="col-md-4" ng-if="data.bankingStatus.hasOwnProperty('banked')">
-            <dl class="dl-horizontal">
+        <dl class="dl-horizontal">
+            <div ng-if="data.bankingStatus.hasOwnProperty('banked')">
                 <dt>Banked lines ({{data.bankingStatus.banked.length}}):</dt>
                 <dd><div ng-repeat="ipsc in data.bankingStatus.banked | orderBy:identity "><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></div></dd>
-            </dl>
             </div>
+            <div ng-if="data.bankingStatus.hasOwnProperty('selected')">
+                <dt>Selected for banking ({{data.bankingStatus.selected.length}}):</dt>
+                <dd><div ng-repeat="ipsc in data.bankingStatus.selected | orderBy:identity "><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></div></dd>
             </div>
+            <div ng-if="data.bankingStatus.hasOwnProperty('pending')">
+                <dt>Pending decision on selection ({{data.bankingStatus.pending.length}}):</dt>
+                <dd><div ng-repeat="ipsc in data.bankingStatus.pending | orderBy:identity "><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></div></dd>
+            </div>
+            <div ng-if="data.bankingStatus.hasOwnProperty('notselected')">
+                <dt>Not selected ({{data.bankingStatus.notselected.length}}):</dt>
+                <dd><div ng-repeat="ipsc in data.bankingStatus.notselected | orderBy:identity "><a ng-href="#/lines/{{ipsc}}" ng-bind="ipsc"></a></div></dd>
+            </div>
+        </dl>
         </div>
         </div>
 
