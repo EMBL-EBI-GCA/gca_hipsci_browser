@@ -47,6 +47,15 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient'
     }).then(function(resp) {
         $scope.apiSuccess = true;
         $scope.data = resp.data['_source'];
+        $scope.data.bankingStatus = {};
+        for (var i=0; i<$scope.data.cellLines; i++) {
+            var cellLine = $scope.data.cellLines[i];
+            if (! $scope.data.bankingStatus.hasOwnProperty(cellLine.bankingStatus)) {
+                $scope.data.bankingStatus[cellLine.bankingStatus] = [];
+            }
+            $scope.data.bankingStatus[cellLine.bankingStatus].push(cellLine.name);            
+        }
+        console.log($scope.data);
     }, function(resp) {
         $scope.apiError = true;
         $scope.apiStatus = resp.status;
