@@ -40,13 +40,6 @@
         <ul>
         <li>This endpoint supports any search option described in the Elasticsearch documentation on <a href="https://www.elastic.co/guide/en/elasticsearch/guide/current/full-body-search.html" target="_blank">Full Body Search</a></li>
         <li>Returns information in json format</li>
-        <li>E.g. POST http://www.hipsci.org/lines/api/cellLine/_search '{"query": {"match": {"sourceMaterial.cellType": "Fibroblast"}}}'</li>
-        </ul>
-
-        <h3>Search for cell lines: http://www.hipsci.org/lines/api/cellLine/_search</h3>
-        <ul>
-        <li>This endpoint supports any search option described in the Elasticsearch documentation on <a href="https://www.elastic.co/guide/en/elasticsearch/guide/current/full-body-search.html" target="_blank">Full Body Search</a></li>
-        <li>Returns information in json format</li>
         <li>E.g. Search for cell lines derived from fibroblasts:
 <pre>POST http://www.hipsci.org/lines/api/cellLine/_search
 '{
@@ -72,7 +65,7 @@
         <ul>
         <li>This endpoint supports any search option described in the Elasticsearch documentation on <a href="https://www.elastic.co/guide/en/elasticsearch/guide/current/full-body-search.html" target="_blank">Full Body Search</a></li>
         <li>Returns information in json format</li>
-        <li>E.g. Search for donors in the age range 20-24
+        <li>E.g. Search for donors in the age range 20-24:
 <pre>POST http://www.hipsci.org/lines/api/donor/_search
 '{
   "query": {
