@@ -18,32 +18,32 @@
 
     <section>
 
-    <h3>Endpoints</h3>
+    <h2>Endpoints</h2>
     <hr/>
     <dl class="dl-horizontal">
     <div class="row"> <div class="col-md-6 col-md-offset-3">
-        <h4>Information about a cell line: http://www.hipsci.org/lines/api/cellLine/:name</h4>
+        <h3>Information about a cell line: http://www.hipsci.org/lines/api/cellLine/:name</h3>
         <ul>
         <li>E.g. GET <a href="http://www.hipsci.org/lines/api/cellLine/HPSI0813i-fpdj_3" target="_blank">http://www.hipsci.org/lines/api/cellLine/HPSI0813i-fpdj_3</a></li>
         <li>Returns information in json format</li>
         <li>The cellLine data structure is defined by <a href="https://github.com/EMBL-EBI-GCA/gca_hipsci_browser/blob/master/json/cellLine_mapping.json" "target=_blank">this mapping</a>. See <a href="https://www.elastic.co/guide/en/elasticsearch/guide/current/mapping-intro.html" target="_blank">this guide</a> for information on Elasticsearch mapping definitions</li>
         </ul>
 
-        <h4>Information about a donor: http://www.hipsci.org/lines/api/donor/:name</h4>
+        <h3>Information about a donor: http://www.hipsci.org/lines/api/donor/:name</h3>
         <ul>
         <li>E.g. GET <a href="http://www.hipsci.org/lines/api/donor/HPSI-ffdj" target="_blank">http://www.hipsci.org/lines/api/donor/HPSI-ffdj</a></li>
         <li>Returns information in json format</li>
         <li>The donor data structure is defined by <a href="https://github.com/EMBL-EBI-GCA/gca_hipsci_browser/blob/master/json/donor_mapping.json" "target=_blank">this mapping</a>. See <a href="https://www.elastic.co/guide/en/elasticsearch/guide/current/mapping-intro.html" target="_blank">this guide</a> for information on Elasticsearch mapping definitions</li>
         </ul>
 
-        <h4>Search for cell lines: http://www.hipsci.org/lines/api/cellLine/_search</h4>
+        <h3>Search for cell lines: http://www.hipsci.org/lines/api/cellLine/_search</h3>
         <ul>
         <li>This endpoint supports any search option described in the Elasticsearch documentation on <a href="https://www.elastic.co/guide/en/elasticsearch/guide/current/full-body-search.html" target="_blank">Full Body Search</a></li>
         <li>Returns information in json format</li>
         <li>E.g. POST http://www.hipsci.org/lines/api/cellLine/_search '{"query": {"match": {"sourceMaterial.cellType": "Fibroblast"}}}'</li>
         </ul>
 
-        <h4>Search for donors: http://www.hipsci.org/lines/api/donor/_search</h4>
+        <h3>Search for donors: http://www.hipsci.org/lines/api/donor/_search</h3>
         <ul>
         <li>This endpoint supports any search option described in the Elasticsearch documentation on <a href="https://www.elastic.co/guide/en/elasticsearch/guide/current/full-body-search.html" target="_blank">Full Body Search</a></li>
         <li>Returns information in json format</li>
