@@ -50,21 +50,21 @@
         <li>E.g. Search for cell lines derived from fibroblasts:
 <pre>POST http://www.hipsci.org/lines/api/cellLine/_search
 '{
-    "query": {
-        "filtered": {
-            "filter": {
-                "term": {"sourceMaterial.cellType": "Fibroblast"}
-            }
-        }
+ "query": {
+    "filtered": {
+      "filter": {
+        "term": {"sourceMaterial.cellType": "Fibroblast"}
+      }
     }
+  }
 }'</pre>
         </li>
         <li>E.g. Search for all cell lines and return the names of the first 100:
 <pre>POST http://www.hipsci.org/lines/api/cellLine/_search
 '{
-    "size": 100,
-    "_source": ["name"],
-    "query": {"match_all": {}}
+  "size": 100,
+  "_source": ["name"],
+  "query": {"match_all": {}}
 }'</pre>
         </li>
 
@@ -75,21 +75,21 @@
         <li>E.g. Search for donors in the age range 20-24
 <pre>POST http://www.hipsci.org/lines/api/donor/_search
 '{
-    "query": {
-        "filtered": {
-            "filter": {
-                "term": {"age": "20-24"}
-            }
-        }
+  "query": {
+    "filtered": {
+      "filter": {
+        "term": {"age": "20-24"}
+      }
     }
+  }
 }'</pre>
         </li>
         <li>E.g. Search for all donors and return the names of the first 100:
 <pre>POST http://www.hipsci.org/lines/api/donor/_search
 '{
-    "size": 100,
-    "_source": ["name"],
-    "query": {"match_all": {}}
+  "size": 100,
+  "_source": ["name"],
+  "query": {"match_all": {}}
 }'</pre>
         </li>
         </ul>
