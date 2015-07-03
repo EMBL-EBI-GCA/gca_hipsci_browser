@@ -49,17 +49,33 @@
         <li>Returns information in json format</li>
         <li>E.g. Search for cell lines derived from fibroblasts:
             <pre>
-            this is a test
-            test2
+            POST http://www.hipsci.org/lines/api/cellLine/_search
+            '{"query": {"filtered": {"filter": {"term": {"sourceMaterial.cellType": "Fibroblast"}}}}}'
             </pre>
         </li>
-        <li>E.g. POST http://www.hipsci.org/lines/api/cellLine/_search '{"query": {"match": {"sourceMaterial.cellType": "Fibroblast"}}}'</li>
+        <li>E.g. Search for all cell lines and return the names of the first 100:
+            <pre>
+            POST http://www.hipsci.org/lines/api/cellLine/_search
+            '{ "size": 100, "_source": ["name"], "query": {"match_all": {}}}'
+            </pre>
+        </li>
 
         <h3>Search for donors: http://www.hipsci.org/lines/api/donor/_search</h3>
         <ul>
         <li>This endpoint supports any search option described in the Elasticsearch documentation on <a href="https://www.elastic.co/guide/en/elasticsearch/guide/current/full-body-search.html" target="_blank">Full Body Search</a></li>
         <li>Returns information in json format</li>
-        <li>E.g. POST http://www.hipsci.org/lines/api/donor/_search '{"query": {"match": {"age": "20-24"}}}'</li>
+        <li>E.g. Search for donors in the age range 20-24
+            <pre>
+            POST http://www.hipsci.org/lines/api/donor/_search
+            '{"query": {"filtered": {"filter": {"term": {"age": "20-24"}}}}}'
+            </pre>
+        </li>
+        <li>E.g. Search for all donors and return the names of the first 100:
+            <pre>
+            POST http://www.hipsci.org/lines/api/donor/_search
+            '{ "size": 100, "_source": ["name"], "query": {"match_all": {}}}'
+            </pre>
+        </li>
         </ul>
 
     </div> </div>
