@@ -30,7 +30,7 @@
                 "max_length": {
                     "type": "custom",
                     "tokenizer": "standard",
-                    "filter": ["lowercase"]
+                    "filter": ["lowercase", "long_word_strip"]
                 },
                 "lowercase_whitespace": {
                     "type": "custom",
@@ -94,6 +94,11 @@
                     "type": "pattern_replace",
                     "pattern": "([0-9]+)[-_]?([a-z]+)",
                     "replacement": "$1$2"
+                },
+                "long_word_strip": {
+                    "type": "pattern_replace",
+                    "pattern": "(.*{8}).*",
+                    "replacement": "$1"
                 },
                 "caucasian": {
                     "type": "pattern_replace",
