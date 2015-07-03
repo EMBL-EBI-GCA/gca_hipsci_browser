@@ -36,6 +36,9 @@ hipsciBrowser.config(['$routeProvider',
       controller: 'DonorListCtrl',
       controllerAs: 'DonorCtrl',
     }).
+    when('/api', {
+      templateUrl: 'partials.20150702/api.html',
+    }).
     otherwise({
       redirectTo: '/lines/'
     });
