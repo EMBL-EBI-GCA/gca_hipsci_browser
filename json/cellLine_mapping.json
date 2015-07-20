@@ -211,6 +211,19 @@
                 "format": "dateOptionalTime",
                 "type": "date"
             },
+            "diseaseStatus": {
+                "properties": {
+                    "value": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.prefixes"
+                    },
+                    "ontologyPURL": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    }
+                }
+            },
             "donor": {
                 "properties": {
                     "name": {
@@ -227,19 +240,6 @@
                         "type": "string",
                         "index": "analyzed",
                         "copy_to": "searchable.prefixes"
-                    },
-                    "disease": {
-                        "properties": {
-                            "value": {
-                                "type": "string",
-                                "index": "not_analyzed",
-                                "copy_to": "searchable.prefixes"
-                            },
-                            "ontologyPURL": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            }
-                        }
                     },
                     "bioSamplesAccession": {
                         "type": "string",
