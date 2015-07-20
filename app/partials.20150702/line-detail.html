@@ -23,9 +23,9 @@
                 <dd><a ng-href="#/donors/{{data.donor.name}}" ng-bind="data.donor.name"></a></dd>
             </div>
 
-            <div ng-if="data.donor.diseaseStatus.value">
+            <div ng-if="data.donor.disease.value">
                 <dt>Disease status:</dt>
-                <dd ng-bind="data.donor.diseaseStatus.value"></dd>
+                <dd ng-bind="data.donor.disease.value"></dd>
             </div>
 
             <div ng-if="data.sourceMaterial.value">

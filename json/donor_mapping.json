@@ -59,7 +59,7 @@
                     }
                 }
             },
-            "diseaseStatus": {
+            "disease": {
                 "properties": {
                     "value": {
                         "type": "string",

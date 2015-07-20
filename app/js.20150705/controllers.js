@@ -68,13 +68,13 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient'
 controllers.controller('DonorListCtrl', function() {
     var controller=this;
     this.documentType = 'donor';
-    this.initFields = ['name', 'sex.value', 'ethnicity', 'diseaseStatus.value', 'age', 'tissueProvider', 'bioSamplesAccession', 'cellLines.name'];
+    this.initFields = ['name', 'sex.value', 'ethnicity', 'disease.value', 'age', 'tissueProvider', 'bioSamplesAccession', 'cellLines.name'];
 
     this.columnHeadersMap = {
         name: 'Name',
         'sex.value': 'Sex',
         ethnicity: 'Ethnicity',
-        'diseaseStatus.value': 'Disease Status',
+        'disease.value': 'Disease Status',
         age: 'Age',
         tissueProvider: 'Tissue Provider',
         bioSamplesAccession: 'Biosample',
@@ -127,7 +127,7 @@ controllers.controller('DonorListCtrl', function() {
 controllers.controller('LineListCtrl', function() {
     var controller = this;
     this.documentType = 'cellLine';
-    this.initHtmlFields =  ['name', 'donor.diseaseStatus.value', 'donor.sex.value', 'sourceMaterial.value', 'tissueProvider', 'openAccess', 'bankingStatus', 'bioSamplesAccession',
+    this.initHtmlFields =  ['name', 'donor.disease.value', 'donor.sex.value', 'sourceMaterial.value', 'tissueProvider', 'openAccess', 'bankingStatus', 'bioSamplesAccession',
         'gtarray', 'gexarray', 'exomeseq', 'rnaseq', 'mtarray', 'proteomics', 'cellbiol-fn' ];
 
     var assaysLocations = {'gtarray':'archive', 'gexarray':'archive', 'exomeseq':'archive', 'rnaseq':'archive', 'mtarray':'archive', 'proteomics':'ftp', 'cellbiol-fn':'ftp'};
@@ -176,7 +176,7 @@ controllers.controller('LineListCtrl', function() {
 
     this.columnHeadersMap = {
         name: 'Name',
-        'donor.diseaseStatus.value': 'Disease Status',
+        'donor.disease.value': 'Disease Status',
         'donor.sex.value': 'Sex',
         'donor.sourceMaterial.value': 'Source Material',
         tissueProvider: 'Tissue Provider',

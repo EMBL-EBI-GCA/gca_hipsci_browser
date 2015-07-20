@@ -228,7 +228,7 @@
                         "index": "analyzed",
                         "copy_to": "searchable.prefixes"
                     },
-                    "diseaseStatus": {
+                    "disease": {
                         "properties": {
                             "value": {
                                 "type": "string",
