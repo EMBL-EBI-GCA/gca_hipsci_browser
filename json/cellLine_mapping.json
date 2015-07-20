@@ -225,19 +225,28 @@
                 }
             },
             "donor": {
-                "type": "string",
-                "index": "not_analyzed",
-                "copy_to": ["searchable.hipsciShortName", "searchable.hipsciFullName"]
-            },
-            "donorAge": {
-                "type": "string",
-                "index": "not_analyzed",
-                "copy_to": "searchable._other"
-            },
-            "ethnicity": {
-                "type": "string",
-                "index": "analyzed",
-                "copy_to": "searchable.prefixes"
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": ["searchable.hipsciShortName", "searchable.hipsciFullName"]
+                    },
+                    "donorAge": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable._other"
+                    },
+                    "ethnicity": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "copy_to": "searchable.prefixes"
+                    },
+                    "bioSamplesAccession": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable._other"
+                    }
+                }
             },
             "growingConditionsQC1": {
                 "type": "string",
