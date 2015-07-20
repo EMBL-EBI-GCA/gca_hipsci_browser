@@ -178,7 +178,7 @@ controllers.controller('LineListCtrl', function() {
         name: 'Name',
         'diseaseStatus.value': 'Disease Status',
         'donor.sex.value': 'Sex',
-        'donor.sourceMaterial.value': 'Source Material',
+        'sourceMaterial.value': 'Source Material',
         tissueProvider: 'Tissue Provider',
         bioSamplesAccession: 'Biosample',
         openAccess: 'Open access data',
