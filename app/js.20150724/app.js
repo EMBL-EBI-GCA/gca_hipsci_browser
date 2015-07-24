@@ -18,26 +18,26 @@ hipsciBrowser.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
     when('/lines/:ipscName', {
-      templateUrl: 'partials.20150702/line-detail.html',
+      templateUrl: 'partials.20150724/line-detail.html',
       controller: 'LineDetailCtrl',
       controllerAs: 'LineCtrl',
     }).
     when('/donors/:donorName', {
-      templateUrl: 'partials.20150702/donor-detail.html',
+      templateUrl: 'partials.20150724/donor-detail.html',
       controller: 'DonorDetailCtrl'
     }).
     when('/lines', {
-      templateUrl: 'partials.20150702/line-list.html',
+      templateUrl: 'partials.20150724/line-list.html',
       controller: 'LineListCtrl',
       controllerAs: 'LineCtrl',
     }).
     when('/donors', {
-      templateUrl: 'partials.20150702/donor-list.html',
+      templateUrl: 'partials.20150724/donor-list.html',
       controller: 'DonorListCtrl',
       controllerAs: 'DonorCtrl',
     }).
     when('/api', {
-      templateUrl: 'partials.20150702/api.html',
+      templateUrl: 'partials.20150724/api.html',
     }).
     otherwise({
       redirectTo: '/lines/'
