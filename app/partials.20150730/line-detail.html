@@ -38,6 +38,11 @@
                 <dd ng-bind="data.tissueProvider"></dd>
             </div>
 
+            <div ng-if="data.reprogramming.methodOfDerivation">
+                <dt>Method of derivation:</dt>
+                <dd ng-bind="data.reprogramming.methodOfDerivation"></dd>
+            </div>
+
             <div ng-if="data.reprogramming.dateOfDerivation">
                 <dt>Date of derivation:</dt>
                 <dd ng-bind="data.reprogramming.dateOfDerivation"></dd>
