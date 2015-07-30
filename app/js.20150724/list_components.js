@@ -35,7 +35,7 @@ listComponents.directive('aggsFilter', function() {
         capitalise: '@',
     },
     require: '^listPanel',
-    templateUrl: 'partials.20150724/uiFacet.html',
+    templateUrl: 'partials.20150730/uiFacet.html',
     link: function(scope, iElement, iAttrs, ListPanelCtrl) {
         scope.filteredTerms = {};
         scope.filterNoData = false;

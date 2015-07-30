@@ -207,10 +207,6 @@
                     }
                 }
             },
-            "dateOfDerivation": {
-                "format": "dateOptionalTime",
-                "type": "date"
-            },
             "diseaseStatus": {
                 "properties": {
                     "value": {
@@ -258,10 +254,33 @@
                 "index": "not_analyzed",
                 "copy_to": "searchable._other"
             },
-            "methodOfDerivation": {
-                "type": "string",
-                "index": "not_analyzed",
-                "copy_to": "searchable._other"
+            "reprogramming": {
+                "properties": {
+                    "methodOfDerivation": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable._other"
+                    },
+                    "type": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable._other"
+                    },
+                    "virus": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable._other"
+                    },
+                    "vector": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable._other"
+                    },
+                    "dateOfDerivation": {
+                        "format": "dateOptionalTime",
+                        "type": "date"
+                    }
+                }
             },
             "name": {
                 "type": "string",
