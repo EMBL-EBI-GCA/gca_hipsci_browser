@@ -41,3 +41,13 @@
         margin-left: 32%;
     }
 }
+
+@media (min-width: 768px) and (max-width: 1199px) {
+    .dl-horizontal.dl-horizontal-wide dt{
+        width: 45%;
+    }
+    .dl-horizontal.dl-horizontal-wide dd{
+        margin-left: 47%;
+    }
+}
+
