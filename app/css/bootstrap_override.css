@@ -33,16 +33,7 @@
   }
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
-    .dl-horizontal dt{
-        width: 45%;
-    }
-    .dl-horizontal dd{
-        margin-left: 47%;
-    }
-}
-
-@media (min-width: 992px) {
+@media (min-width: 768px) {
     .dl-horizontal dt{
         width: 30%;
     }
@@ -50,3 +41,13 @@
         margin-left: 32%;
     }
 }
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .dl-horizontal .dl-horizontal-wide dt{
+        width: 45%;
+    }
+    .dl-horizontal dd{
+        margin-left: 47%;
+    }
+}
+
