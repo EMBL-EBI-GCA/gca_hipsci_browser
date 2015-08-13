@@ -46,7 +46,7 @@
     .dl-horizontal .dl-horizontal-wide dt{
         width: 45%;
     }
-    .dl-horizontal dd{
+    .dl-horizontal .dl-horizontal-wide dd{
         margin-left: 47%;
     }
 }
