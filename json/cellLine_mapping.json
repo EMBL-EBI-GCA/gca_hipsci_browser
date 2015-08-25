@@ -1,6 +1,7 @@
 {
     "cellLine": {
         "_all": {"enabled": false},
+        "_timestamp": {"enabled": true},
         "properties": {
             "searchable": {
                 "properties": {
