@@ -1,7 +1,7 @@
 {
     "donor": {
         "_all": {"enabled": false},
-        "_timestamp": {"enabled": true, "store": "yes"},
+        "_timestamp": {"enabled": true, "store": "yes", "path": "_timestamp"},
         "properties": {
             "searchable": {
                 "properties": {
