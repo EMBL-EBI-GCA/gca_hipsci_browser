@@ -9,22 +9,22 @@
                 <facets-clear text="Clear filters"></facets-clear>
                 <div class="row">
                 <div class="col-sm-6 col-md-12">
-                <aggs-filter title="Data Access" field="openAccess" type="terms" labels-map="LineCtrl.openAccessMap"></aggs-filter>
+                <aggs-filter title="Data Access" field="calculated.access"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
-                <aggs-filter title="Assays" field="assays" type="exists" exists-fields="LineCtrl.assaysFields" labels-map="LineCtrl.filterFieldsMap"></aggs-filter>
+                <aggs-filter title="Assays" field="calculated.assays"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
-                <aggs-filter title="Source Material" field="sourceMaterial.value" type="terms"></aggs-filter>
+                <aggs-filter title="Source Material" field="sourceMaterial.value"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
-                <aggs-filter title="Disease Status" field="diseaseStatus.value" type="terms"></aggs-filter>
+                <aggs-filter title="Disease Status" field="diseaseStatus.value"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
-                <aggs-filter title="Banked Status" field="bankingStatus" type="terms"></aggs-filter>
+                <aggs-filter title="Banked Status" field="calculated.bankingStatus" sort-function="LineCtrl.bankingStatusSort"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
-                <aggs-filter title="Tissue Provider" field="tissueProvider" type="terms"></aggs-filter>
+                <aggs-filter title="Tissue Provider" field="tissueProvider"></aggs-filter>
                 </div>
                 </div>
             </div>
@@ -50,7 +50,7 @@
 
             <div class="matrix-wrapper table-responsive">
                 <list-table class="matrix table table-striped" compile-head="LineCtrl.compileHead" compile-row="LineCtrl.compileRow" process-hit-fields="LineCtrl.processHitFields"
-                        default-sort-fields="[['_score', false],['assays.count',false]]">
+                        default-sort-fields="[['_score', false],['calculated.assayCount',false]]">
                 </list-table>
             </div>
 

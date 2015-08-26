@@ -15,6 +15,7 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
     }).then(function(resp) {
         $scope.apiSuccess = true;
         $scope.data = resp.data['_source'];
+        $scope.data.bankingStatus = jQuery.grep($scope.data.bankingStatus, function(str) {return ! /shipped/i.test(str)});
     }, function(resp) {
         $scope.apiError = true;
         $scope.apiStatus = resp.status;
@@ -50,7 +51,12 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient'
         $scope.data.bankingStatus = {};
         for (var i=0; i<$scope.data.cellLines.length; i++) {
             var cellLine = $scope.data.cellLines[i];
-            var bankingStatus = cellLine.bankingStatus.toLowerCase().replace(/\s+/g, '');
+            var joinedBankingStatus = cellLine.bankingStatus.join();
+            var bankingStatus = joinedBankingStatus.match(/banked/i) ? 'banked'
+                            : joinedBankingStatus.match(/pending/i) ? 'pending'
+                            : joinedBankingStatus.match(/not selected/i) ? 'notselected'
+                            : joinedBankingStatus.match(/selected/i) ? 'selected'
+                            : '';
             if (! $scope.data.bankingStatus.hasOwnProperty(bankingStatus)) {
                 $scope.data.bankingStatus[bankingStatus] = [];
             }
@@ -114,7 +120,7 @@ controllers.controller('DonorListCtrl', function() {
         for (var i=0; i<fields.length; i++) {
             var field = fields[i];
             processedFields[i] = ! hitFields.hasOwnProperty(field) ? undefined
-                    : field == 'cellLines' ? hitFields[field]
+                    : field == 'cellLines.name' ? hitFields[field]
                     : hitFields[field][0];
         }
         return processedFields;
@@ -174,6 +180,7 @@ controllers.controller('LineListCtrl', function() {
         'cellbiol-fn': 'Cellular phenotyping',
     };
 
+
     this.columnHeadersMap = {
         name: 'Name',
         'diseaseStatus.value': 'Disease Status',
@@ -197,11 +204,6 @@ controllers.controller('LineListCtrl', function() {
             this.filterFieldsMap['assays.'+ assay+ '.path'] = this.assayNamesMap[assay];
         }
     }
-
-    this.openAccessMap = {
-        'T': 'Open access',
-        'F': 'Managed access',
-    };
 
     this.compileHead = function(esFields) {
         var trChildren = [];
@@ -253,8 +255,12 @@ controllers.controller('LineListCtrl', function() {
             else if (field == 'bankingStatus') {
                 processedFields[i] = {letter: '', text: ''};
                 if (hitFields.hasOwnProperty(field)) {
-                    processedFields[i].text = hitFields[field][0];
-                    processedFields[i].letter = hitFields[field][0].substr(0,1);
+                    processedFields[i].text = jQuery.grep(hitFields[field], function(str) {return ! /shipped/i.test(str)}).join(', ');
+                    processedFields[i].letter = /banked/i.test(processedFields[i].text) ? 'B'
+                                            : /pending/i.test(processedFields[i].text) ? 'P'
+                                            : /not selected/i.test(processedFields[i].text) ? 'N'
+                                            : /selected/i.test(processedFields[i].text) ? 'S'
+                                            : '';
                 }
             }
             else if (field == 'openAccess') {
@@ -270,6 +276,17 @@ controllers.controller('LineListCtrl', function() {
             }
         }
         return processedFields;
+    };
+
+    var bankingStatusSortRegex = [/banked/i, /^selected/i, /pending/i]
+    this.bankingStatusSort = function(a,b) {
+        for (var i=0; i<bankingStatusSortRegex.length; i++) {
+            var a_passes = bankingStatusSortRegex[i].test(a) ? 1 : 0;
+            var b_passes = bankingStatusSortRegex[i].test(b) ? 1 : 0;
+            if (a_passes != b_passes) {
+                return b_passes - a_passes;
+            }
+        }
     };
 
 });

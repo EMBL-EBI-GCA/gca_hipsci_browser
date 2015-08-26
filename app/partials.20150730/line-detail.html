@@ -13,9 +13,9 @@
         <section>
         <dl class="dl-horizontal">
 
-            <div ng-if="data.bankingStatus">
+            <div ng-if="data.bankingStatus.length">
                 <dt>Banking status:</dt>
-                <dd ng-bind="data.bankingStatus"></dd>
+                <dd ng-bind="data.bankingStatus.join(', ')"></dd>
             </div>
 
             <div ng-if="data.donor.name">
@@ -70,7 +70,7 @@
         </dl>
         </section>
 
-        <section ng-if="data.assays.count || data.hlaTyping">
+        <section ng-if="!jQuery.isEmptyObject(data.assays) || data.hlaTyping">
         <h3 class="item-detail-section">Genomic assays</h3>
         <hr/>
         <dl class="dl-horizontal">

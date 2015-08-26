@@ -27,12 +27,8 @@ listComponents.directive('aggsFilter', function() {
     scope: {
         title: '@',
         field: '@',
-        labelsMap: '@',
-        existsFields: '@',
-        type: '@',
-        preSelected: '@',
         showNoData: '@',
-        capitalise: '@',
+        sortFunction: '@',
     },
     require: '^listPanel',
     templateUrl: 'partials.20150730/uiFacet.html',
@@ -45,21 +41,11 @@ listComponents.directive('aggsFilter', function() {
         scope.collapsed = true;
         scope.buttonText = '+';
 
-        scope.ulMaxHeight = 0;
-        scope.sortOrder = {};
+        var sortFunction = scope.$parent.$eval(scope.sortFunction) || function() {return 0;};
 
-        var existsFields = scope.$parent.$eval(scope.existsFields);
-        var labelsMap = scope.$parent.$eval(scope.labelsMap) || {};
-        var preSelected = scope.$parent.$eval(scope.preSelected) || [];
+        scope.ulMaxHeight = 0;
+
         var showNoData = scope.$parent.$eval(scope.showNoData) || false;
-        var capitalise = scope.$parent.$eval(scope.capitalise) || false;
-        var existsLabels = [];
-        if (typeof existsFields == 'undefined') {
-            existsFields = [];
-        }
-        for (var i=0; i<existsFields.length; i++) {
-            existsLabels[i] = labelsMap[existsFields[i]];
-        }
 
         var disableCallback = function() {
             scope.filteredTerms = {};
@@ -103,54 +89,18 @@ listComponents.directive('aggsFilter', function() {
             }
             ListPanelCtrl.registerFilter(scope.field, filterReq, disableCallback);
         };
-        var registerExistsFilter = function() {
-            var filtTermsArr = Object.keys(scope.filteredTerms);
-            var filterReq = undefined;
-            if (filtTermsArr.length == 1) {
-                filterReq = {exists: {field: filtTermsArr[0]}};
-            }
-            else if (filtTermsArr.length > 1) {
-                filtTermsArr = filtTermsArr.sort(); // This is to help with caching
-                filterReq = {and: []};
-                for (var i=0; i<filtTermsArr.length; i++) {
-                    filterReq.and.push({exists: {field: filtTermsArr[i]}});
-                }
-            }
-            ListPanelCtrl.registerFilter(scope.field, filterReq, disableCallback);
-        };
 
         var processAggResp = function(resps) {
             var aggs = {};
-            if (scope.type == 'terms') {
-                scope.aggsOther = resps[0].sum_other_doc_count;
-                for (var i=0; i<resps[0].buckets.length; i++) {
-                    var respAgg = resps[0].buckets[i];
-                    if (labelsMap.hasOwnProperty(respAgg.key)) {
-                        aggs[respAgg.key] = {key: labelsMap[respAgg.key], doc_count: respAgg.doc_count, field: respAgg.key };
-                    }
-                    else if (capitalise) {
-                        var key = respAgg.key;
-                        key = key.charAt(0).toUpperCase() + key.slice(1);
-                        aggs[respAgg.key] = {key: key, doc_count: respAgg.doc_count, field: respAgg.key };
-                    }
-                    else {
-                        respAgg.field = respAgg.key;
-                        aggs[respAgg.key] = respAgg;
-                    }
-                }
-                if (showNoData && resps[1].doc_count) {
-                    aggs['_noData'] = {key: 'No data', doc_count: resps[1].doc_count, field: '_noData'};
-                }
+            scope.aggsOther = resps[0].sum_other_doc_count;
+            for (var i=0; i<resps[0].buckets.length; i++) {
+                var respAgg = resps[0].buckets[i];
+                respAgg.field = respAgg.key;
+                aggs[respAgg.key] = respAgg;
             }
-            else if (scope.type == 'exists') {
-                if (resps.length != existsFields.length) {
-                    return;
-                }
-                for (var i=0; i<existsFields.length; i++) {
-                    aggs[existsFields[i]] = {key: existsLabels[i], doc_count: resps[i].value, field: existsFields[i]};
-                }
+            if (showNoData && resps[1].doc_count) {
+                aggs['_noData'] = {key: 'No data', doc_count: resps[1].doc_count, field: '_noData'};
             }
-            else {return;}
             
             for (var aggField in scope.filteredTerms) {
                 if (!aggs.hasOwnProperty(aggField)) {
@@ -163,7 +113,7 @@ listComponents.directive('aggsFilter', function() {
                 var sortedKeys = Object.keys(aggs).sort(function(a,b) {
                     if (a=='_noData') {return a;}
                     if (b=='_noData') {return b;}
-                    return aggs[b].doc_count - aggs[a].doc_count;
+                    return sortFunction(a,b) || aggs[b].doc_count - aggs[a].doc_count;
                 });
                 for (var i=0; i<sortedKeys.length; i++) {
                     scope.aggs.push(aggs[sortedKeys[i]]);
@@ -186,7 +136,7 @@ listComponents.directive('aggsFilter', function() {
                 fieldsArr.concat(newFieldsArr.sort(function(a,b) {
                     if (a=='_noData') {return a;}
                     if (b=='_noData') {return b;}
-                    return aggs[b].doc_count - aggs[a].doc_count;
+                    return sortFunction(a,b) || aggs[b].doc_count - aggs[a].doc_count;
                 }));
                 scope.aggs = [];
                 for (var i=0; i<fieldsArr.length; i++) {
@@ -196,7 +146,6 @@ listComponents.directive('aggsFilter', function() {
                     }
                     else {
                         var key = field == '_noData'? 'No data'
-                                : labelsMap.hasOwnProperty(field) ? labelsMap[field]
                                 : field;
                         scope.aggs.push({key: key, doc_count: 0, field: field});
                     }
@@ -229,68 +178,19 @@ listComponents.directive('aggsFilter', function() {
                 }
                 scope.filteredTerms[term] = true;
             }
-            if (scope.type == 'terms') {
-                registerTermsFilter();
-            }
-            else if (scope.type == 'exists') {
-                registerExistsFilter();
-            }
-            else return;
+            registerTermsFilter();
             ListPanelCtrl.refreshSearch();
         };
 
         scope.toggleCollapse = function() {
             scope.collapsed = !scope.collapsed;
             scope.buttonText = scope.collapsed ? '+' : '-';
-            if (scope.collapsed) {
-                var unsortedKeys = Object.keys(scope.sortOrder);
-                var sortedKeys = unsortedKeys.sort(function(a,b) {
-                    if (scope.filteredTerms.hasOwnProperty(a) && scope.filteredTerms[a]) {
-                        if (scope.filteredTerms.hasOwnProperty(b) && scope.filteredTerms[b]) {
-                            return 1;
-                        }
-                        return -1;
-                    }
-                    if (scope.filteredTerms.hasOwnProperty(b) && scope.filteredTerms[b]) {
-                        if (scope.filteredTerms.hasOwnProperty(a) && scope.filteredTerms[a]) {
-                            return -1;
-                        }
-                        return 1;
-                    }
-                    return scope.sortOrder[a] - scope.sortOrder[b];
-                });
-                for (var i=0; i<sortedKeys.length; i++) {
-                    scope.sortOrder[sortedKeys[i]] = i;
-                }
-                scope.aggs = scope.aggs.sort(function(a,b) {
-                    return scope.sortOrder[a.field] - scope.sortOrder[b.field];
-                });
-            }
         };
 
-        for (var i=0; i<preSelected.length; i++) {
-            scope.filteredTerms[preSelected[i]] = true;
-        }
-
-        if (scope.type == 'terms') {
-            var aggReq = { terms: {field: scope.field, size: 20}};
-            var aggMissingReq = {missing: {field: scope.field}};
-            var aggReqsArr = showNoData ? [aggReq, aggMissingReq] : [aggReq];
-            ListPanelCtrl.registerAggregate(scope.field, aggReqsArr, true, processAggResp);
-            if (preSelected.length >0) {
-                registerTermsFilter();
-            }
-        }
-        else if (scope.type == 'exists') {
-            var aggReqs = [];
-            for (var i=0; i<existsFields.length; i++) {
-                aggReqs.push({value_count: {field: existsFields[i]}});
-            }
-            ListPanelCtrl.registerAggregate(scope.field, aggReqs, false, processAggResp);
-            if (preSelected.length >0) {
-                registerExistsFilter();
-            }
-        }
+        var aggReq = { terms: {field: scope.field, size: 20}};
+        var aggMissingReq = {missing: {field: scope.field}};
+        var aggReqsArr = showNoData ? [aggReq, aggMissingReq] : [aggReq];
+        ListPanelCtrl.registerAggregate(scope.field, aggReqsArr, true, processAggResp);
 
         iAttrs.$set('list-panel-registered', true);
     }
@@ -320,7 +220,6 @@ listComponents.directive('listTable', ['$compile', function($compile) {
   return {
     restrict: 'E',
     scope: {
-        type: '@type',
         compileHead: '=',
         compileRow: '=',
         processHitFields: '=',
