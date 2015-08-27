@@ -31,7 +31,7 @@ listComponents.directive('aggsFilter', function() {
         sortFunction: '@',
     },
     require: '^listPanel',
-    templateUrl: 'partials.20150730/uiFacet.html',
+    templateUrl: 'partials.20150827/uiFacet.html',
     link: function(scope, iElement, iAttrs, ListPanelCtrl) {
         scope.filteredTerms = {};
         scope.filterNoData = false;
