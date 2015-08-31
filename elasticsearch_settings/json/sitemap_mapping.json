@@ -1,0 +1,20 @@
+{
+    "sitemap": {
+        "_all": {"enabled": false},
+        "properties": {
+            "url": {
+                "type": "string",
+                "index": "no"
+            },
+            "content": {
+                "type": "string",
+                "index": "analyzed"
+            },
+            "title": {
+                "type": "string",
+                "index": "analyzed"
+            }
+        }
+    }
+}
+
