@@ -49,7 +49,6 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
       var filterReqs = {};
       var filterCallbacks = {};
       var aggReqs = {};
-      var aggExcludeFilters = {};
       var aggCallbacks = {};
       controller.tableInitCallback = function() {return;};
       controller.tableRespCallback = function() {return;};
@@ -95,16 +94,9 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
         }
 
         var filterKeys = Object.keys(filterReqs);
-        var aggExcludeFilterKeys = [];
         var globalFilterKeys = [];
         for (var i=0; i<filterKeys.length; i++) {
-            if (aggExcludeFilters.hasOwnProperty(filterKeys[i])
-                    && aggExcludeFilters[filterKeys[i]]) {
-                aggExcludeFilterKeys.push(filterKeys[i]);
-            }
-            else {
-                globalFilterKeys.push(filterKeys[i]);
-            }
+            globalFilterKeys.push(filterKeys[i]);
         }
 
         if (globalFilterKeys.length >0) {
@@ -120,52 +112,13 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
             }
         }
 
-        if (aggExcludeFilterKeys.length >0) {
-            if (aggExcludeFilterKeys.length == 1) {
-                searchBody['post_filter'] = filterReqs[aggExcludeFilterKeys[0]];
-            }
-            else {
-                var filterArr = [];
-                for (var i=0; i<aggExcludeFilterKeys.length; i++) {
-                    filterArr.push(filterReqs[aggExcludeFilterKeys[i]]);
-                }
-                searchBody['post_filter'] = {and: filterArr};
-            }
-        }
-
         var aggKeys = Object.keys(aggReqs);
         if (aggKeys.length >0) {
             searchBody['aggs'] = {};
             for (var i=0; i<aggKeys.length; i++) {
                 var aggKey = aggKeys[i];
-                var extraFilterKeys = [];
-                for (var j=0; j<aggExcludeFilterKeys.length; j++) {
-                    if (aggExcludeFilterKeys[j] != aggKey) {
-                        extraFilterKeys.push(aggExcludeFilterKeys[j]);
-                    }
-                }
-                if (extraFilterKeys.length >0) {
-                    var filter;
-                    if (extraFilterKeys.length ==1) {
-                        searchBody['aggs'][aggKey] = {filter: filterReqs[extraFilterKeys[0]]};
-                    }
-                    else {
-                        var extraFilterReqs = [];
-                        for (var j=0; j<extraFilterKeys.length; j++) {
-                            extraFilterReqs.push(filterReqs[extraFilterKeys[j]]);
-                        }
-                        searchBody['aggs'][aggKey] = {filter: {and: extraFilterReqs}};
-                    }
-                    searchBody['aggs'][aggKey]['aggs'] = {};
-                    for (var j=0; j<aggReqs[aggKey].length; j++) {
-                        searchBody['aggs'][aggKey]['aggs'][aggKey+'.'+j] = aggReqs[aggKey][j];
-                    }
-                    
-                }
-                else {
-                    for (var j=0; j<aggReqs[aggKey].length; j++) {
-                        searchBody['aggs'][aggKey+'.'+j] = aggReqs[aggKey][j];
-                    }
+                for (var j=0; j<aggReqs[aggKey].length; j++) {
+                    searchBody['aggs'][aggKey+'.'+j] = aggReqs[aggKey][j];
                 }
             }
         }
@@ -297,9 +250,8 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
           controller.refreshSearch();
       };
 
-      controller.registerAggregate = function(aggName, aggReqArr, excludeFilter, processCallback) {
+      controller.registerAggregate = function(aggName, aggReqArr, processCallback) {
           aggReqs[aggName] = aggReqArr;
-          aggExcludeFilters[aggName] = excludeFilter;
           aggCallbacks[aggName] = processCallback;
 
       };

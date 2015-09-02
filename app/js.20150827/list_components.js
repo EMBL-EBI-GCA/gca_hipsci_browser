@@ -190,7 +190,7 @@ listComponents.directive('aggsFilter', function() {
         var aggReq = { terms: {field: scope.field, size: 20}};
         var aggMissingReq = {missing: {field: scope.field}};
         var aggReqsArr = showNoData ? [aggReq, aggMissingReq] : [aggReq];
-        ListPanelCtrl.registerAggregate(scope.field, aggReqsArr, true, processAggResp);
+        ListPanelCtrl.registerAggregate(scope.field, aggReqsArr, processAggResp);
 
         iAttrs.$set('list-panel-registered', true);
     }
