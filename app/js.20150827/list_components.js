@@ -29,6 +29,7 @@ listComponents.directive('aggsFilter', function() {
         field: '@',
         showNoData: '@',
         sortFunction: '@',
+        multiBoolean: '@',
     },
     require: '^listPanel',
     templateUrl: 'partials.20150827/uiFacet.html',
@@ -81,7 +82,7 @@ listComponents.directive('aggsFilter', function() {
             }
             else {
                 filtTermsArr = filtTermsArr.sort(); // This is to help with caching
-                filterReq = {terms: {execution: 'or'}};
+                filterReq = {terms: {execution: scope.multiBoolean || 'or'}};
                 filterReq.terms[scope.field] = filtTermsArr;
             }
             if (filtTermsArr.length >0 && scope.filteredTerms['_noData']) {
