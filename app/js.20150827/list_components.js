@@ -21,7 +21,7 @@ listComponents.directive('listSearchBox', function() {
   };
 });
 
-listComponents.directive('aggsFilter', ['$routeParams', function($routeParams) {
+listComponents.directive('aggsFilter', ['$location', function($location) {
   return {
     restrict: 'E',
     scope: {
@@ -89,7 +89,7 @@ listComponents.directive('aggsFilter', ['$routeParams', function($routeParams) {
                 filterReq = {or: [filterReq, {missing: {field: scope.field}}]};
             }
             if (filtTermsArr.length >0) {
-                $routeParams[scope.title] = filtTermsArr.join(',');
+                $location.search(scope.title,filtTermsArr.join(',')); 
             }
             ListPanelCtrl.registerFilter(scope.field, filterReq, disableCallback);
         };
@@ -191,8 +191,9 @@ listComponents.directive('aggsFilter', ['$routeParams', function($routeParams) {
             scope.buttonText = scope.collapsed ? '+' : '-';
         };
 
-        if ($routeParams.hasOwnProperty(scope.title)) {
-            var initTerms = $routeParams[scope.title].split(',');
+        var locationSearch = $location.search();
+        if (locationSearch.hasOwnProperty(scope.title)) {
+            var initTerms = locationSearch[scope.title].split(',');
             for (var i=0; i<initTerms.length; i++) {
                 if (initTerms[i].length >0) {
                     scope.filteredTerms[initTerms[i]] = true;

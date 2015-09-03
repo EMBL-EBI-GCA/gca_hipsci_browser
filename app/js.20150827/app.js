@@ -30,11 +30,13 @@ hipsciBrowser.config(['$routeProvider',
       templateUrl: 'partials.20150827/line-list.html',
       controller: 'LineListCtrl',
       controllerAs: 'LineCtrl',
+      reloadOnSearch: false,
     }).
     when('/donors', {
       templateUrl: 'partials.20150827/donor-list.html',
       controller: 'DonorListCtrl',
       controllerAs: 'DonorCtrl',
+      reloadOnSearch: false,
     }).
     when('/api', {
       templateUrl: 'partials.20150827/api.html',
