@@ -21,7 +21,7 @@ listComponents.directive('listSearchBox', function() {
   };
 });
 
-listComponents.directive('aggsFilter', function() {
+listComponents.directive('aggsFilter', ['$routeParams', function($routeParams) {
   return {
     restrict: 'E',
     scope: {
@@ -87,6 +87,9 @@ listComponents.directive('aggsFilter', function() {
             }
             if (filtTermsArr.length >0 && scope.filteredTerms['_noData']) {
                 filterReq = {or: [filterReq, {missing: {field: scope.field}}]};
+            }
+            if (filtTermsArr.length >0) {
+                $routeParams[scope.title] = filtTermsArr.join(',');
             }
             ListPanelCtrl.registerFilter(scope.field, filterReq, disableCallback);
         };
@@ -188,6 +191,16 @@ listComponents.directive('aggsFilter', function() {
             scope.buttonText = scope.collapsed ? '+' : '-';
         };
 
+        if ($routeParams.hasOwnProperty(scope.title)) {
+            var initTerms = $routeParams[scope.title].split(',');
+            for (var i=0; i<initTerms.length; i++) {
+                if (initTerms[i].length >0) {
+                    scope.filteredTerms[initTerms[i]] = true;
+                }
+            }
+            registerTermsFilter();
+        }
+
         var aggReq = { terms: {field: scope.field, size: 20}};
         var aggMissingReq = {missing: {field: scope.field}};
         var aggReqsArr = showNoData ? [aggReq, aggMissingReq] : [aggReq];
@@ -196,7 +209,7 @@ listComponents.directive('aggsFilter', function() {
         iAttrs.$set('list-panel-registered', true);
     }
   };
-});
+}]);
 
 
 
