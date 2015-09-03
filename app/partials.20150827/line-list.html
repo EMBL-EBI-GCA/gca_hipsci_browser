@@ -29,10 +29,7 @@
                 </div>
             </div>
             <div class="col-md-9 fixd-width-rhs">
-                <div class="alert alert-danger" role="alert" ng-if="ListPanelCtrl.apiError">
-                    <span class="glyphicon glyphicon-exclamation-sign" ></span>
-                    <span>Server error: {{ListPanelCtrl.apiStatus}} {{ListPanelCtrl.apiStatusText}}</span>
-                </div>
+                <list-error-alert></list-error-alert>
     		<list-pagination></list-pagination>
 
                 <div class="export-button btn-group pull-right" dropdown="">
@@ -40,8 +37,8 @@
                         Export<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a ng-click="ListPanelCtrl.exportData('csv')">comma delimited .csv</a></li>
-                        <li><a ng-click="ListPanelCtrl.exportData('tsv')">tab delimited .tsv</a></li>
+                        <li><a ng-click="exportData('csv')">comma delimited .csv</a></li>
+                        <li><a ng-click="exportData('tsv')">tab delimited .tsv</a></li>
                     </ul>
                 </div>
                 <div class="list-search-box">

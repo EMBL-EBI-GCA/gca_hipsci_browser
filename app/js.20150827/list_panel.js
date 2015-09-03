@@ -1,17 +1,30 @@
-'use strict';
 
 var listPanelModule = angular.module('hipsciBrowser.listPanel', []);
 
-listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
+listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiClient, $location) {
   return {
-    controllerAs: 'ListPanelCtrl',
     restrict: 'E',
-    transclude: false,
     scope: false,
-    compile: function(tElement, tAttrs) { 
-    return {
-    post: function(scope, iElement, iAttrs, controller) {
+    link: function(scope, iElement, iAttrs, controller) {
       controller.documentType = scope.$eval(iAttrs.documentType);
+      scope.exportData = controller.exportData;
+
+      var firstView = true;
+      var newUrl = $location.url();
+      if (controller.cache.lastUrl.length > 0) {
+          if (newUrl.indexOf('?') == -1 ) {
+              $location.url(controller.cache.lastUrl);
+              firstView = false;
+          }
+          else if (newUrl === controller.cache.lastUrl) {
+              firstView = false;
+          }
+      }
+      if (firstView) {
+          controller.cache.currentPage = 1;
+          controller.cache.sortFields.length = 0;
+          controller.cache.lastUrl = newUrl;
+      }
 
       var unbindWatch = scope.$watch(function() {
           var unregisteredCounter = 0;
@@ -21,117 +34,222 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
         }, function(newValue) {
           if (newValue <= 0) {
               unbindWatch();
-              if (typeof controller.tableInitCallback != 'undefined') {
-                  controller.tableInitCallback(controller.fields);
+              if (controller.listTableCtrl) {
+                controller.listTableCtrl.resetSortOrder(firstView);
+                controller.listTableCtrl.compileTable(controller.fields);
               }
-              controller.refreshSearch();
+              controller.loadFromUrl(firstView);
           }
       });
 
-    }
-    };},
-    controller: ['$timeout', function ($timeout) {
-      var controller = this;
-      controller.currentPage = 1;
-      controller.numPages = 0;
-      controller.hitsPerPage = 15;
-      controller.numHits = 0;
-      controller.query = '';
-      controller.fields = [];
-      controller.exportHeadersMap = {};
-      controller.sortFields = [];
-      controller.apiError = false;
+    },
+    controller: ['$timeout', '$location', 'routeCache', '$scope', function ($timeout, $location, routeCache, $scope) {
+      var c = this;
+      c.exportHeadersMap = {};
+      c.apiStatus = {error: false, code: '', text: ''};
+      c.delayedSearchActivated = false;
+      c.aggsFilterCtrls = {};
+      c.listTableCtrl = null;
+      c.unbindRouteUpdate = null;
+      c.hitsPerPage = 15;
+      c.fields = [];
+      c.lastUrlChange = null;
 
-      controller.delayedSearchActivated = false;
-      controller.cachedResps = [];
+      c.cache = routeCache.get('listPanel', c.documentType);
+      if (!c.cache.hasOwnProperty('lastUrl')) {
+          jQuery.extend(c.cache, {
+              currentPage: 1,
+              numHits: 0,
+              query: '',
+              aggsFilters: {},
+              sortFields: [],
+              esResps : [],
+              lastUrl : '',
+          });
+      }
 
-      var cachedHits = [];
-      var filterReqs = {};
-      var filterCallbacks = {};
-      var aggReqs = {};
-      var aggCallbacks = {};
-      controller.tableInitCallback = function() {return;};
-      controller.tableRespCallback = function() {return;};
+      c.routeUpdateListen = function() {
+          c.lastUrlChange = $location.url();
+          if (!c.unbindRouteUpdate) {
+              c.unbindRouteUpdate = $scope.$on('$routeUpdate', function(event, object) {
+                  var newUrl = $location.url();
+                  if (newUrl === c.lastUrlChange) {
+                      return;
+                  }
+                  if (newUrl.indexOf('?') == -1 && c.lastUrlChange) {
+                      $location.url(c.lastUrlChange);
+                      return;
+                  }
+                  c.lastUrlChange = newUrl;
+                  c.routeUpdateUnlisten();
+                  c.loadFromUrl();
+              });
+          }
+      }
+      c.routeUpdateUnlisten = function() {
+        if (c.unbindRouteUpdate) {
+            c.unbindRouteUpdate();
+            c.unbindRouteUpdate = null;
+        }
+      }
+
+      c.loadFromUrl = function(firstView, routeChangeFn) {
+          c.routeUpdateUnlisten();
+          if (routeChangeFn) {
+              routeChangeFn();
+          }
+          c.cache.lastUrl = $location.url();
+          c.cache.query = $location.search()['q'] || '';
+          var unfiltTermsRequired = false;
+          for (var key in c.aggsFilterCtrls) {
+              if (c.aggsFilterCtrls.hasOwnProperty(key)) {
+                  unfiltTermsRequired = c.aggsFilterCtrls[key].loadFromUrl(firstView) ? true : unfiltTermsRequired;
+              }
+          }
+          if (unfiltTermsRequired && c.cache.lastUrl.indexOf('?') >-1) {
+              c.aggsOnlySearch(c.search);
+              return;
+          }
+          c.search();
+          c.routeUpdateListen();
+      };
 
       var processResp = function(resp) {
-          controller.numHits = resp.hits.total;
-          controller.numPages = Math.ceil(controller.numHits / controller.hitsPerPage);
-          if (typeof controller.tableRespCallback != 'undefined') {
-              controller.tableRespCallback(resp.hits.hits, controller.fields);
+          c.routeUpdateUnlisten();
+          c.routeUpdateUnlisten();
+          if (resp.hasOwnProperty('hits')) {
+              c.cache.numHits = resp.hits.total;
+              if (c.listTableCtrl) {
+                  c.listTableCtrl.processHits(resp.hits.hits, c.fields);
+              }
           }
 
           if (resp.hasOwnProperty('aggregations')) {
-              var aggResps = resp['aggregations'];
-              var aggKeys = Object.keys(aggReqs);
-              for (var i=0; i<aggKeys.length; i++) {
-                  if (aggCallbacks.hasOwnProperty(aggKeys[i])) {
-                      var aggRespObjs = [];
-                      var aggRespTopObj = aggResps.hasOwnProperty(aggKeys[i]) ? aggResps[aggKeys[i]] : aggResps;
-                      for (var j=0; j<aggReqs[aggKeys[i]].length; j++) {
-                          var aggKey = aggKeys[i]+'.'+j;
-                          if (aggRespTopObj.hasOwnProperty(aggKey)) {
-                              aggRespObjs[j] = aggRespTopObj[aggKey];
+              for (var field in c.aggsFilterCtrls) {
+                  if (c.aggsFilterCtrls.hasOwnProperty(field)) {
+                      var thisResp = resp.aggregations[field];
+                      if (!thisResp && resp.aggregations['unfiltered']) {
+                          thisResp = resp.aggregations['unfiltered'][field];
+                      }
+                      if (thisResp) {
+                          if (thisResp.hasOwnProperty(field)) {
+                              thisResp = thisResp[field];
                           }
+                          c.aggsFilterCtrls[field].processAggResp(thisResp);
                       }
                   }
-                  aggCallbacks[aggKeys[i]](aggRespObjs);
               }
+
           }
+          c.routeUpdateListen();
       };
-  
-      var search = function() {
-        controller.delayedSearchActivated = false;
-        var searchBody = {
-          fields: controller.fields,
-          size: controller.hitsPerPage,
-          from: (controller.currentPage -1) * controller.hitsPerPage
+
+      c.aggsOnlySearch = function(callback) {
+
+        var searchBody = {aggs: {}};
+        for (var field in c.aggsFilterCtrls) {
+            if (c.aggsFilterCtrls.hasOwnProperty(field) && c.aggsFilterCtrls[field].hasOwnProperty('esAggRequest')) {
+                searchBody.aggs[field] = c.aggsFilterCtrls[field].esAggRequest;
+            }
         };
-        for (var i=0; i<controller.sortFields.length; i++) {
+        searchBody.size = 0;
+        apiClient.search( {
+          type: c.documentType,
+          body: searchBody,
+        }).then(function(resp) {
+            c.apiStatus.error = false;
+            processResp(resp.data);
+            callback();
+        }, function(resp) {
+            c.apiStatus.error = true;
+            c.apiStatus.code = resp.status;
+            c.apiStatus.text = resp.statusText;
+        });
+      }
+  
+      c.search = function() {
+        c.delayedSearchActivated = false;
+        var searchBody = {
+          fields: c.fields,
+          size: c.hitsPerPage,
+          from: (c.cache.currentPage -1) * c.hitsPerPage
+        };
+        for (var i=0; i<c.cache.sortFields.length; i++) {
             searchBody.sort = searchBody.sort || [];
             var sortObj = {};
-            sortObj[controller.sortFields[i][0]] = controller.sortFields[i][1] ? 'asc':'desc';
+            sortObj[c.cache.sortFields[i][0]] = c.cache.sortFields[i][1] ? 'asc':'desc';
             searchBody.sort.push(sortObj);
         }
 
-        var filterKeys = Object.keys(filterReqs);
-        var globalFilterKeys = [];
-        for (var i=0; i<filterKeys.length; i++) {
-            globalFilterKeys.push(filterKeys[i]);
-        }
-
-        if (globalFilterKeys.length >0) {
-            if (globalFilterKeys.length == 1) {
-                searchBody['query'] = {filtered: {filter: filterReqs[globalFilterKeys[0]]}};
+        var filterReqArr = [];
+        var filterReqObj = {};
+        var filteredFields = [];
+        var filtAggFields = [];
+        var unfiltAggFields = [];
+        var aggReqs = {};
+        for (var field in c.aggsFilterCtrls) {
+            if (c.aggsFilterCtrls[field].esFilterRequest) {
+                filterReqArr.push(c.aggsFilterCtrls[field].esFilterRequest);
+                filterReqObj[field] = c.aggsFilterCtrls[field].esFilterRequest;
+                filteredFields.push(field);
             }
-            else {
-                var filterArr = [];
-                for (var i=0; i<globalFilterKeys.length; i++) {
-                    filterArr.push(filterReqs[globalFilterKeys[i]]);
+            if (c.aggsFilterCtrls[field].esAggRequest) {
+                aggReqs[field] = c.aggsFilterCtrls[field].esAggRequest;
+                if (c.aggsFilterCtrls[field].esFilterRequest) {
+                    filtAggFields.push(field);
                 }
-                searchBody['query'] = {filtered: {filter: {and: filterArr}}};
+                else {
+                    unfiltAggFields.push(field);
+                }
             }
         }
 
-        var aggKeys = Object.keys(aggReqs);
-        if (aggKeys.length >0) {
+        if (filterReqArr.length == 1) {
+            searchBody['post_filter'] = filterReqArr[0];
+        }
+        else if (filterReqArr.length > 1) {
+            searchBody['post_filter'] = {and: filterReqArr};
+        }
+
+        if (filterReqArr.length >0) {
             searchBody['aggs'] = {};
-            for (var i=0; i<aggKeys.length; i++) {
-                var aggKey = aggKeys[i];
-                for (var j=0; j<aggReqs[aggKey].length; j++) {
-                    searchBody['aggs'][aggKey+'.'+j] = aggReqs[aggKey][j];
+            if (unfiltAggFields.length >0) {
+                searchBody.aggs['unfiltered'] = {filter: searchBody.post_filter, aggs:{} };
+                for (var i=0; i<unfiltAggFields.length; i++) {
+                    searchBody.aggs.unfiltered.aggs[unfiltAggFields[i]] = aggReqs[unfiltAggFields[i]];
+                }
+            }
+            for (var i=0; i<filtAggFields.length; i++) {
+                var extraFilters = jQuery.grep(filteredFields, function(filtField) {return filtField === filtAggFields[i] ? false : true});
+                if (extraFilters.length == 0) {
+                    searchBody.aggs[filtAggFields[i]] = aggReqs[filtAggFields[i]];
+                }
+                else if (extraFilters.length == 1) {
+                    searchBody.aggs[filtAggFields[i]] = {aggs: {}, filter: filterReqObj[extraFilters[0]]};
+                    searchBody.aggs[filtAggFields[i]].aggs[filtAggFields[i]] = aggReqs[filtAggFields[i]];
+                }
+                else {
+                    searchBody.aggs[filtAggFields[i]] = {aggs: {}, filter: {and: []}};
+                    searchBody.aggs[filtAggFields[i]].aggs[filtAggFields[i]] = aggReqs[filtAggFields[i]];
+                    for (var j=0; j<extraFilters.length; j++) {
+                        searchBody.aggs[filtAggFields[i]].filter.and.push(filterReqObj[extraFilters[j]]);
+                    }
                 }
             }
         }
+        else if (filtAggFields.length >0 || unfiltAggFields.length >0) {
+            searchBody['aggs'] = aggReqs;
+        }
 
-        if (controller.query.length >0) {
+        if (c.cache.query.length >0) {
             var queryObj = {multi_match: {
-                query: controller.query,
+                query: c.cache.query,
                 fields: ['searchable.*'],
                 fuzziness: 'AUTO',
                 type: "most_fields",
                 prefix_length: 2
             }};
-            if (globalFilterKeys.length >0) {
+            if (filterReqs.length >0) {
                 searchBody.query.filtered['query'] = queryObj;
             }
             else {
@@ -140,158 +258,93 @@ listPanelModule.directive('listPanel', ['apiClient', function (apiClient) {
         }
 
         var bodyStr = JSON.stringify(searchBody);
-        var cachedResp;
-        for (var i=controller.cachedResps.length-1; i>=0; i--) {
-            var cachedStrResp = controller.cachedResps[i];
-            if (cachedStrResp[0] == bodyStr) {
-                cachedResp = cachedStrResp[1];
-                controller.cachedResps.splice(i, 1);
-                controller.cachedResps.push(cachedStrResp);
-                break;
+        for (var i=c.cache.esResps.length-1; i>=0; i--) {
+            var cachedResp = c.cache.esResps[i];
+            if (cachedResp[0] == bodyStr) {
+                c.cache.esResps.splice(i, 1);
+                c.cache.esResps.push(cachedResp);
+                processResp(cachedResp[1]);
+                return;
             }
         }
-        if (typeof cachedResp != 'undefined') {
-            processResp(cachedResp);
-        }
-        else {
-            apiClient.search( {
-              type: controller.documentType,
-              body: searchBody,
-            }).then(function(resp) {
-                controller.apiError = false;
-                controller.cachedResps.push([bodyStr, resp.data]);
-                while (controller.cachedResps.length >10) {
-                    controller.cachedResps.shift();
-                }
-                processResp(resp.data);
-            }, function(resp) {
-                controller.apiError = true;
-                controller.apiStatus = resp.status;
-                controller.apiStatusText = resp.statusText;
-            });
-
-        }
+        apiClient.search( {
+          type: c.documentType,
+          body: searchBody,
+        }).then(function(resp) {
+            c.apiStatus.error = false;
+            c.cache.esResps.push([bodyStr, resp.data]);
+            while (c.cache.esResps.length >10) {
+                c.cache.esResps.shift();
+            }
+            processResp(resp.data);
+        }, function(resp) {
+            c.apiStatus.error = true;
+            c.apiStatus.code = resp.status;
+            c.apiStatus.text = resp.statusText;
+        });
 
       };
   
-      controller.exportData = function(format) {
+      c.exportData = function(format) {
         var form = document.createElement('form');
         var columnNames = [];
-        for (var i=0; i<controller.fields.length; i++) {
-            columnNames.push(controller.exportHeadersMap[controller.fields[i]]);
+        for (var i=0; i<c.fields.length; i++) {
+            columnNames.push(c.exportHeadersMap[c.fields[i]]);
         }
         var searchBody = {
-        fields: controller.fields,
+        fields: c.fields,
         column_names: columnNames,
         from: 0,
-        size: controller.numHits,
+        size: c.cache.numHits,
         };
-        for (var i=0; i<controller.sortFields.length; i++) {
+        for (var i=0; i<c.cache.sortFields.length; i++) {
             searchBody.sort = searchBody.sort || [];
             var sortObj = {};
-            sortObj[controller.sortFields[i][0]] = controller.sortFields[i][1] ? 'asc':'desc';
+            sortObj[c.cache.sortFields[i][0]] = c.cache.sortFields[i][1] ? 'asc':'desc';
             searchBody.sort.push(sortObj);
         }
 
-        var filterKeys = Object.keys(filterReqs);
-        if (filterKeys.length >0) {
-            if (filterKeys.length == 1) {
-                searchBody['query'] = {filtered: {filter: filterReqs[filterKeys[0]]}};
-            }
-            else {
-                var filterArr = [];
-                for (var i=0; i<filterKeys.length; i++) {
-                    filterArr.push(filterReqs[filterKeys[i]]);
-                }
-                searchBody['query'] = {filtered: {filter: {and: filterArr}}};
+        var filterReqs = [];
+        for (var field in c.aggsFilterCtrls) {
+            if (c.aggsFilterCtrls[field].esFilterRequest) {
+                filterReqs.push(c.aggsFilterCtrls[field].esFilterRequest);
             }
         }
 
-        return apiClient.exportData({type: controller.documentType, body: searchBody, format: format});
+        if (filterReqs.length == 1) {
+            searchBody['query'] = {filtered: {filter: filterReqs[0]}};
+        }
+        else if (filterReqs.length > 1) {
+            searchBody['query'] = {filtered: {filter: {and: filterReqs}}};
+        }
+
+        return apiClient.exportData({type: c.documentType, body: searchBody, format: format});
       };
   
-      controller.refreshSearch = function () {
-        controller.currentPage = 1;
-        search();
-      };
-      controller.setPage = function () {
-          /*
-        if (typeof displayResults == "undefined") {
-          search();
-        }
-        else {
-          controller.displayResults = displayResults
-        }
-      */
-          search();
-      };
-      controller.registerFilter = function(filterName, filterReq, disableCallback) {
-          if (typeof filterReq == 'undefined') {
-              delete filterReqs[filterName];
-              delete filterCallbacks[filterName];
-          }
-          else {
-              filterReqs[filterName] = filterReq;
-              filterCallbacks[filterName] = disableCallback;
-          }
-      };
-      controller.clearFilters = function() {
-          var filterKeys = Object.keys(filterReqs);
-          if (filterKeys.length ==0) {
-              return;
-          }
-          for (var i=0; i<filterKeys.length; i++) {
-              if (filterCallbacks.hasOwnProperty(filterKeys[i])) {
-                  filterCallbacks[filterKeys[i]]();
-                  delete filterCallbacks[filterKeys[i]];
-              };
-              delete filterReqs[filterKeys[i]];
-          }
-          controller.refreshSearch();
-      };
-
-      controller.registerAggregate = function(aggName, aggReqArr, processCallback) {
-          aggReqs[aggName] = aggReqArr;
-          aggCallbacks[aggName] = processCallback;
-
-      };
-
-      controller.registerTable = function(tableInitCallback, tableRespCallback, sortFields) {
-          controller.tableInitCallback = tableInitCallback;
-          controller.tableRespCallback = tableRespCallback;
-          controller.sortFields = sortFields;
-          if (controller.cachedResps.length >0) {
-              controller.tableInitCallback(controller.fields);
-              controller.tableRespCallback(controller.cachedReps[controller.cachedResps.length-1]);
+      c.clearFilters = function() {
+          if (Object.keys($location.search()).length >0) {
+              c.loadFromUrl( false, function() {$location.search({})});
           }
       };
 
-      controller.registerFields = function(fields, exportHeadersMap) {
-          controller.fields = fields;
-          controller.exportHeadersMap = exportHeadersMap;
-      };
 
-      controller.registerSortOrders = function(sortFields) {
-          controller.sortFields = sortFields;
-          controller.refreshSearch();
-      };
-
-      controller.delayedSearch = function(event) {
+      c.delayedSearch = function(event) {
           if (typeof event == 'object' && event.keyCode === 13) {
-              controller.refreshSearch();
+              c.loadFromUrl(false, function() { $location.search('q', c.cache.query || null);});
               return;
           }
-          if (controller.delayedSearchActivated) {
+          if (c.delayedSearchActivated) {
               return;
           }
-          controller.delayedSearchActivated = true;
+          c.delayedSearchActivated = true;
           $timeout(function() {
-              if (controller.query.length >0 && controller.query.length <4) {
-                  controller.delayedSearchActivated = false;
-                  return;
+              c.delayedSearchActivated = false;
+              if (c.cache.query.length ==0) {
+                  c.loadFromUrl(false, function() { $location.search('q', null);});
               }
-              if (controller.delayedSearchActivated)
-                {controller.refreshSearch();}
+              if (c.cache.query.length >3) {
+                  c.loadFromUrl(false, function() { $location.search('q', c.cache.query);});
+              }
             }, 1000);
       };
 

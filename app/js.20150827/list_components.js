@@ -6,10 +6,14 @@ listComponents.directive('listPagination', function() {
   return {
     restrict: 'E',
     scope: false,
-    template: '<pagination total-items="ListPanelCtrl.numHits"'
-        +' ng-model="ListPanelCtrl.currentPage" ng-change="ListPanelCtrl.setPage()"'
-        +' items-per-page="ListPanelCtrl.hitsPerPage" max-size=3'
-        +' class="pagination-sm" boundary-links="true" rotate="false" ></pagination>'
+    template: '<pagination total-items="listPanelCtrl.cache.numHits"'
+        +' ng-model="listPanelCtrl.cache.currentPage" ng-change="listPanelCtrl.loadFromUrl()"'
+        +' items-per-page="listPanelCtrl.hitsPerPage" max-size=3'
+        +' class="pagination-sm" boundary-links="true" rotate="false" ></pagination>',
+    require: '^listPanel',
+    link: function(scope, iElement, iAttr, listPanelCtrl) {
+        scope.listPanelCtrl = listPanelCtrl;
+    },
   };
 });
 
@@ -17,7 +21,27 @@ listComponents.directive('listSearchBox', function() {
   return {
     restrict: 'E',
     scope: false,
-    template: '<div class="search-box">Search:<input ng-model="ListPanelCtrl.query" ng-change="ListPanelCtrl.delayedSearch()" ng-keypress="ListPanelCtrl.delayedSearch($event)"></input></div>'
+    template: '<div class="search-box">Search:<input ng-model="listPanelCtrl.cache.query"'
+            + 'ng-change="listPanelCtrl.delayedSearch()" ng-keypress="listPanelCtrl.delayedSearch($event)"></input></div>',
+    require: '^listPanel',
+    link: function(scope, iElement, iAttr, listPanelCtrl) {
+        scope.listPanelCtrl = listPanelCtrl;
+    }
+  };
+});
+
+listComponents.directive('listErrorAlert', function() {
+  return {
+    restrict: 'E',
+    scope: false,
+    template: '<div class="alert alert-danger" role="alert" ng-if="apiStatus.error">'
+            +    '<span class="glyphicon glyphicon-exclamation-sign" ></span>'
+            +    '<span>Server error: {{apiStatus.code}} {{apiStatus.text}}</span>'
+            +'</div>',
+    require: '^listPanel',
+    link: function(scope, iElement, iAttr, listPanelCtrl) {
+        scope.apiStatus = listPanelCtrl.apiStatus;
+    }
   };
 });
 
@@ -27,136 +51,172 @@ listComponents.directive('aggsFilter', function() {
     scope: {
         title: '@',
         field: '@',
-        showNoData: '@',
         sortFunction: '@',
         multiBoolean: '@',
     },
-    require: '^listPanel',
+    require: ['aggsFilter', '^listPanel'],
     templateUrl: 'partials.20150827/uiFacet.html',
-    link: function(scope, iElement, iAttrs, ListPanelCtrl) {
-        scope.filteredTerms = {};
-        scope.filterNoData = false;
-        scope.aggs = [];
-        scope.aggsOther = 0;
-        scope.aggsNoData = 0;
-        scope.collapsed = true;
-        scope.buttonText = '+';
+    controller: ['$scope', '$location', function($scope, $location) {
+        var c = this;
+        c.esAggRequest = { terms: {field: $scope.field, size: 20}};
+        c.esFilterRequest = null;
+        var cache = null;
 
-        var sortFunction = scope.$parent.$eval(scope.sortFunction) || function() {return 0;};
-
-        scope.ulMaxHeight = 0;
-
-        var showNoData = scope.$parent.$eval(scope.showNoData) || false;
-
-        var disableCallback = function() {
-            scope.filteredTerms = {};
-            scope.filterNoData = false;
-            for (var i=0; i<scope.aggs.length; i++) {
-                scope.aggs[i]['doc_count'] = '';
+        c.initCache = function(listPanelCtrl) {
+            if (!listPanelCtrl.cache.aggsFilters.hasOwnProperty($scope.field)) {
+                listPanelCtrl.cache.aggsFilters[$scope.field] = {};
             }
-            scope.aggsOther = 0;
-            scope.aggsNoData = 0;
+            cache = listPanelCtrl.cache.aggsFilters[$scope.field];
+            if (!cache.hasOwnProperty('collapsed')) {
+                cache.collapsed = true;
+            }
+            $scope.collapsed = cache.collapsed;
         };
-        var registerTermsFilter = function() {
-            var filtTermsArr = [];
-            for (var key in scope.filteredTerms) {
-                if (key != '_noData') {
-                    filtTermsArr.push(key);
-                }
-            };
-            var filterReq = {};
+
+        c.createFilterRequest = function() {
+            var filtTermsArr = jQuery.grep($scope.aggs, function(a) {return a.filtered});
+            filtTermsArr = jQuery.map(filtTermsArr, function(a) {return a.term});
             if (filtTermsArr.length == 0) {
-                if (scope.filteredTerms['_noData']) {
-                    filterReq = {missing: {field: scope.field}};
-                }
-                else {
-                    filterReq = undefined;
-                }
+                c.esFilterRequest = null;
             }
-            else if (filtTermsArr.length == 1) {
-                if (scope.filteredTerms['_noData']) {
-                    filterReq = {missing: {field: scope.field}};
-                }
-                filterReq = {term: {}};
-                filterReq.term[scope.field] = filtTermsArr[0];
+            else if (filtTermsArr.length ==1) {
+                c.esFilterRequest = {term: {}};
+                c.esFilterRequest.term[$scope.field] = filtTermsArr[0];
             }
             else {
                 filtTermsArr = filtTermsArr.sort(); // This is to help with caching
-                filterReq = {terms: {execution: scope.multiBoolean || 'or'}};
-                filterReq.terms[scope.field] = filtTermsArr;
+                c.esFilterRequest = {terms: {execution: $scope.multiBoolean || 'or'}};
+                c.esFilterRequest.terms[$scope.field] = filtTermsArr;
             }
-            if (filtTermsArr.length >0 && scope.filteredTerms['_noData']) {
-                filterReq = {or: [filterReq, {missing: {field: scope.field}}]};
-            }
-            ListPanelCtrl.registerFilter(scope.field, filterReq, disableCallback);
         };
 
-        var processAggResp = function(resps) {
-            var aggs = {};
-            scope.aggsOther = resps[0].sum_other_doc_count;
-            for (var i=0; i<resps[0].buckets.length; i++) {
-                var respAgg = resps[0].buckets[i];
-                respAgg.field = respAgg.key;
-                aggs[respAgg.key] = respAgg;
-            }
-            if (showNoData && resps[1].doc_count) {
-                aggs['_noData'] = {key: 'No data', doc_count: resps[1].doc_count, field: '_noData'};
-            }
-            
-            for (var aggField in scope.filteredTerms) {
-                if (!aggs.hasOwnProperty(aggField)) {
-                    var aggKey = aggField == '_noData' ? 'No data' : aggField;
-                    aggs[aggField] = {key: aggKey, doc_count: 0, field: aggField};
-                }
-            }
+        c.urlToFilteredTerms = function() {
+            var filteredTerms = $location.search()[$scope.title+'[]'];
+            return (typeof filteredTerms === 'undefined') ? []
+                    : (filteredTerms.constructor === Array) ? filteredTerms
+                    : [filteredTerms];
+        };
 
-            if (scope.aggs.length == 0) {
-                var sortedKeys = Object.keys(aggs).sort(function(a,b) {
-                    if (a=='_noData') {return a;}
-                    if (b=='_noData') {return b;}
-                    return sortFunction(a,b) || aggs[b].doc_count - aggs[a].doc_count;
-                });
-                for (var i=0; i<sortedKeys.length; i++) {
-                    scope.aggs.push(aggs[sortedKeys[i]]);
+        c.filteredTermsToUrl = function() {
+            var filtTermsArr = [];
+            for (var i=0; i<$scope.aggs.length; i++) {
+                if ($scope.aggs[i].filtered) {
+                    filtTermsArr.push($scope.aggs[i].term);
+                }
+            };
+            $location.search($scope.title+'[]', filtTermsArr.length > 0 ? filtTermsArr : null); 
+        };
+
+        c.processAggResp = function (resp) {
+            if (cache.hasOwnProperty('aggs')) {
+                var respAggs = {};
+                for (var i=0; i<resp.buckets.length; i++) {
+                    respAggs[resp.buckets[i].key] = resp.buckets[i].doc_count;
+                }
+                for (var i=0; i<$scope.aggs.length; i++) {
+                    $scope.aggs[i].doc_count = respAggs[$scope.aggs[i].term] || 0;
                 }
             }
             else {
-                var oldFields = {};
-                var fieldsArr = [];
-                for (var i=0; i<scope.aggs.length; i++) {
-                    var field = scope.aggs[i].field;
-                    oldFields[field] = true;
-                    fieldsArr.push(field);
-                }
-                var newFieldsArr = [];
-                for (var field in aggs) {
-                    if (!oldFields[field]) {
-                        newFieldsArr.push(field);
+                var filtTerms = {};
+                var numFiltTermsBefore = 0;
+                var numFiltTermsAfter = 0;
+                for (var i=0; i<$scope.aggs.length; i++) {
+                    if ($scope.aggs[i].filtered) {
+                        filtTerms[$scope.aggs[i].term] = 1;
+                        numFiltTermsBefore +=1;
                     }
                 }
-                fieldsArr.concat(newFieldsArr.sort(function(a,b) {
-                    if (a=='_noData') {return a;}
-                    if (b=='_noData') {return b;}
-                    return sortFunction(a,b) || aggs[b].doc_count - aggs[a].doc_count;
-                }));
-                scope.aggs = [];
-                for (var i=0; i<fieldsArr.length; i++) {
-                    var field = fieldsArr[i];
-                    if (aggs.hasOwnProperty(field)) {
-                        scope.aggs.push(aggs[field]);
+                cache['aggs'] = [];
+                for (var i=0; i<resp.buckets.length; i++) {
+                    if (filtTerms.hasOwnProperty(resp.buckets[i].key)) {
+                        numFiltTermsAfter +=1;
                     }
                     else {
-                        var key = field == '_noData'? 'No data'
-                                : field;
-                        scope.aggs.push({key: key, doc_count: 0, field: field});
+                        filtTerms[resp.buckets[i].key] = 0;
                     }
+                    cache.aggs.push({
+                        term: resp.buckets[i].key,
+                        doc_count: resp.buckets[i].doc_count,
+                        unfilteredCount: resp.buckets[i].doc_count,
+                        filtered: filtTerms[resp.buckets[i].key] > 0 ? true : false
+                    });
                 }
+                cache.aggs = cache.aggs.sort(function(a,b) {
+                    return filtTerms[b.term] - filtTerms[a.term]
+                        || c.sortFunction(a,b);
+                });
+                $scope.aggs = cache.aggs;
+                if (numFiltTermsBefore != numFiltTermsAfter) {
+                    c.filteredTermsToUrl();
+                }
+                c.createFilterRequest();
             }
-
         };
 
+        c.loadFromUrl = function(firstView) {
+            if (firstView) {
+                cache.collapsed = true;
+                $scope.collapsed = true;
+            }
+            var filtTermsArr = c.urlToFilteredTerms();
+            if (cache.hasOwnProperty('aggs')) {
+                var numFiltTermsAllowed = 0;
+                for (var i=0; i<cache.aggs.length; i++) {
+                    if (jQuery.inArray(cache.aggs[i].term, filtTermsArr) >=0) {
+                        numFiltTermsAllowed += 1;
+                        cache.aggs[i].filtered = true;
+                    }
+                    else {
+                        cache.aggs[i].filtered = false;
+                    }
+                }
+                if (firstView) {
+                    cache.aggs = cache.aggs.sort(function(a,b) {
+                        return (b.filtered ? 1 : 0) - (a.filtered ? 1 : 0)
+                            || c.sortFunction(a,b);
+                    });
+                }
+                $scope.aggs = cache.aggs;
+                if (numFiltTermsAllowed != filtTermsArr.length) {
+                    c.filteredTermsToUrl();
+                }
+                c.createFilterRequest();
+            }
+            else {
+                $scope.aggs = [];
+                for (var i=0; i<filtTermsArr.length; i++) {
+                    $scope.aggs.push({
+                        term: filtTermsArr[i],
+                        doc_count: '',
+                        filtered: true
+                    });
+                }
+                return true;
+            }
+        };
+
+        c.toggleCollapse = function() {
+            cache.collapsed = ! cache.collapsed;
+            $scope.collapsed = cache.collapsed;
+        };
+
+    }],
+    link: function(scope, iElement, iAttrs, ctrls) {
+        var aggsFilterCtrl = ctrls[0];
+        var listPanelCtrl = ctrls[1];
+        aggsFilterCtrl.sortFunction = scope.$parent.$eval(scope.sortFunction)
+            || function(a, b) {b.unfilteredCount - a.unfilteredCount};
+
+        listPanelCtrl.aggsFilterCtrls[scope.field] = aggsFilterCtrl;
+        aggsFilterCtrl.initCache(listPanelCtrl);
+
+        scope.ulMaxHeight = 0;
         var ulElem = iElement.find("ul").first();
         scope.buttonRequired = function() {
+            if (! scope.collapsed) {
+                return true;
+            }
             var scrollHeight = ulElem.prop('scrollHeight');
             if (scope.ulMaxHeight == 0  && (scrollHeight > ulElem.height())) {
                 scope.ulMaxHeight = ulElem.height();
@@ -169,29 +229,17 @@ listComponents.directive('aggsFilter', function() {
         };
 
         scope.handleEvent = function(agg) {
-            var term = agg['field'];
-            if (scope.filteredTerms.hasOwnProperty(term)) {
-                delete scope.filteredTerms[term];
+            if (!agg.filtered && ! agg.doc_count) {
+                return;
             }
-            else {
-                if (agg['doc_count'] == 0) {
-                    return;
-                }
-                scope.filteredTerms[term] = true;
-            }
-            registerTermsFilter();
-            ListPanelCtrl.refreshSearch();
+            agg.filtered = ! agg.filtered;
+            aggsFilterCtrl.createFilterRequest();
+            listPanelCtrl.loadFromUrl(false, function() { aggsFilterCtrl.filteredTermsToUrl();});
         };
 
         scope.toggleCollapse = function() {
-            scope.collapsed = !scope.collapsed;
-            scope.buttonText = scope.collapsed ? '+' : '-';
+            aggsFilterCtrl.toggleCollapse();
         };
-
-        var aggReq = { terms: {field: scope.field, size: 20}};
-        var aggMissingReq = {missing: {field: scope.field}};
-        var aggReqsArr = showNoData ? [aggReq, aggMissingReq] : [aggReq];
-        ListPanelCtrl.registerAggregate(scope.field, aggReqsArr, processAggResp);
 
         iAttrs.$set('list-panel-registered', true);
     }
@@ -217,7 +265,7 @@ listComponents.directive('facetsClear', [function() {
 }]);
 
 
-listComponents.directive('listTable', ['$compile', function($compile) {
+listComponents.directive('listTable', function() {
   return {
     restrict: 'E',
     scope: {
@@ -226,97 +274,112 @@ listComponents.directive('listTable', ['$compile', function($compile) {
         processHitFields: '=',
         defaultSortFields: '@',
     },
-    require: '^listPanel',
-    replace: false,
+    require: ['listTable', '^listPanel'],
     template: '<table><thead ><tr class="slanted"></tr></thead><tbody></tbody></table>',
-    compile: function(tElement, tAttrs) {
-      return {
-        post: function(scope, iElement, iAttrs, listPanelCtrl) {
+    link: function(scope, iElement, iAttrs, ctrls) {
+        var listTableCtrl = ctrls[0];
+        var listPanelCtrl = ctrls[1];
+        listPanelCtrl.listTableCtrl = listTableCtrl;
+        listTableCtrl.initCache(listPanelCtrl);
+        listTableCtrl.iElement = iElement;
+        listTableCtrl.defaultSortFields = scope.$eval(scope.defaultSortFields) || [];
 
-            scope.processedHits = [];
-            var defaultSortFields = scope.$eval(scope.defaultSortFields) || [];
-            scope.sortField = '';
-            scope.sortAscending = true;
-            var tableEl = iElement.find('table');
-            tableEl.attr('class', iAttrs.class);
-            iElement.removeAttr('class');
+        scope.processedHits = [];
+        scope.sortField = '';
+        scope.sortAscending = true;
 
-            var compileTable = function (fields) {
-                var headEl = iElement.find('thead');
-                var bodyEl = iElement.find('tbody');
-                var headTrEl = headEl.find('tr');
-                var headTrChildren = scope.compileHead(fields);
-                for (var i=0; i<headTrChildren.length; i++) {
-                    headTrEl.append(headTrChildren[i]);
-                    var appended = headTrEl.children().last();
-                    if (appended.hasClass('sort')) {
-                        var fieldsStr = "'"+fields[i]+"'";
-                        appended.attr('ng-class', '{sortAsc: (sortField=='+fieldsStr+' && sortAscending), sortDesc: (sortField=='+fieldsStr+' && !sortAscending)}');
-                        appended.attr('ng-click', 'registerSortOrder('+fieldsStr+')');
-                    }
-                };
+        scope.registerSortOrder = function(field) {
+            listTableCtrl.registerSortOrder(field);
+            listPanelCtrl.search();
+        };
 
-                bodyEl.append('<tr ng-repeat="hit in processedHits"></tr>');
-                var rowEl = bodyEl.find('tr');
-                var rowTrChildren = scope.compileRow(fields);
-                for (var i=0; i<rowTrChildren.length; i++) {
-                    rowEl.append(rowTrChildren[i]);
-                }
+        var tableEl = iElement.find('table');
+        tableEl.attr('class', iAttrs.class);
+        iElement.removeAttr('class');
 
-                var linkFunc = $compile(tableEl);
-                linkFunc(scope);
-            };
+        iAttrs.$set('list-panel-registered', true);
+    },
+    controller: ['$scope', '$compile', function($scope, $compile) {
+        this.iElement = null;
+        this.defaultSortFields = [];
+        var cachedSortFields = null;
 
-            var processHits = function(respHits, fields) {
-                scope.processedHits = [];
-                for (var i=0; i<respHits.length; i++) {
-                    scope.processedHits.push(scope.processHitFields(respHits[i].fields, fields));
-                }
-            };
+        this.initCache = function(listPanelCtrl) {
+            cachedSortFields = listPanelCtrl.cache.sortFields;
+        };
 
-            scope.registerSortOrder = function(field) {
-                if (scope.sortField == field) {
-                    if (scope.sortAscending) {
-                        scope.sortAscending = false
-                    }
-                    else {
-                        scope.sortField = '';
-                        scope.sortAscending = true;
-                    }
-                }
-                else {
-                    scope.sortField = field;
-                    scope.sortAscending = true;
-                }
-                
-                if (scope.sortField.length >0) {
-                    var sortFields = [[scope.sortField, scope.sortAscending]];
-                    for (var i=0; i<defaultSortFields.length; i++) {
-                        if (defaultSortFields[i][0] != scope.sortField) {
-                            sortFields.push(defaultSortFields[i]);
-                        }
-                    }
-                    listPanelCtrl.registerSortOrders(sortFields);
-                }
-                else {
-                    listPanelCtrl.registerSortOrders(defaultSortFields);
+        this.compileTable = function (fields) {
+            var headEl = this.iElement.find('thead');
+            var bodyEl = this.iElement.find('tbody');
+            var headTrEl = headEl.find('tr');
+            var tableEl = this.iElement.find('table');
+            var headTrChildren = $scope.compileHead(fields);
+            for (var i=0; i<headTrChildren.length; i++) {
+                headTrEl.append(headTrChildren[i]);
+                var appended = headTrEl.children().last();
+                if (appended.hasClass('sort')) {
+                    var fieldsStr = "'"+fields[i]+"'";
+                    appended.attr('ng-class', '{sortAsc: (sortField=='+fieldsStr+' && sortAscending), sortDesc: (sortField=='+fieldsStr+' && !sortAscending)}');
+                    appended.attr('ng-click', 'registerSortOrder('+fieldsStr+')');
                 }
             };
 
-            listPanelCtrl.registerTable(compileTable, processHits, defaultSortFields);
-            iAttrs.$set('list-panel-registered', true);
-    }};}
+            bodyEl.append('<tr ng-repeat="hit in processedHits"></tr>');
+            var rowEl = bodyEl.find('tr');
+            var rowTrChildren = $scope.compileRow(fields);
+            for (var i=0; i<rowTrChildren.length; i++) {
+                rowEl.append(rowTrChildren[i]);
+            }
+
+            var linkFunc = $compile(tableEl);
+            linkFunc($scope);
+        };
+
+        this.resetSortOrder = function(firstView) {
+            if (firstView) {
+                cachedSortFields.length = 0;
+                Array.prototype.push.apply(cachedSortFields, this.defaultSortFields);
+            }
+            $scope.sortField = cachedSortFields.length >0 ? cachedSortFields[0][0] : 0;
+            $scope.sortAscending = cachedSortFields.length >0 ? cachedSortFields[0][1] : true;
+        };
+
+
+        this.processHits = function(respHits, fields) {
+            var processedHits = []
+            for (var i=0; i<respHits.length; i++) {
+                processedHits.push($scope.processHitFields(respHits[i].fields, fields));
+            }
+            $scope.processedHits = processedHits;
+        };
+
+        this.registerSortOrder = function(field) {
+            cachedSortFields.length = 0;
+            if (field != $scope.sortField || $scope.sortAscending) {
+                cachedSortFields.push([field, field == $scope.sortField ? !$scope.sortAscending : true]);
+            }
+            for (var i=0; i<this.defaultSortFields.length; i++) {
+                if (this.defaultSortFields[i][0] != field) {
+                    cachedSortFields.push(this.defaultSortFields[i]);
+                }
+            }
+            $scope.sortField = cachedSortFields.length >0 ? cachedSortFields[0][0] : '';
+            $scope.sortAscending = cachedSortFields.length >0 ? cachedSortFields[0][1] : true;
+        };
+
+    }]
   };
-}]);
+});
 
-listComponents.directive('listInitFields', [function() {
+listComponents.directive('listInitFields', function() {
   return {
     restrict: 'E',
     require: '^listPanel',
     scope: {exportHeadersMap : '=', fields: '=' },
     link: function(scope, iElement, iAttrs, ListPanelController) {
-        ListPanelController.registerFields(scope.fields, scope.exportHeadersMap);
+        ListPanelController.fields = scope.fields;
+        ListPanelController.exportHeadersMap = scope.exportHeadersMap;
         iAttrs.$set('list-panel-registered', true);
     },
   };
-}]);
+});
