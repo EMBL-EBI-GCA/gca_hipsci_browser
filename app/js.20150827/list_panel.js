@@ -10,15 +10,20 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
       scope.exportData = controller.exportData;
 
       var firstView = true;
+      var newUrl = $location.url();
       if (controller.cache.lastUrl.length > 0) {
-          if (Object.keys($location.search()).length ==0) {
+          if (newUrl.indexOf('?') == -1 ) {
               $location.url(controller.cache.lastUrl);
+              firstView = false;
+          }
+          else if (newUrl === controller.cache.lastUrl) {
               firstView = false;
           }
       }
       if (firstView) {
           controller.cache.currentPage = 1;
           controller.cache.sortFields.length = 0;
+          controller.cache.lastUrl = newUrl;
       }
 
       var unbindWatch = scope.$watch(function() {
@@ -30,7 +35,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
           if (newValue <= 0) {
               unbindWatch();
               if (controller.listTableCtrl) {
-                controller.listTableCtrl.resetSortOrder();
+                controller.listTableCtrl.resetSortOrder(firstView);
                 controller.listTableCtrl.compileTable(controller.fields);
               }
               controller.loadFromUrl(firstView);
@@ -49,6 +54,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
       c.unbindRouteUpdate = null;
       c.hitsPerPage = 15;
       c.fields = [];
+      c.lastUrlChange = null;
 
       c.cache = routeCache.get('listPanel', c.documentType);
       if (!c.cache.hasOwnProperty('lastUrl')) {
@@ -64,9 +70,19 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
       }
 
       c.routeUpdateListen = function() {
+          c.lastUrlChange = $location.url();
           if (!c.unbindRouteUpdate) {
-              c.unbindRouteUpdate = $scope.$on('$routeUpdate', function() {
-                  c.cache.lastUrl = $location.url();
+              c.unbindRouteUpdate = $scope.$on('$routeUpdate', function(event, object) {
+                  var newUrl = $location.url();
+                  if (newUrl === c.lastUrlChange) {
+                      return;
+                  }
+                  if (newUrl.indexOf('?') == -1 && c.lastUrlChange) {
+                      $location.url(c.lastUrlChange);
+                      return;
+                  }
+                  c.lastUrlChange = newUrl;
+                  c.routeUpdateUnlisten();
                   c.loadFromUrl();
                   });
           }
@@ -80,6 +96,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
 
       c.loadFromUrl = function(firstView) {
           c.routeUpdateUnlisten();
+          c.cache.lastUrl = $location.url();
           c.cache.query = $location.search()['q'] || '';
           for (var key in c.aggsFilterCtrls) {
               if (c.aggsFilterCtrls.hasOwnProperty(key)) {
@@ -87,7 +104,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
               }
           }
           for (var key in c.aggsFilterCtrls) {
-              if (c.aggsFilterCtrls.hasOwnProperty(key) && c.aggsFilterCtrls[key].unFilteredTermsReq) {
+              if (c.aggsFilterCtrls.hasOwnProperty(key) && c.aggsFilterCtrls[key].unfilteredTermsReq) {
                   c.aggsOnlySearch(c.search);
                   return;
               }
@@ -141,6 +158,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
   
       c.search = function() {
         c.delayedSearchActivated = false;
+        console.log($location.url());
         var searchBody = {
           fields: c.fields,
           size: c.hitsPerPage,
@@ -272,12 +290,12 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
           }
           c.delayedSearchActivated = true;
           $timeout(function() {
-              if (c.cache.query.length >0 && c.cache.query.length <4) {
-                  c.delayedSearchActivated = false;
-                  return;
+              c.delayedSearchActivated = false;
+              if (c.cache.query.length ==0) {
+                  $location.search('q', null);
               }
-              if (c.delayedSearchActivated) {
-                $location.search('q', c.cache.query || null);
+              if (c.cache.query.length >3) {
+                  $location.search('q', c.cache.query);
               }
             }, 1000);
       };

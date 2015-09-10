@@ -7,7 +7,7 @@ listComponents.directive('listPagination', function() {
     restrict: 'E',
     scope: false,
     template: '<pagination total-items="listPanelCtrl.cache.numHits"'
-        +' ng-model="listPanelCtrl.cache.currentPage" ng-change="listPanelCtrl.search()"'
+        +' ng-model="listPanelCtrl.cache.currentPage" ng-change="listPanelCtrl.loadFromUrl()"'
         +' items-per-page="listPanelCtrl.hitsPerPage" max-size=3'
         +' class="pagination-sm" boundary-links="true" rotate="false" ></pagination>',
     require: '^listPanel',
@@ -281,7 +281,6 @@ listComponents.directive('listTable', function() {
         defaultSortFields: '@',
     },
     require: ['listTable', '^listPanel'],
-    replace: false,
     template: '<table><thead ><tr class="slanted"></tr></thead><tbody></tbody></table>',
     link: function(scope, iElement, iAttrs, ctrls) {
         var listTableCtrl = ctrls[0];
@@ -342,9 +341,11 @@ listComponents.directive('listTable', function() {
             linkFunc($scope);
         };
 
-        this.resetSortOrder = function() {
-            cachedSortFields.length = 0;
-            Array.prototype.push.apply(cachedSortFields, this.defaultSortFields);
+        this.resetSortOrder = function(firstView) {
+            if (firstView) {
+                cachedSortFields.length = 0;
+                Array.prototype.push.apply(cachedSortFields, this.defaultSortFields);
+            }
             $scope.sortField = cachedSortFields.length >0 ? cachedSortFields[0][0] : 0;
             $scope.sortAscending = cachedSortFields.length >0 ? cachedSortFields[0][1] : true;
         };
