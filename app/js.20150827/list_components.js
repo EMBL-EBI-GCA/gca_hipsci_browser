@@ -22,7 +22,7 @@ listComponents.directive('listSearchBox', function() {
     restrict: 'E',
     scope: false,
     template: '<div class="search-box">Search:<input ng-model="listPanelCtrl.cache.query"'
-            + 'ng-change="listPanelCtrl.search()" ng-keypress="listPanelCtrl.search($event)"></input></div>',
+            + 'ng-change="listPanelCtrl.delayedSearch()" ng-keypress="listPanelCtrl.delayedSearch($event)"></input></div>',
     require: '^listPanel',
     link: function(scope, iElement, iAttr, listPanelCtrl) {
         scope.listPanelCtrl = listPanelCtrl;
@@ -219,6 +219,9 @@ listComponents.directive('aggsFilter', function() {
         scope.ulMaxHeight = 0;
         var ulElem = iElement.find("ul").first();
         scope.buttonRequired = function() {
+            if (! scope.collapsed) {
+                return true;
+            }
             var scrollHeight = ulElem.prop('scrollHeight');
             if (scope.ulMaxHeight == 0  && (scrollHeight > ulElem.height())) {
                 scope.ulMaxHeight = ulElem.height();
