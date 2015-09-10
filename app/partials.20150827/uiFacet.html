@@ -5,7 +5,7 @@
 			<button type="button" class="btn btn-xs btn-primary" ng-show="buttonRequired()" ng-click="toggleCollapse()" ng-bind="collapsed ? '+': '-'"></button>
 		</li>
 		<li ng-repeat="agg in aggs" class="list-group-item facet-term " 
-			ng-class="{'active': agg.filtered, 'facet-disabled': !agg.filtered && !agg.doc_count}"
+			ng-class="{'active': agg.filtered, 'facet-disabled': !(agg.filtered || agg.doc_count)}"
 			ng-click="handleEvent(agg)" >
 			<span ng-bind="agg.term"></span>
                         <span class="badge" ng-bind="agg.doc_count"></span>
