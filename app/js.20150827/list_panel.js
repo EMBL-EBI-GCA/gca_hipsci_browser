@@ -39,7 +39,6 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
                 controller.listTableCtrl.compileTable(controller.fields);
               }
               controller.loadFromUrl(firstView);
-              controller.routeUpdateListen();
           }
       });
 
@@ -84,7 +83,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
                   c.lastUrlChange = newUrl;
                   c.routeUpdateUnlisten();
                   c.loadFromUrl();
-                  });
+              });
           }
       }
       c.routeUpdateUnlisten = function() {
@@ -94,20 +93,22 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
         }
       }
 
-      c.loadFromUrl = function(firstView) {
+      c.loadFromUrl = function(firstView, routeChangeFn) {
           c.routeUpdateUnlisten();
+          if (routeChangeFn) {
+              routeChangeFn();
+          }
           c.cache.lastUrl = $location.url();
           c.cache.query = $location.search()['q'] || '';
+          var unfiltTermsRequired = false;
           for (var key in c.aggsFilterCtrls) {
               if (c.aggsFilterCtrls.hasOwnProperty(key)) {
-                  c.aggsFilterCtrls[key].loadFromUrl(firstView);
+                  unfiltTermsRequired = c.aggsFilterCtrls[key].loadFromUrl(firstView) ? true : unfiltTermsRequired;
               }
           }
-          for (var key in c.aggsFilterCtrls) {
-              if (c.aggsFilterCtrls.hasOwnProperty(key) && c.aggsFilterCtrls[key].unfilteredTermsReq) {
-                  c.aggsOnlySearch(c.search);
-                  return;
-              }
+          if (unfiltTermsRequired && c.cache.lastUrl.indexOf('?') >-1) {
+              c.aggsOnlySearch(c.search);
+              return;
           }
           c.search();
           c.routeUpdateListen();
@@ -158,7 +159,6 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
   
       c.search = function() {
         c.delayedSearchActivated = false;
-        console.log($location.url());
         var searchBody = {
           fields: c.fields,
           size: c.hitsPerPage,
@@ -275,14 +275,14 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
   
       c.clearFilters = function() {
           if (Object.keys($location.search()).length >0) {
-              $location.search({});
+              c.loadFromUrl( false, function() {$location.search({})});
           }
       };
 
 
       c.delayedSearch = function(event) {
           if (typeof event == 'object' && event.keyCode === 13) {
-              $location.search('q', c.cache.query || null);
+              c.loadFromUrl(false, function() { $location.search('q', c.cache.query || null);});
               return;
           }
           if (c.delayedSearchActivated) {
@@ -292,10 +292,10 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
           $timeout(function() {
               c.delayedSearchActivated = false;
               if (c.cache.query.length ==0) {
-                  $location.search('q', null);
+                  c.loadFromUrl(false, function() { $location.search('q', null);});
               }
               if (c.cache.query.length >3) {
-                  $location.search('q', c.cache.query);
+                  c.loadFromUrl(false, function() { $location.search('q', c.cache.query);});
               }
             }, 1000);
       };

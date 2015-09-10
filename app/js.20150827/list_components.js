@@ -60,7 +60,6 @@ listComponents.directive('aggsFilter', function() {
         var c = this;
         c.esAggRequest = { terms: {field: $scope.field, size: 20}};
         c.esFilterRequest = null;
-        c.unFilteredTermsReq = false;
         var cache = null;
 
         c.initCache = function(listPanelCtrl) {
@@ -147,12 +146,11 @@ listComponents.directive('aggsFilter', function() {
                     return filtTerms[b.term] - filtTerms[a.term]
                         || c.sortFunction(a,b);
                 });
-                c.unfilteredTermsReq = false;
                 $scope.aggs = cache.aggs;
                 if (numFiltTermsBefore != numFiltTermsAfter) {
                     c.filteredTermsToUrl();
-                    c.createFilterRequest();
                 }
+                c.createFilterRequest();
             }
         };
 
@@ -184,7 +182,6 @@ listComponents.directive('aggsFilter', function() {
                     c.filteredTermsToUrl();
                 }
                 c.createFilterRequest();
-                c.unfilteredTermsReq = false;
             }
             else {
                 $scope.aggs = [];
@@ -195,9 +192,7 @@ listComponents.directive('aggsFilter', function() {
                         filtered: true
                     });
                 }
-                if (filtTermsArr.length > 0) {
-                    c.unfilteredTermsReq = true;
-                }
+                return true;
             }
         };
 
@@ -239,8 +234,7 @@ listComponents.directive('aggsFilter', function() {
             }
             agg.filtered = ! agg.filtered;
             aggsFilterCtrl.createFilterRequest();
-            aggsFilterCtrl.filteredTermsToUrl();
-            //listPanelCtrl.search();
+            listPanelCtrl.loadFromUrl(false, function() { aggsFilterCtrl.filteredTermsToUrl();});
         };
 
         scope.toggleCollapse = function() {
