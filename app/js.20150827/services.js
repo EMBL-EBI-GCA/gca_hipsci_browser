@@ -44,3 +44,19 @@ services.service('apiClient', ['$http', function($http) {
   }
 ]);
 
+services.service('routeCache', ['$location', function($location) {
+    var cache = {};
+    this.get = function(ctrlName, id) {
+        var path = $location.path();
+        if (!cache.hasOwnProperty(path)) {
+            cache[path] = {};
+        }
+        if (!cache[path].hasOwnProperty(ctrlName)) {
+            cache[path][ctrlName] = {};
+        }
+        if (!cache[path][ctrlName].hasOwnProperty(id)) {
+            cache[path][ctrlName][id] = {};
+        }
+        return cache[path][ctrlName][id];
+    };
+}]);
