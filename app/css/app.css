@@ -278,6 +278,10 @@ div.search-box > input {
     background-image: linear-gradient(to bottom, #E8F5FA, #F9F9F9 100%);
     color: black;
     outline: none;
+    cursor: default;
+}
+.nav >li >a:focus {
+    background-color: transparent;
 }
 .nav >li > a:hover {
     background-image: linear-gradient(to bottom, #E8F5FA, #F9F9F9 100%);
