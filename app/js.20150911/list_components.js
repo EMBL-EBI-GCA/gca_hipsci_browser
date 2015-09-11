@@ -55,7 +55,7 @@ listComponents.directive('aggsFilter', function() {
         multiBoolean: '@',
     },
     require: ['aggsFilter', '^listPanel'],
-    templateUrl: 'partials.20150827/uiFacet.html',
+    templateUrl: 'partials.20150911/uiFacet.html',
     controller: ['$scope', '$location', function($scope, $location) {
         var c = this;
         c.esAggRequest = { terms: {field: $scope.field, size: 20}};

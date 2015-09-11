@@ -9,7 +9,7 @@ navigation.directive('navigationBanner', ['$location', function($location) {
 
     return {
         restrict: 'E',
-        templateUrl : 'partials.20150827/navigation.html',
+        templateUrl : 'partials.20150911/navigation.html',
         scope : true,
         link : function (scope) {
             scope.activeLink = activeLink;
