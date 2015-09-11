@@ -125,11 +125,21 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
           }
 
           if (resp.hasOwnProperty('aggregations')) {
-              jQuery.each(resp.aggregations, function(field, fieldResp) {
+              for (var field in c.aggsFilterCtrls) {
                   if (c.aggsFilterCtrls.hasOwnProperty(field)) {
-                      c.aggsFilterCtrls[field].processAggResp(fieldResp);
+                      var thisResp = resp.aggregations[field];
+                      if (!thisResp && resp.aggregations['unfiltered']) {
+                          thisResp = resp.aggregations['unfiltered'][field];
+                      }
+                      if (thisResp) {
+                          if (thisResp.hasOwnProperty(field)) {
+                              thisResp = thisResp[field];
+                          }
+                          c.aggsFilterCtrls[field].processAggResp(thisResp);
+                      }
                   }
-              });
+              }
+
           }
           c.routeUpdateListen();
       };
@@ -171,25 +181,63 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
             searchBody.sort.push(sortObj);
         }
 
-        var filterReqs = [];
+        var filterReqArr = [];
+        var filterReqObj = {};
+        var filteredFields = [];
+        var filtAggFields = [];
+        var unfiltAggFields = [];
         var aggReqs = {};
         for (var field in c.aggsFilterCtrls) {
             if (c.aggsFilterCtrls[field].esFilterRequest) {
-                filterReqs.push(c.aggsFilterCtrls[field].esFilterRequest);
+                filterReqArr.push(c.aggsFilterCtrls[field].esFilterRequest);
+                filterReqObj[field] = c.aggsFilterCtrls[field].esFilterRequest;
+                filteredFields.push(field);
             }
             if (c.aggsFilterCtrls[field].esAggRequest) {
                 aggReqs[field] = c.aggsFilterCtrls[field].esAggRequest;
+                if (c.aggsFilterCtrls[field].esFilterRequest) {
+                    filtAggFields.push(field);
+                }
+                else {
+                    unfiltAggFields.push(field);
+                }
             }
         }
 
-        if (filterReqs.length == 1) {
-            searchBody['query'] = {filtered: {filter: filterReqs[0]}};
+        if (filterReqArr.length == 1) {
+            searchBody['post_filter'] = filterReqArr[0];
         }
-        else if (filterReqs.length > 1) {
-            searchBody['query'] = {filtered: {filter: {and: filterReqs}}};
+        else if (filterReqArr.length > 1) {
+            searchBody['post_filter'] = {and: filterReqArr};
         }
 
-        if (Object.keys(aggReqs).length >0) {
+        if (filterReqArr.length >0) {
+            searchBody['aggs'] = {};
+            if (unfiltAggFields.length >0) {
+                searchBody.aggs['unfiltered'] = {filter: searchBody.post_filter, aggs:{} };
+                for (var i=0; i<unfiltAggFields.length; i++) {
+                    searchBody.aggs.unfiltered.aggs[unfiltAggFields[i]] = aggReqs[unfiltAggFields[i]];
+                }
+            }
+            for (var i=0; i<filtAggFields.length; i++) {
+                var extraFilters = jQuery.grep(filteredFields, function(filtField) {return filtField === filtAggFields[i] ? false : true});
+                if (extraFilters.length == 0) {
+                    searchBody.aggs[filtAggFields[i]] = aggReqs[filtAggFields[i]];
+                }
+                else if (extraFilters.length == 1) {
+                    searchBody.aggs[filtAggFields[i]] = {aggs: {}, filter: filterReqObj[extraFilters[0]]};
+                    searchBody.aggs[filtAggFields[i]].aggs[filtAggFields[i]] = aggReqs[filtAggFields[i]];
+                }
+                else {
+                    searchBody.aggs[filtAggFields[i]] = {aggs: {}, filter: {and: []}};
+                    searchBody.aggs[filtAggFields[i]].aggs[filtAggFields[i]] = aggReqs[filtAggFields[i]];
+                    for (var j=0; j<extraFilters.length; j++) {
+                        searchBody.aggs[filtAggFields[i]].filter.and.push(filterReqObj[extraFilters[j]]);
+                    }
+                }
+            }
+        }
+        else if (filtAggFields.length >0 || unfiltAggFields.length >0) {
             searchBody['aggs'] = aggReqs;
         }
 
