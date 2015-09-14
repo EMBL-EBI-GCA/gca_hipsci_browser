@@ -249,7 +249,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
                 type: "most_fields",
                 prefix_length: 2
             }};
-            if (filterReqs.length >0) {
+            if (filterReqArr.length >0) {
                 searchBody.query.filtered['query'] = queryObj;
             }
             else {
