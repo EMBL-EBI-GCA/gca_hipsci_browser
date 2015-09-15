@@ -9,28 +9,16 @@
         "properties": {
             "searchable": {
                 "properties": {
-                    "_other": {
+                    "fixed": {
                         "type": "string",
                         "index": "analyzed",
-                        "index_analyzer": "lowercase_whitespace",
-                        "search_analyzer": "hipsci_words"
+                        "analyzer": "fixed_text"
                     },
-                    "hipsciShortName": {
+                    "free": {
                         "type": "string",
                         "index": "analyzed",
-                        "index_analyzer": "hipsci_long_to_short",
-                        "search_analyzer": "find_short_name"
-                    },
-                    "hipsciFullName": {
-                        "type": "string",
-                        "index": "analyzed",
-                        "analyzer": "hipsci_long_name"
-                    },
-                    "prefixes": {
-                        "type": "string",
-                        "index": "analyzed",
-                        "analyzer": "prefix_only",
-                        "search_analyzer": "max_length"
+                        "search_sanalyzer": "standard",
+                        "index_analyzer": "prefixes"
                     }
                 }
             },
@@ -84,7 +72,7 @@
                             "study": {
                                 "type": "string",
                                 "index": "not_analyzed",
-                                "copy_to": "searchable._other"
+                                "copy_to": "searchable.fixed"
                             },
                             "ontologyPURL": {
                                 "type": "string",
@@ -105,7 +93,7 @@
                             "study": {
                                 "type": "string",
                                 "index": "not_analyzed",
-                                "copy_to": "searchable._other"
+                                "copy_to": "searchable.fixed"
                             },
                             "ontologyPURL": {
                                 "type": "string",
@@ -126,7 +114,7 @@
                             "study": {
                                 "type": "string",
                                 "index": "not_analyzed",
-                                "copy_to": "searchable._other"
+                                "copy_to": "searchable.fixed"
                             },
                             "ontologyPURL": {
                                 "type": "string",
@@ -147,7 +135,7 @@
                             "study": {
                                 "type": "string",
                                 "index": "not_analyzed",
-                                "copy_to": "searchable._other"
+                                "copy_to": "searchable.fixed"
                             },
                             "ontologyPURL": {
                                 "type": "string",
@@ -188,7 +176,7 @@
                             "study": {
                                 "type": "string",
                                 "index": "not_analyzed",
-                                "copy_to": "searchable._other"
+                                "copy_to": "searchable.fixed"
                             },
                             "ontologyPURL": {
                                 "type": "string",
@@ -209,7 +197,7 @@
             "bioSamplesAccession": {
                 "type": "string",
                 "index": "not_analyzed",
-                "copy_to": "searchable._other"
+                "copy_to": "searchable.fixed"
             },
             "cnv": {
                 "properties": {
@@ -233,7 +221,7 @@
                     "value": {
                         "type": "string",
                         "index": "not_analyzed",
-                        "copy_to": "searchable.prefixes"
+                        "copy_to": "searchable.free"
                     },
                     "ontologyPURL": {
                         "type": "string",
@@ -245,57 +233,56 @@
                 "properties": {
                     "name": {
                         "type": "string",
-                        "index": "not_analyzed",
-                        "copy_to": ["searchable.hipsciShortName", "searchable.hipsciFullName"]
+                        "index": "not_analyzed"
                     },
                     "age": {
                         "type": "string",
                         "index": "not_analyzed",
-                        "copy_to": "searchable._other"
+                        "copy_to": "searchable.fixed"
                     },
                     "ethnicity": {
                         "type": "string",
                         "index": "analyzed",
-                        "copy_to": "searchable.prefixes"
+                        "copy_to": "searchable.free"
                     },
                     "bioSamplesAccession": {
                         "type": "string",
                         "index": "not_analyzed",
-                        "copy_to": "searchable._other"
+                        "copy_to": "searchable.fixed"
                     }
                 }
             },
             "growingConditionsQC1": {
                 "type": "string",
                 "index": "not_analyzed",
-                "copy_to": "searchable._other"
+                "copy_to": "searchable.free"
             },
             "growingConditionsQC2": {
                 "type": "string",
                 "index": "not_analyzed",
-                "copy_to": "searchable._other"
+                "copy_to": "searchable.free"
             },
             "reprogramming": {
                 "properties": {
                     "methodOfDerivation": {
                         "type": "string",
                         "index": "not_analyzed",
-                        "copy_to": "searchable._other"
+                        "copy_to": "searchable.free"
                     },
                     "type": {
                         "type": "string",
                         "index": "not_analyzed",
-                        "copy_to": "searchable._other"
+                        "copy_to": "searchable.free"
                     },
                     "virus": {
                         "type": "string",
                         "index": "not_analyzed",
-                        "copy_to": "searchable._other"
+                        "copy_to": "searchable.free"
                     },
                     "vector": {
                         "type": "string",
                         "index": "not_analyzed",
-                        "copy_to": "searchable._other"
+                        "copy_to": "searchable.free"
                     },
                     "dateOfDerivation": {
                         "format": "dateOptionalTime",
@@ -305,8 +292,7 @@
             },
             "name": {
                 "type": "string",
-                "index": "not_analyzed",
-                "copy_to": ["searchable.hipsciShortName", "searchable.hipsciFullName"]
+                "index": "not_analyzed"
             },
             "pluritest": {
                 "properties": {
@@ -331,7 +317,7 @@
                     "value": {
                         "type": "string",
                         "index": "not_analyzed",
-                        "copy_to": "searchable._other"
+                        "copy_to": "searchable.free"
                     },
                     "ontologyPURL": {
                         "type": "string",
@@ -344,12 +330,12 @@
                     "value": {
                         "type": "string",
                         "index": "not_analyzed",
-                        "copy_to": "searchable.prefixes"
+                        "copy_to": "searchable.free"
                     },
                     "cellType": {
                         "type": "string",
                         "index": "not_analyzed",
-                        "copy_to": "searchable.prefixes"
+                        "copy_to": "searchable.free"
                     },
                     "ontologyPURL": {
                         "type": "string",
@@ -360,7 +346,7 @@
             "tissueProvider": {
                 "type": "string",
                 "index": "not_analyzed",
-                "copy_to": "searchable.prefixes"
+                "copy_to": "searchable.free"
             },
             "ebiscName": {
                 "type": "string",

@@ -2,38 +2,30 @@
     "donor": {
         "_all": {"enabled": false},
         "_timestamp": {"enabled": true, "store": "yes"},
+        "transform": {
+            "file": "hipsci_donor_transform",
+            "lang": "groovy"
+        },
         "properties": {
             "searchable": {
                 "properties": {
-                    "_other": {
+                    "fixed": {
                         "type": "string",
                         "index": "analyzed",
-                        "index_analyzer": "lowercase_whitespace",
-                        "search_analyzer": "hipsci_words"
+                        "analyzer": "fixed_text"
                     },
-                    "hipsciShortName": {
+                    "free": {
                         "type": "string",
                         "index": "analyzed",
-                        "index_analyzer": "hipsci_long_to_short",
-                        "search_analyzer": "find_short_name"
-                    },
-                    "hipsciFullName": {
-                        "type": "string",
-                        "index": "analyzed",
-                        "analyzer": "hipsci_long_name"
-                    },
-                    "prefixes": {
-                        "type": "string",
-                        "index": "analyzed",
-                        "analyzer": "prefix_only",
-                        "search_analyzer": "max_length"
+                        "search_sanalyzer": "standard",
+                        "index_analyzer": "prefixes"
                     }
                 }
             },
             "age": {
                 "type": "string",
                 "index": "not_analyzed",
-                "copy_to": "searchable._other"
+                "copy_to": "searchable.fixed"
             },
             "assays": {
                 "properties": {
@@ -45,14 +37,14 @@
             "bioSamplesAccession": {
                 "type": "string",
                 "index": "not_analyzed",
-                "copy_to": "searchable._other"
+                "copy_to": "searchable.fixed"
             },
             "cellLines": {
                 "properties": {
                     "name": {
                         "type": "string",
                         "index": "not_analyzed",
-                        "copy_to": ["searchable.hipsciShortName", "searchable.hipsciFullName"]
+                        "copy_to": "searchable.fixed"
                     },
                     "bankingStatus": {
                         "type": "string",
@@ -65,7 +57,7 @@
                     "value": {
                         "type": "string",
                         "index": "not_analyzed",
-                        "copy_to": "searchable.prefixes"
+                        "copy_to": "searchable.free"
                     },
                     "ontologyPURL": {
                         "type": "string",
@@ -76,20 +68,19 @@
             "ethnicity": {
                 "type": "string",
                 "index": "analyzed",
-                "analyzer": "ethnicity_analyzer",
-                "copy_to": "searchable.prefixes"
+                "copy_to": "searchable.free"
             },
             "name": {
                 "type": "string",
                 "index": "not_analyzed",
-                "copy_to": ["searchable.hipsciShortName", "searchable.hipsciFullName"]
+                "copy_to": "searchable.fixed"
             },
             "sex": {
                 "properties": {
                     "value": {
                         "type": "string",
                         "index": "not_analyzed",
-                        "copy_to": "searchable._other"
+                        "copy_to": "searchable.fixed"
                     },
                     "ontologyPURL": {
                         "type": "string",
@@ -100,7 +91,7 @@
             "tissueProvider": {
                 "type": "string",
                 "index": "not_analyzed",
-                "copy_to": "searchable.prefixes"
+                "copy_to": "searchable.free"
             }
         }
     }

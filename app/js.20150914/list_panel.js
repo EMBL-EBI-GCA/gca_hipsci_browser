@@ -244,10 +244,8 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
         if (c.cache.query.length >0) {
             var queryObj = {multi_match: {
                 query: c.cache.query,
-                fields: ['searchable.*'],
-                fuzziness: 'AUTO',
+                fields: ['searchable.free', 'searchable.fixed^3'],
                 type: "most_fields",
-                prefix_length: 2
             }};
             if (filterReqArr.length >0) {
                 searchBody.query.filtered['query'] = queryObj;
