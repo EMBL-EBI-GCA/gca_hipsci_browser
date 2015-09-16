@@ -20,11 +20,12 @@ listComponents.directive('listPagination', function() {
 listComponents.directive('listSearchBox', function() {
   return {
     restrict: 'E',
-    scope: false,
-    template: '<div class="search-box">Search:<input ng-model="listPanelCtrl.cache.query"'
+    scope: true,
+    template: '<div class="search-box"><span ng-bind="label"></span>:<input ng-model="listPanelCtrl.cache.query"'
             + 'ng-change="listPanelCtrl.delayedSearch()" ng-keypress="listPanelCtrl.delayedSearch($event)"></input></div>',
     require: '^listPanel',
-    link: function(scope, iElement, iAttr, listPanelCtrl) {
+    link: function(scope, iElement, iAttrs, listPanelCtrl) {
+        scope.label = iAttrs.label || 'Search';
         scope.listPanelCtrl = listPanelCtrl;
     }
   };
