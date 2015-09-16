@@ -302,18 +302,32 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
             searchBody.sort.push(sortObj);
         }
 
-        var filterReqs = [];
+        var filterReqArr = [];
         for (var field in c.aggsFilterCtrls) {
             if (c.aggsFilterCtrls[field].esFilterRequest) {
-                filterReqs.push(c.aggsFilterCtrls[field].esFilterRequest);
+                filterReqArr.push(c.aggsFilterCtrls[field].esFilterRequest);
             }
         }
 
-        if (filterReqs.length == 1) {
-            searchBody['query'] = {filtered: {filter: filterReqs[0]}};
+        if (filterReqArr.length == 1) {
+            searchBody['query'] = {filtered: {filter: filterReqArr[0]}};
         }
-        else if (filterReqs.length > 1) {
-            searchBody['query'] = {filtered: {filter: {and: filterReqs}}};
+        else if (filterReqArr.length > 1) {
+            searchBody['query'] = {filtered: {filter: {and: filterReqArr}}};
+        }
+
+        if (c.cache.query.length >0) {
+            var queryObj = {multi_match: {
+                query: c.cache.query,
+                fields: ['searchable.free', 'searchable.fixed^3'],
+                type: "most_fields",
+            }};
+            if (filterReqArr.length >0) {
+                searchBody.query.filtered['query'] = queryObj;
+            }
+            else {
+                searchBody['query'] = queryObj;
+            }
         }
 
         return apiClient.exportData({type: c.documentType, body: searchBody, format: format});
