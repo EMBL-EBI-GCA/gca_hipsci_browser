@@ -62,6 +62,7 @@ listComponents.directive('aggsFilter', function() {
         c.esAggRequest = { terms: {field: $scope.field, size: 20}};
         c.esFilterRequest = null;
         var cache = null;
+        c.esFilterIsGlobal = $scope.multiBoolean === 'and' ? true : false;
 
         c.initCache = function(listPanelCtrl) {
             if (!listPanelCtrl.cache.aggsFilters.hasOwnProperty($scope.field)) {

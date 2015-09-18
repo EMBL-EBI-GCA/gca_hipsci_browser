@@ -181,21 +181,29 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
             searchBody.sort.push(sortObj);
         }
 
-        var filterReqArr = [];
+        var postFilterReqArr = [];
+        var globalFilterReqArr = []
+        //var filterReqArr = [];
         var filterReqObj = {};
-        var filteredFields = [];
+        var postFilteredFields = [];
+        //var filteredFields = [];
         var filtAggFields = [];
         var unfiltAggFields = [];
         var aggReqs = {};
         for (var field in c.aggsFilterCtrls) {
             if (c.aggsFilterCtrls[field].esFilterRequest) {
-                filterReqArr.push(c.aggsFilterCtrls[field].esFilterRequest);
                 filterReqObj[field] = c.aggsFilterCtrls[field].esFilterRequest;
-                filteredFields.push(field);
+                if (c.aggsFilterCtrls[field].esFilterIsGlobal) {
+                    globalFilterReqArr.push(c.aggsFilterCtrls[field].esFilterRequest);
+                }
+                else {
+                    postFilterReqArr.push(c.aggsFilterCtrls[field].esFilterRequest);
+                    postFilteredFields.push(field);
+                }
             }
             if (c.aggsFilterCtrls[field].esAggRequest) {
                 aggReqs[field] = c.aggsFilterCtrls[field].esAggRequest;
-                if (c.aggsFilterCtrls[field].esFilterRequest) {
+                if (c.aggsFilterCtrls[field].esFilterRequest && !c.aggsFilterCtrls[field].esFilterIsGlobal) {
                     filtAggFields.push(field);
                 }
                 else {
@@ -204,14 +212,14 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
             }
         }
 
-        if (filterReqArr.length == 1) {
-            searchBody['post_filter'] = filterReqArr[0];
+        if (postFilterReqArr.length == 1) {
+            searchBody['post_filter'] = postFilterReqArr[0];
         }
-        else if (filterReqArr.length > 1) {
-            searchBody['post_filter'] = {and: filterReqArr};
+        else if (postFilterReqArr.length > 1) {
+            searchBody['post_filter'] = {and: postFilterReqArr};
         }
 
-        if (filterReqArr.length >0) {
+        if (postFilterReqArr.length >0) {
             searchBody['aggs'] = {};
             if (unfiltAggFields.length >0) {
                 searchBody.aggs['unfiltered'] = {filter: searchBody.post_filter, aggs:{} };
@@ -220,7 +228,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
                 }
             }
             for (var i=0; i<filtAggFields.length; i++) {
-                var extraFilters = jQuery.grep(filteredFields, function(filtField) {return filtField === filtAggFields[i] ? false : true});
+                var extraFilters = jQuery.grep(postFilteredFields, function(filtField) {return filtField === filtAggFields[i] ? false : true});
                 if (extraFilters.length == 0) {
                     searchBody.aggs[filtAggFields[i]] = aggReqs[filtAggFields[i]];
                 }
@@ -241,13 +249,32 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
             searchBody['aggs'] = aggReqs;
         }
 
+        if (c.cache.query.length >0 || globalFilterReqArr.length >0) {
+            searchBody.query = {};
+        }
+        if (globalFilterReqArr.length >0) {
+            searchBody.query.filtered = {}
+        }
+
         if (c.cache.query.length >0) {
-            var queryObj = {multi_match: {
+            var multiMatch = {
                 query: c.cache.query,
                 fields: ['searchable.free', 'searchable.fixed^3'],
                 type: "most_fields",
-            }};
-            searchBody['query'] = queryObj;
+            };
+            if (globalFilterReqArr.length >0) {
+                searchBody.query.filtered.query = {multi_match:  multiMatch};
+            }
+            else {
+                searchBody.query.multi_match = multiMatch;
+            }
+        }
+
+        if (globalFilterReqArr.length ==1) {
+            searchBody.query.filtered.filter = globalFilterReqArr[0];
+        }
+        else if (globalFilterReqArr.length >1) {
+            searchBody.query.filtered.filter = {and: globalFilterReqArr};
         }
 
         var bodyStr = JSON.stringify(searchBody);
