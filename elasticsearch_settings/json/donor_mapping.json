@@ -7,6 +7,16 @@
             "lang": "groovy"
         },
         "properties": {
+            "indexCreated": {
+                "type": "date",
+                "format": "yyyyMMdd",
+                "index": "not_analyzed"
+            },
+            "indexUpdated": {
+                "type": "date",
+                "format": "yyyyMMdd",
+                "index": "not_analyzed"
+            },
             "searchable": {
                 "properties": {
                     "fixed": {
