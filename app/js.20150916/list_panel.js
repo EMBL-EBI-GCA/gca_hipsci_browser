@@ -247,12 +247,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
                 fields: ['searchable.free', 'searchable.fixed^3'],
                 type: "most_fields",
             }};
-            if (filterReqArr.length >0) {
-                searchBody.query.filtered['query'] = queryObj;
-            }
-            else {
-                searchBody['query'] = queryObj;
-            }
+            searchBody['query'] = queryObj;
         }
 
         var bodyStr = JSON.stringify(searchBody);
