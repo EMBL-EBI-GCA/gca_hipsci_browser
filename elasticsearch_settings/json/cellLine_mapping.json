@@ -1,18 +1,17 @@
 {
     "cellLine": {
         "_all": {"enabled": false},
-        "_timestamp": {"enabled": true, "store": true},
         "transform": {
             "file": "hipsci_cellLine_transform",
             "lang": "groovy"
         },
         "properties": {
-            "indexCreated": {
+            "_indexCreated": {
                 "type": "date",
                 "format": "yyyyMMdd",
                 "index": "not_analyzed"
             },
-            "indexUpdated": {
+            "_indexUpdated": {
                 "type": "date",
                 "format": "yyyyMMdd",
                 "index": "not_analyzed"

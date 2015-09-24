@@ -1,18 +1,17 @@
 {
     "donor": {
         "_all": {"enabled": false},
-        "_timestamp": {"enabled": true, "store": "yes"},
         "transform": {
             "file": "hipsci_donor_transform",
             "lang": "groovy"
         },
         "properties": {
-            "indexCreated": {
+            "_indexCreated": {
                 "type": "date",
                 "format": "yyyyMMdd",
                 "index": "not_analyzed"
             },
-            "indexUpdated": {
+            "_indexUpdated": {
                 "type": "date",
                 "format": "yyyyMMdd",
                 "index": "not_analyzed"
