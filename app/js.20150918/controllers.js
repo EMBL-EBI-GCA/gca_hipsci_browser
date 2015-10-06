@@ -281,8 +281,8 @@ controllers.controller('LineListCtrl', function() {
     var bankingStatusSortRegex = [/banked/i, /^selected/i, /pending/i]
     this.bankingStatusSort = function(a,b) {
         for (var i=0; i<bankingStatusSortRegex.length; i++) {
-            var a_passes = bankingStatusSortRegex[i].test(a) ? 1 : 0;
-            var b_passes = bankingStatusSortRegex[i].test(b) ? 1 : 0;
+            var a_passes = bankingStatusSortRegex[i].test(a.term) ? 1 : 0;
+            var b_passes = bankingStatusSortRegex[i].test(b.term) ? 1 : 0;
             if (a_passes != b_passes) {
                 return b_passes - a_passes;
             }
