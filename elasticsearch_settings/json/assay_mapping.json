@@ -51,7 +51,7 @@
                         "type": "string",
                         "index": "not_analyzed",
                         "copy_to": "searchable.free"
-                    }
+                    },
                     "archive": {
                         "type": "string",
                         "index": "not_analyzed",
@@ -64,7 +64,7 @@
                     },
                     "accessionType": {
                         "type": "string",
-                        "index": "not_analyzed",
+                        "index": "not_analyzed"
                     },
                     "fileUrl": {
                         "type": "string",
@@ -78,12 +78,12 @@
                         "type": "boolean"
                     }
                 }
-            }
+            },
             "assay": {
                 "properties": {
                     "type": {
                         "type": "string",
-                        "index": "not_analyzed"
+                        "index": "not_analyzed",
                         "copy_to": "searchable.free"
                     },
                     "growingConditions": {
@@ -123,7 +123,7 @@
                         "type": "string",
                         "index": "not_analyzed",
                         "copy_to": "searchable.free"
-                    },
+                    }
                 }
             }
         }
