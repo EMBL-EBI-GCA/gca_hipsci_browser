@@ -1,0 +1,131 @@
+{
+    "assay": {
+        "_all": {"enabled": false},
+        "transform": {
+            "file": "hipsci_assay_transform",
+            "lang": "groovy"
+        },
+        "properties": {
+            "_indexCreated": {
+                "type": "date",
+                "format": "yyyyMMdd",
+                "index": "not_analyzed"
+            },
+            "_indexUpdated": {
+                "type": "date",
+                "format": "yyyyMMdd",
+                "index": "not_analyzed"
+            },
+            "searchable": {
+                "properties": {
+                    "fixed": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "analyzer": "fixed_text"
+                    },
+                    "free": {
+                        "type": "string",
+                        "index": "analyzed",
+                        "search_sanalyzer": "standard",
+                        "index_analyzer": "prefixes"
+                    }
+                }
+            },
+            "file": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.fixed"
+                    },
+                    "md5": {
+                        "type": "string",
+                        "index": "no"
+                    },
+                    "type": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.free"
+                    },
+                    "description": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.free"
+                    }
+                    "archive": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.fixed"
+                    },
+                    "accession": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.fixed"
+                    },
+                    "accessionType": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                    },
+                    "fileUrl": {
+                        "type": "string",
+                        "index": "no"
+                    },
+                    "archiveUrl": {
+                        "type": "string",
+                        "index": "no"
+                    },
+                    "openAccess": {
+                        "type": "boolean"
+                    }
+                }
+            }
+            "assay": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                        "copy_to": "searchable.free"
+                    },
+                    "growingConditions": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.free"
+                    },
+                    "description": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.free"
+                    }
+                }
+            },
+            "sample": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    },
+                    "bioSamplesAccession": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.fixed"
+                    },
+                    "cellType": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.free"
+                    },
+                    "diseaseStatus": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.free"
+                    },
+                    "sex": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.free"
+                    },
+                }
+            }
+        }
+    }
+}
