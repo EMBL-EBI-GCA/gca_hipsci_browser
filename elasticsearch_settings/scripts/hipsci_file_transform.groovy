@@ -1,7 +1,7 @@
 
 ctx._source.calculated = [:]
 
-ctx._source.calculated.access = ctx._source.file.openAccess ? 'Open access' : ctx._source.file.openAccess != null ? 'Managed access' : ''
+ctx._source.calculated.access = ctx._source.archive.openAccess ? 'Open access' : ctx._source.archive.openAccess != null ? 'Managed access' : ''
 
 ctx._source.searchable = [:]
 ctx._source.searchable.fixed = []
