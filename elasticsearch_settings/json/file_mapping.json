@@ -31,36 +31,36 @@
                     }
                 }
             },
-            "file": {
+            "description": {
+                "type": "string",
+                "index": "not_analyzed",
+                "copy_to": "searchable.free"
+            },
+            "files": {
                 "properties": {
-                    "files": {
-                        "properties": {
-                            "name": {
-                                "type": "string",
-                                "index": "not_analyzed",
-                                "copy_to": "searchable.fixed"
-                            },
-                            "md5": {
-                                "type": "string",
-                                "index": "no"
-                            },
-                            "url": {
-                                "type": "string",
-                                "index": "no"
-                            }
-                        }
+                    "name": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.fixed"
+                    },
+                    "md5": {
+                        "type": "string",
+                        "index": "no"
                     },
                     "type": {
                         "type": "string",
                         "index": "not_analyzed",
                         "copy_to": "searchable.free"
                     },
-                    "description": {
+                    "url": {
                         "type": "string",
-                        "index": "not_analyzed",
-                        "copy_to": "searchable.free"
-                    },
-                    "archive": {
+                        "index": "no"
+                    }
+                }
+            },
+            "archive": {
+                "properties": {
+                    "name": {
                         "type": "string",
                         "index": "not_analyzed",
                         "copy_to": "searchable.fixed"
@@ -74,7 +74,7 @@
                         "type": "string",
                         "index": "not_analyzed"
                     },
-                    "archiveUrl": {
+                    "url": {
                         "type": "string",
                         "index": "no"
                     },
