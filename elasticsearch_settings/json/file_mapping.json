@@ -1,8 +1,8 @@
 {
-    "assay": {
+    "file": {
         "_all": {"enabled": false},
         "transform": {
-            "file": "hipsci_assay_transform",
+            "file": "hipsci_file_transform",
             "lang": "groovy"
         },
         "properties": {
