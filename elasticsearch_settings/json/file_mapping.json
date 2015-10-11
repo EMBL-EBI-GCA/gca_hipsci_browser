@@ -33,14 +33,22 @@
             },
             "file": {
                 "properties": {
-                    "name": {
-                        "type": "string",
-                        "index": "not_analyzed",
-                        "copy_to": "searchable.fixed"
-                    },
-                    "md5": {
-                        "type": "string",
-                        "index": "no"
+                    "files": {
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "index": "not_analyzed",
+                                "copy_to": "searchable.fixed"
+                            },
+                            "md5": {
+                                "type": "string",
+                                "index": "no"
+                            },
+                            "url": {
+                                "type": "string",
+                                "index": "no"
+                            }
+                        }
                     },
                     "type": {
                         "type": "string",
@@ -65,10 +73,6 @@
                     "accessionType": {
                         "type": "string",
                         "index": "not_analyzed"
-                    },
-                    "fileUrl": {
-                        "type": "string",
-                        "index": "no"
                     },
                     "archiveUrl": {
                         "type": "string",
