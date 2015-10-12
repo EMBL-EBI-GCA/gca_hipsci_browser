@@ -290,3 +290,85 @@ controllers.controller('LineListCtrl', function() {
     };
 
 });
+
+controllers.controller('FileListCtrl', function() {
+    var controller=this;
+    this.documentType = 'file';
+    this.esFields = ['files.name', 'files.md5', 'files.url', 'assay.type', 'description', 'sample.name', 'sample.cellType',
+        'sample.bioSamplesAccession', 'archive.name', 'archive.accessionType',
+        'archive.accession', 'archive.url',
+        'assay.growingConditions', 'sample.diseaseStatus', 'sample.sex', 'assay.description'];
+
+    this.columnHeadersMap = {
+        'files.name': 'File name',
+        'files.md5': 'md5',
+        'files.url': 'File url',
+        'assay.type': 'Assay',
+        'description': 'Description',
+        'sample.name': 'Cell line',
+        'sample.cellType': 'Cell type',
+        'sample.bioSamplesAccession': 'Biosample',
+        'archive.name': 'Archive',
+        'archive.accessionType': 'Accession type',
+        'archive.accession': 'Accession',
+        'archive.url': 'Archive url',
+        'assay.growingConditions': 'Cell line growing conditions for this assay',
+        'sample.diseaseStatus': 'Disease status',
+        'sample.sex': 'Sex',
+        'assay.description': 'Assay description',
+    };
+
+    this.htmlFields = [
+        'sample.name', 'assay.type', 'description', 'file', 'archive'
+    ];
+
+    this.htmlHeadersMap = {
+        'sample.name': 'Cell line',
+        'assay.type': 'Assay',
+        'description': 'Description',
+        'file': 'File download',
+        'archive': 'Archive'
+    };
+
+    this.compileHead = function(fields) {
+        var trChildren = [];
+        for (var i=0; i<controller.htmlFields.length; i++) {
+            var field = controller.htmlFields[i];
+            trChildren.push(
+              '<th class="sort">'+controller.htmlHeadersMap[field]+'</th>'
+            );
+        }
+        return trChildren;
+    };
+
+    this.compileRow = function(fields) {
+        var trChildren = [];
+        for (var i=0; i<controller.htmlFields.length; i++) {
+            var field = controller.htmlFields[i];
+            var hitStr = 'hit['+i+']';
+            trChildren.push(
+              field == 'sample.name' ? '<td class="name"><a ng-if="'+hitStr+'.isIPS" ng-href="#/lines/{{'+hitStr+'.name}}" ng-bind="'+hitStr+'.name"></a><span ng-if="!'+hitStr+'.isIPS" ng-bind="'+hitStr+'.name" ></span></td>'
+              : field == 'file' ? '<td class="name"><span ng-repeat="url in '+hitStr+'"><a ng-href="{{url}}"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a></span></td>'
+              : field == 'archive' ? '<td class="name"><a ng-href="{{'+hitStr+'.url}}" ng-bind="'+hitStr+'.name"></a></td>'
+              : '<td ng-bind="'+hitStr+'"></td>'
+            );
+        }
+        return trChildren;
+    };
+
+    this.processHitFields = function(hitFields, fields) {
+        var processedFields = [];
+        processedFields[0] = { name: hitFields['sample.name'][0], isIPS: hitFields['sample.cellType'][0] == 'iPSC' ? true : false};
+        processedFields[1] = hitFields['assay.type'][0];
+        processedFields[2] = hitFields.description[0];
+        processedFields[3] = hitFields['files.url'];
+        processedFields[4] = {
+            name: hitFields.hasOwnProperty('archive.name') ? hitFields['archive.name'][0] : undefined,
+            url: hitFields.hasOwnProperty('archive.url') ? hitFields['archive.url'][0] : undefined,
+        };
+        console.log(processedFields);
+        return processedFields;
+    };
+
+
+});

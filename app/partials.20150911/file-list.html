@@ -1,0 +1,56 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+    <list-panel document-type="FileCtrl.documentType" >
+    <list-init-fields fields="FileCtrl.esFields" export-headers-map="FileCtrl.columnHeadersMap"></list-init-fields>
+
+        <h1>Files</h1>
+        <hr/>
+
+        <div class="row list-panel">
+            <div class="col-md-3 fixd-width-lhs">
+                <facets-clear text="Clear filters"></facets-clear>
+                <div class="row">
+                <div class="col-sm-6 col-md-12">
+                <aggs-filter title="Assay" field="assay.type"></aggs-filter>
+                </div>
+                <div class="col-sm-6 col-md-12">
+                <aggs-filter title="Description" field="description"></aggs-filter>
+                </div>
+                <div class="col-sm-6 col-md-12">
+                <aggs-filter title="Growing conditions" field="assay.growingConditions"></aggs-filter>
+                </div>
+                <div class="col-sm-6 col-md-12">
+                <aggs-filter title="File format" field="file.type"></aggs-filter>
+                </div>
+                </div>
+            </div>
+            <div class="col-md-9 fixd-width-rhs">
+                <list-error-alert></list-error-alert>
+    		<list-pagination></list-pagination>
+
+                <div class="export-button btn-group pull-right" dropdown="">
+                    <button type="button" class="btn btn-primary dropdown-toggle" >
+                        Export<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a ng-click="exportData('csv')">comma delimited .csv</a></li>
+                        <li><a ng-click="exportData('tsv')">tab delimited .tsv</a></li>
+                    </ul>
+                </div>
+                <div class="list-search-box">
+                    <list-search-box label="Search files"></list-search-box>
+                </div>
+
+            <div class="matrix-wrapper table-responsive">
+                <list-table class="matrix table table-striped" compile-head="FileCtrl.compileHead" compile-row="FileCtrl.compileRow" process-hit-fields="FileCtrl.processHitFields"
+                        default-sort-fields="[['_score', false],['sample.name',false]]">
+                </list-table>
+            </div>
+
+    		<list-pagination></list-pagination>
+            </div>
+
+        </div>
+    </list-panel>
+    </div>
+</div>

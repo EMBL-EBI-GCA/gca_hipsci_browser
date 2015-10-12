@@ -38,6 +38,12 @@ hipsciBrowser.config(['$routeProvider',
       controllerAs: 'DonorCtrl',
       reloadOnSearch: false,
     }).
+    when('/files', {
+      templateUrl: 'partials.20150911/file-list.html',
+      controller: 'FileListCtrl',
+      controllerAs: 'FileCtrl',
+      reloadOnSearch: false,
+    }).
     when('/api', {
       templateUrl: 'partials.20150911/api.html',
     }).
