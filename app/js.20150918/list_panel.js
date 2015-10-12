@@ -51,7 +51,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
       c.aggsFilterCtrls = {};
       c.listTableCtrl = null;
       c.unbindRouteUpdate = null;
-      c.hitsPerPage = 15;
+      c.hitsPerPage = 25;
       c.fields = [];
       c.lastUrlChange = null;
 
