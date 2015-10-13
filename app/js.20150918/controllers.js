@@ -348,7 +348,7 @@ controllers.controller('FileListCtrl', function() {
             var hitStr = 'hit['+i+']';
             trChildren.push(
               field == 'samples.name' ? '<td class="name"><div ng-repeat="sample in '+hitStr+'"><a ng-if="sample.isIPS" ng-href="#/lines/{{sample.name}}" ng-bind="sample.name"></a><span ng-if="!sample.isIPS" ng-bind="sample.name" ></span></div></td>'
-              : field == 'file' ? '<td class="name"><span ng-repeat="url in '+hitStr+'"><a ng-href="{{url}}"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a></span></td>'
+              : field == 'file' ? '<td class="name"><span ng-repeat="url in '+hitStr+'"><a ng-href="{{url}}"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" style="padding-right:2px"></span></a></span></td>'
               : field == 'archive' ? '<td class="name"><a ng-href="{{'+hitStr+'.url}}" ng-bind="'+hitStr+'.name"></a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
             );
