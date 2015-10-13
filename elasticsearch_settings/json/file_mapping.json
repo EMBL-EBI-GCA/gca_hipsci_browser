@@ -102,7 +102,7 @@
                     }
                 }
             },
-            "sample": {
+            "samples": {
                 "properties": {
                     "name": {
                         "type": "string",
