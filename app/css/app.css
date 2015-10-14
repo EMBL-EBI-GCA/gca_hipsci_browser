@@ -101,12 +101,12 @@ p .left-image{
 .list-search-box{
   float: right;
   margin-top: 20px;
-  margin-bottom: 20px;
   margin-right: 20px;
 }
 .export-button button {
   margin-top: 10px;
   margin-right: 20px;
+  margin-bottom: 10px;
 }
 /*match the panel heading style*/
 .facet .heading{
@@ -154,6 +154,9 @@ div.matrix-wrapper {
 }
 html[data-useragent*='MSIE 8'] div.matrix-wrapper {
   padding-right: 0; /* not need in IE 8 since the heading are not slanting */
+}
+table.matrix {
+    margin-top: 20px;
 }
 table.matrix th.matrix-dot{
   width: 25px;

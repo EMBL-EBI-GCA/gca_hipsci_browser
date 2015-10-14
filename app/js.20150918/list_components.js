@@ -46,6 +46,33 @@ listComponents.directive('listErrorAlert', function() {
   };
 });
 
+listComponents.directive('invisibleFilter', function() {
+  return {
+    restrict: 'E',
+    scope: {
+        field: '@',
+        term: '@',
+    },
+    require: ['invisibleFilter', '^listPanel'],
+    controller: ['$scope', '$location', function($scope, $location) {
+        var c = this;
+        c.createFilterRequest = function(term) {
+            c.esFilterRequest = {term: {}};
+            c.esFilterRequest.term[$scope.field] = term;
+        };
+        c.esFilterIsGlobal = true;
+
+    }],
+    link: function(scope, iElement, iAttrs, ctrls) {
+        var invisibleFilterCtrl = ctrls[0];
+        var listPanelCtrl = ctrls[1];
+        listPanelCtrl.aggsFilterCtrls[scope.field] = invisibleFilterCtrl;
+        invisibleFilterCtrl.createFilterRequest(scope.$parent.$eval(scope.term));
+        iAttrs.$set('list-panel-registered', true);
+    }
+  };
+});
+
 listComponents.directive('aggsFilter', function() {
   return {
     restrict: 'E',

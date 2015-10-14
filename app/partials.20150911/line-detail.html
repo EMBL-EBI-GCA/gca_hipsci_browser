@@ -71,38 +71,36 @@
         </section>
 
         <section ng-if="data.assays || data.hlaTyping">
-        <h3 class="item-detail-section">Genomic assays</h3>
+        <h3 class="item-detail-section">Genomic assay files</h3>
         <hr/>
-        <dl class="dl-horizontal">
-            <div ng-if="data.assays.gtarray">
-                <dt>Genotyping microarray:</dt>
-                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.gtarray)}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="data.assays.gtarray.study"></span></a></dd>
-            </div>
-            <div ng-if="data.assays.gexarray">
-                <dt>Gene expression microarray:</dt>
-                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.gexarray)}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="data.assays.gexarray.study"></span></a></dd>
-            </div>
-            <div ng-if="data.assays.exomeseq">
-                <dt>Exome sequencing:</dt>
-                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.exomeseq)}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="data.assays.exomeseq.study"></span></a></dd>
-            </div>
-            <div ng-if="data.assays.rnaseq">
-                <dt>RNA sequencing:</dt>
-                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.rnaseq)}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="data.assays.rnaseq.study"></span></a></dd>
-            </div>
-            <div ng-if="data.assays.mtarray">
-                <dt>Methylation profiling microarray:</dt>
-                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.mtarray)}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="data.assays.mtarray.study"></span></a></dd>
-            </div>
-            <div ng-if="data.assays.proteomics">
-                <dt>Proteomics:</dt>
-                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays.proteomics)}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> Data on FTP site</a></dd>
-            </div>
-            <div ng-if="data.assays['cellbiol-fn']">
-                <dt>Cellular phenotyping:</dt>
-                <dd><a ng-href="{{LineCtrl.assayToHref(data.assays['cellbiol-fn'])}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> Data on FTP site</a></dd>
-            </div>
-        </dl>
+
+        <div class="row" ng-controller="FileListCtrl as FileCtrl">
+        <list-panel document-type="FileCtrl.documentType" >
+        <list-init-fields fields="FileCtrl.esFields" export-headers-map="FileCtrl.columnHeadersMap"></list-init-fields>
+        <invisible-filter field="samples.name" term="ipscName"></invisible-filter>
+
+        <list-error-alert></list-error-alert>
+
+        <div class="col-md-2 col-sm-3 col-xs-4 col-md-offset-9 col-sm-offset-9 col-xs-offset-8 export-button btn-group pull-right" dropdown="">
+            <button type="button" class="btn btn-primary dropdown-toggle" >
+                Export file list<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a ng-click="exportData('csv')">comma delimited .csv</a></li>
+                <li><a ng-click="exportData('tsv')">tab delimited .tsv</a></li>
+            </ul>
+        </div>
+
+        <div class="col-md-10 col-sm-12 col-xs-12 col-md-offset-1">
+                <div class="table-responsive">
+                    <list-table class="matrix table table-striped" compile-head="FileCtrl.compileHead" compile-row="FileCtrl.compileRow" process-hit-fields="FileCtrl.processHitFields"
+                            default-sort-fields="[['assay.type',true]]">
+                    </list-table>
+                </div>
+
+        </list-panel>
+        </div></div>
+
         <div ng-if="data.hlaTyping">
             <dl class="dl-horizontal">
                 <dt>HLA typing from imputed genotypes:</dt>
@@ -169,6 +167,9 @@
         </section>
 
         </div>
+
+
+
 
 
     </div>

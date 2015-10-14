@@ -29,6 +29,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
       var unbindWatch = scope.$watch(function() {
           var unregisteredCounter = 0;
           iElement.find('aggs-filter').each(function(index, el) {if ( ! el.attributes.hasOwnProperty('list-panel-registered')) {unregisteredCounter++;} });
+          iElement.find('invisible-filter').each(function(index, el) {if ( ! el.attributes.hasOwnProperty('list-panel-registered')) {unregisteredCounter++;} });
           iElement.find('list-init-fields').each(function(index, el) {if ( ! el.attributes.hasOwnProperty('list-panel-registered')) {unregisteredCounter++;} });
           return unregisteredCounter;
         }, function(newValue) {
@@ -102,7 +103,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
           c.cache.query = $location.search()['q'] || '';
           var unfiltTermsRequired = false;
           for (var key in c.aggsFilterCtrls) {
-              if (c.aggsFilterCtrls.hasOwnProperty(key)) {
+              if (c.aggsFilterCtrls.hasOwnProperty(key) && c.aggsFilterCtrls[key].hasOwnProperty('loadFromUrl')) {
                   unfiltTermsRequired = c.aggsFilterCtrls[key].loadFromUrl(firstView) ? true : unfiltTermsRequired;
               }
           }
@@ -126,7 +127,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
 
           if (resp.hasOwnProperty('aggregations')) {
               for (var field in c.aggsFilterCtrls) {
-                  if (c.aggsFilterCtrls.hasOwnProperty(field)) {
+                  if (c.aggsFilterCtrls.hasOwnProperty(field) && c.aggsFilterCtrls[field].hasOwnProperty('processAggResp')) {
                       var thisResp = resp.aggregations[field];
                       if (!thisResp && resp.aggregations['unfiltered']) {
                           thisResp = resp.aggregations['unfiltered'][field];

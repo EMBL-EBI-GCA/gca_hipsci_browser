@@ -133,43 +133,11 @@ controllers.controller('DonorListCtrl', function() {
 controllers.controller('LineListCtrl', function() {
     var controller = this;
     this.documentType = 'cellLine';
-    this.initHtmlFields =  ['name', 'diseaseStatus.value', 'donor.sex.value', 'sourceMaterial.value', 'tissueProvider', 'openAccess', 'bankingStatus', 'bioSamplesAccession',
-        'gtarray', 'gexarray', 'exomeseq', 'rnaseq', 'mtarray', 'proteomics', 'cellbiol-fn' ];
 
-    var assaysLocations = {'gtarray':'archive', 'gexarray':'archive', 'exomeseq':'archive', 'rnaseq':'archive', 'mtarray':'archive', 'proteomics':'ftp', 'cellbiol-fn':'ftp'};
-    this.assaysFields = [];
-    for (var field in assaysLocations) {
-        if (assaysLocations[field] == 'archive') {
-            this.assaysFields.push('assays.'+field+'.archive');
-        }
-        else if (assaysLocations[field] == 'ftp') {
-            this.assaysFields.push('assays.'+field+'.path');
-        }
-    }
+    this.initFields =  ['name', 'diseaseStatus.value', 'donor.sex.value', 'sourceMaterial.value', 'tissueProvider', 'openAccess', 'bankingStatus', 'bioSamplesAccession', 'calculated.assays'];
+    this.assays = ['gtarray', 'gexarray', 'exomeseq', 'rnaseq', 'mtarray', 'proteomics', 'cellbiol-fn'];
 
-    this.htmlFieldsToEsFields = function(htmlFields) {
-        var esFields = [];
-        for (var i=0; i<htmlFields.length; i++) {
-            var field = htmlFields[i];
-            if (assaysLocations.hasOwnProperty(field)) {
-                if (assaysLocations[field] == 'archive') {
-                    esFields.push('assays.' + field + '.archive');
-                    esFields.push('assays.' + field + '.study');
-                }
-                else if (assaysLocations[field] == 'ftp') {
-                    esFields.push('assays.' + field + '.path');
-                }
-            }
-            else {
-                esFields.push(field);
-            }
-        }
-        return esFields;
-    };
-
-    this.initEsFields = this.htmlFieldsToEsFields(this.initHtmlFields);
-    this.htmlFields = this.initHtmlFields;
-
+    //this.assays = [ 'Genotyping array', 'Expression array', 'Exome-seq', 'RNA-seq', 'Methylation array', 'Proteomics', 'Cellular phenotyping', ];
     this.assayNamesMap = {
         gtarray: 'Genotyping array',
         gexarray: 'Expression array',
@@ -180,7 +148,6 @@ controllers.controller('LineListCtrl', function() {
         'cellbiol-fn': 'Cellular phenotyping',
     };
 
-
     this.columnHeadersMap = {
         name: 'Name',
         'diseaseStatus.value': 'Disease Status',
@@ -190,48 +157,49 @@ controllers.controller('LineListCtrl', function() {
         bioSamplesAccession: 'Biosample',
         openAccess: 'Open access data',
         bankingStatus: 'Bank status',
+        'calculated.assays': 'Assays data available',
     };
-    this.filterFieldsMap = {};
-
-    for (var assay in this.assayNamesMap) {
-        if (assaysLocations[assay] == 'archive') {
-            this.columnHeadersMap['assays.'+ assay+ '.archive'] = this.assayNamesMap[assay] + ' archive';
-            this.columnHeadersMap['assays.'+ assay+ '.study'] = this.assayNamesMap[assay] + ' study accession';
-            this.filterFieldsMap['assays.'+ assay+ '.archive'] = this.assayNamesMap[assay];
-        }
-        else if (assaysLocations[assay] == 'ftp') {
-            this.columnHeadersMap['assays.'+ assay+ '.path'] = this.assayNamesMap[assay] + ' ftp path';
-            this.filterFieldsMap['assays.'+ assay+ '.path'] = this.assayNamesMap[assay];
-        }
-    }
 
     this.compileHead = function(esFields) {
         var trChildren = [];
-        for (var i=0; i<controller.htmlFields.length; i++) {
-            var field = controller.htmlFields[i];
-            trChildren.push(
-                field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
-              :  field == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
-              :  field == 'openAccess' ? '<th class="matrix-dot"><div><span>Data access</span></div></th>'
-              :  assaysLocations.hasOwnProperty(field) ? '<th class="matrix-dot assay"><div><span>'+field+'</span></div></th>'
-              : '<th class="sort">'+controller.columnHeadersMap[field]+'</th>'
-            );
+        for (var i=0; i<controller.initFields.length; i++) {
+            var field = controller.initFields[i];
+            if (field == 'calculated.assays') {
+                for (var j=0; j<controller.assays.length; j++) {
+                    trChildren.push(
+                        '<th class="matrix-dot assay"><div><span>'+controller.assays[j]+'</span></div></th>'
+                    );
+                }
+            }
+            else {
+                trChildren.push(
+                    field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
+                  :  field == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
+                  :  field == 'openAccess' ? '<th class="matrix-dot"><div><span>Data access</span></div></th>'
+                  : '<th class="sort">'+controller.columnHeadersMap[field]+'</th>'
+                );
+            }
         }
         return trChildren;
     };
 
     this.compileRow = function(esFields) {
         var trChildren = [];
-        for (var i=0; i<controller.htmlFields.length; i++) {
-            var field = controller.htmlFields[i];
+        for (var i=0; i<esFields.length-1; i++) {
+            var field = esFields[i];
             var hitStr = 'hit['+i+']';
             trChildren.push(
                 field == 'bioSamplesAccession' ? '<td class="matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item biosample" popover="Biosample" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
               : field == 'bankingStatus' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field == 'openAccess' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
-              : assaysLocations.hasOwnProperty(field) ? '<td class="matrix-dot"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item assay" popover="'+controller.assayNamesMap[field]+'" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
+            );
+        }
+        for (var i=0; i<controller.assays.length; i++) {
+            var hitStr = 'hit['+(i+esFields.length-1)+']';
+            trChildren.push(
+              '<td class="matrix-dot"><a ng-if="'+hitStr+'" ng-href="#/lines/{{'+hitStr+'}}"><div class="matrix-dot-item assay" popover="'+controller.assayNamesMap[controller.assays[i]]+'" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
             );
         }
         return trChildren;
@@ -239,20 +207,9 @@ controllers.controller('LineListCtrl', function() {
 
     this.processHitFields = function(hitFields, esFields) {
         var processedFields = [];
-        for (var i=0; i<controller.htmlFields.length; i++) {
-            var field = controller.htmlFields[i];
-            if (hitFields.hasOwnProperty('assays.'+field+'.archive') && assaysLocations[field] == 'archive') {
-                var archive = hitFields['assays.'+field+'.archive'][0];
-                var study = hitFields['assays.'+field+'.study'][0];
-                processedFields[i] = archive == 'EGA' ? 'https://www.ebi.ac.uk/ega/studies/'+study
-                                : archive == 'ENA' ? 'http://www.ebi.ac.uk/ena/data/view/'+study
-                                : undefined;
-            }
-            else if (hitFields.hasOwnProperty('assays.'+field+'.path') && assaysLocations[field] == 'ftp') {
-                var path = hitFields['assays.'+field+'.path'][0];
-                processedFields[i] = 'ftp://ftp.hipsci.ebi.ac.uk'+path;
-            }
-            else if (field == 'bankingStatus') {
+        for (var i=0; i<controller.initFields.length-1; i++) {
+            var field = controller.initFields[i];
+            if (field == 'bankingStatus') {
                 processedFields[i] = {letter: '', text: ''};
                 if (hitFields.hasOwnProperty(field)) {
                     processedFields[i].text = jQuery.grep(hitFields[field], function(str) {return ! /shipped/i.test(str)}).join(', ');
@@ -273,6 +230,11 @@ controllers.controller('LineListCtrl', function() {
             else {
                 processedFields[i] = ! hitFields.hasOwnProperty(field) ? undefined
                         : hitFields[field][0];
+            }
+        }
+        if (hitFields.hasOwnProperty('calculated.assays')) {
+            for (var j=0; j<controller.assays.length; j++) {
+                processedFields.push(jQuery.inArray(controller.assayNamesMap[controller.assays[j]], hitFields['calculated.assays']) > -1 ? hitFields.name[0] : undefined);
             }
         }
         return processedFields;
