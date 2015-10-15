@@ -256,7 +256,7 @@ controllers.controller('LineListCtrl', function() {
 controllers.controller('FileListCtrl', function() {
     var controller=this;
     this.documentType = 'file';
-    this.esFields = ['files.name', 'files.md5', 'files.url', 'assay.type', 'description', 'samples.name', 'samples.cellType',
+    this.esFields = ['files.name', 'files.md5', 'archive.ftpUrl', 'assay.type', 'description', 'samples.name', 'samples.cellType',
         'samples.bioSamplesAccession', 'archive.name', 'archive.accessionType',
         'archive.accession', 'archive.url',
         'assay.growingConditions', 'samples.diseaseStatus', 'samples.sex', 'assay.description'];
@@ -264,7 +264,7 @@ controllers.controller('FileListCtrl', function() {
     this.columnHeadersMap = {
         'files.name': 'File name',
         'files.md5': 'md5',
-        'files.url': 'File url',
+        'archive.ftpUrl': 'FTP url',
         'assay.type': 'Assay',
         'description': 'Description',
         'samples.name': 'Cell line',
@@ -310,8 +310,8 @@ controllers.controller('FileListCtrl', function() {
             var hitStr = 'hit['+i+']';
             trChildren.push(
               field == 'samples.name' ? '<td class="name"><a ng-if="'+hitStr+'.isIPS" ng-href="#/lines/{{'+hitStr+'.name}}" ng-bind="'+hitStr+'.name"></a><span ng-if="!'+hitStr+'.isIPS" ng-bind="'+hitStr+'.name" ></span></td>'
-              : field == 'file' ? '<td class="name"><span ng-repeat="url in '+hitStr+'"><a ng-href="{{url}}"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" style="padding-right:2px"></span></a></span></td>'
-              : field == 'archive' ? '<td class="name"><a ng-href="{{'+hitStr+'.url}}" ng-bind="'+hitStr+'.name"></a></td>'
+              : field == 'file' ? '<td class="name"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
+              : field == 'archive' ? '<td class="name"><a ng-href="{{'+hitStr+'.url}}" target="_blank" ng-bind="'+hitStr+'.name"></a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
             );
         }
@@ -324,7 +324,7 @@ controllers.controller('FileListCtrl', function() {
                             : {name: hitFields['samples.name'].length + ' cell lines', isIPS: false};
         processedFields[1] = hitFields['assay.type'][0];
         processedFields[2] = hitFields.description[0];
-        processedFields[3] = hitFields['files.url'];
+        processedFields[3] = hitFields['archive.ftpUrl'][0];
         processedFields[4] = {
             name: hitFields.hasOwnProperty('archive.name') ? hitFields['archive.name'][0] : undefined,
             url: hitFields.hasOwnProperty('archive.url') ? hitFields['archive.url'][0] : undefined,
