@@ -70,7 +70,7 @@
         </dl>
         </section>
 
-        <section ng-if="data.assays || data.hlaTyping">
+        <section ng-if="data.assays">
         <h3 class="item-detail-section">Genomic assay files</h3>
         <hr/>
 
@@ -101,18 +101,6 @@
         </list-panel>
         </div></div>
 
-        <div ng-if="data.hlaTyping">
-            <dl class="dl-horizontal">
-                <dt>HLA typing from imputed genotypes:</dt>
-                <dd><a ng-href="{{LineCtrl.assayToHref(data.hlaTyping)}}" target="_blank">
-                    <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
-                    <span ng-switch="data.hlaTyping.archive">
-                    <span ng-switch-when="FTP">Data on FTP site</span>
-                    <span ng-switch-default="" ng-bind="data.hlaTyping.study"></span>
-                    </span>
-                    </a></dd>
-            </dl>
-        </div>
         </section>
 
 
