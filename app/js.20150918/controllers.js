@@ -309,7 +309,7 @@ controllers.controller('FileListCtrl', function() {
             var field = controller.htmlFields[i];
             var hitStr = 'hit['+i+']';
             trChildren.push(
-              field == 'samples.name' ? '<td class="name"><div ng-repeat="sample in '+hitStr+'"><a ng-if="sample.isIPS" ng-href="#/lines/{{sample.name}}" ng-bind="sample.name"></a><span ng-if="!sample.isIPS" ng-bind="sample.name" ></span></div></td>'
+              field == 'samples.name' ? '<td class="name"><a ng-if="'+hitStr+'.isIPS" ng-href="#/lines/{{'+hitStr+'.name}}" ng-bind="'+hitStr+'.name"></a><span ng-if="!'+hitStr+'.isIPS" ng-bind="'+hitStr+'.name" ></span></td>'
               : field == 'file' ? '<td class="name"><span ng-repeat="url in '+hitStr+'"><a ng-href="{{url}}"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" style="padding-right:2px"></span></a></span></td>'
               : field == 'archive' ? '<td class="name"><a ng-href="{{'+hitStr+'.url}}" ng-bind="'+hitStr+'.name"></a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
@@ -320,7 +320,8 @@ controllers.controller('FileListCtrl', function() {
 
     this.processHitFields = function(hitFields, fields) {
         var processedFields = [];
-        processedFields[0] = [];
+        processedFields[0] = hitFields['samples.name'].length == 1 ? {name: hitFields['samples.name'][0], isIPS: hitFields['samples.cellType'][0] == 'iPSC' ? true : false}
+                            : {name: hitFields['samples.name'].length + ' cell lines', isIPS: false};
         processedFields[1] = hitFields['assay.type'][0];
         processedFields[2] = hitFields.description[0];
         processedFields[3] = hitFields['files.url'];
@@ -329,9 +330,6 @@ controllers.controller('FileListCtrl', function() {
             url: hitFields.hasOwnProperty('archive.url') ? hitFields['archive.url'][0] : undefined,
         };
 
-        for (var i=0; i<hitFields['samples.name'].length; i++) {
-            processedFields[0].push({ name: hitFields['samples.name'][i], isIPS: hitFields['samples.cellType'][i] == 'iPSC' ? true : false});
-        }
         return processedFields;
     };
 
