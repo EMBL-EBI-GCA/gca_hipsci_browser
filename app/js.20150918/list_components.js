@@ -21,8 +21,8 @@ listComponents.directive('listSearchBox', function() {
   return {
     restrict: 'E',
     scope: true,
-    template: '<div class="search-box"><span ng-bind="label"></span>:<input ng-model="listPanelCtrl.cache.query"'
-            + 'ng-change="listPanelCtrl.delayedSearch()" ng-keypress="listPanelCtrl.delayedSearch($event)"></input></div>',
+    template: '<div class="search-box"><input ng-model="listPanelCtrl.cache.query"'
+            + 'ng-change="listPanelCtrl.delayedSearch()" ng-keypress="listPanelCtrl.delayedSearch($event)" placeholder="{{label}}"></input></div>',
     require: '^listPanel',
     link: function(scope, iElement, iAttrs, listPanelCtrl) {
         scope.label = iAttrs.label || 'Search';

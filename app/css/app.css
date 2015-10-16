@@ -265,7 +265,8 @@ h3.item-detail-section {
 }
 
 div.search-box > input {
-    margin-left: 10px;
+    height: 25px;
+    width: 250px;
 }
 
 
