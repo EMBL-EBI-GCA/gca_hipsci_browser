@@ -303,6 +303,19 @@
                 "type": "string",
                 "index": "not_analyzed"
             },
+            "cellType": {
+                "properties": {
+                    "value": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.free"
+                    },
+                    "ontologyPURL": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    }
+                }
+            },
             "pluritest": {
                 "properties": {
                     "novelty": {
