@@ -166,6 +166,8 @@ controllers.controller('LineListCtrl', function() {
         {visible: false, sortable: true,  selectable: true,  esName: 'donor.ethnicity', label: 'Ethnicity'},
         {visible: true,  sortable: true,  selectable: true,  esName: 'sourceMaterial.value', label: 'Source Material'},
         {visible: true,  sortable: true,  selectable: true,  esName: 'tissueProvider', label: 'Tissue Provider'},
+        {visible: false, sortable: true,  selectable: true,  esName: 'reprogramming.methodOfDerivation', label: 'Method of derivation'},
+        {visible: false, sortable: true,  selectable: true,  esName: 'reprogramming.dateOfDerivation', label: 'Date of derivation'},
         {visible: true,  sortable: false, selectable: false, esName: 'bioSamplesAccession', label: 'Biosample'},
         {visible: true,  sortable: false, selectable: false, esName: 'openAccess', label: 'Open access data'},
         {visible: true,  sortable: false, selectable: false, esName: 'bankingStatus', label: 'Bank status'},
