@@ -33,6 +33,32 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
             return 'ftp://ftp.hipsci.ebi.ac.uk'+assayObj.path;
         }
     };
+
+    this.fileFields = [
+      {visible: true,  selectable: false, sortable: true,  esName: 'assay.type',       label: 'Assay'},
+      {visible: true,  selectable: false, sortable: true,  esName: 'description',      label: 'Description'},
+      {visible: true,  selectable: true,  sortable: false, esName: 'archive.ftpUrl',   label: 'File download'},
+      {visible: true,  selectable: true,  sortable: true,  esName: 'archive.name',     label: 'Archive'},
+      {visible: false, selectable: true,  sortable: true,  esName: 'archive.accession',label: 'Accession'},
+      {visible: false, selectable: true,  sortable: true,  esName: 'samples.sex',      label: 'Sex'},
+      {visible: true, selectable: true,  sortable: true,  esName: 'assay.growingConditions', label: 'Culture'},
+
+      {visible: false, selectable: false, esName: 'archive.url'},
+      {visible: false, selectable: false, esName: 'samples.cellType'},
+      {visible: false,  selectable: false, esName: 'samples.name'},
+    ];
+    
+    for (var i=0; i<this.fileFields.length; i++) {
+      var field = this.fileFields[i];
+      if (field.visible || field.selectable) {
+          field.th = '<th>'+field.label+'</th>'
+          var hitStr = 'hit['+i+']';
+          field.td = 
+                field.esName == 'archive.ftpUrl' ? '<td class="name"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
+                : field.esName == 'archive.name' ? '<td class="name"><a ng-href="{{'+hitStr+'.url}}" target="_blank" ng-bind="'+hitStr+'.name"></a></td>'
+               : '<td ng-bind="'+hitStr+'"></td>';
+      }
+    }
   }
 ]);
 
@@ -74,54 +100,43 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient'
 controllers.controller('DonorListCtrl', function() {
     var controller=this;
     this.documentType = 'donor';
+
     this.initFields = ['name', 'sex.value', 'ethnicity', 'diseaseStatus.value', 'age', 'tissueProvider', 'bioSamplesAccession', 'cellLines.name'];
 
-    this.columnHeadersMap = {
-        name: 'Name',
-        'sex.value': 'Sex',
-        ethnicity: 'Ethnicity',
-        'diseaseStatus.value': 'Disease Status',
-        age: 'Age',
-        tissueProvider: 'Tissue Provider',
-        bioSamplesAccession: 'Biosample',
-        'cellLines.name': 'Cell Lines',
-    };
+    this.fields = [
+        {visible: true, selectable: false, sortable: true , esName: 'name', label: 'Name'},
+        {visible: true, selectable: false, sortable: true , esName: 'sex.value', label: 'Sex'},
+        {visible: true, selectable: false, sortable: true , esName: 'ethnicity', label: 'Ethnicity'},
+        {visible: true, selectable: false, sortable: true , esName: 'diseaseStatus.value', label: 'Disease Status'},
+        {visible: true, selectable: false, sortable: true , esName: 'age', label: 'Age'},
+        {visible: true, selectable: false, sortable: true , esName: 'tissueProvider', label: 'Tissue Provider'},
+        {visible: true, selectable: false, sortable: false, esName: 'bioSamplesAccession', label: 'Biosample'},
+        {visible: true, selectable: false, sortable: false, esName: 'cellLines.name', label: 'Cell Lines'},
+    ];
 
-    this.compileHead = function(fields) {
-        var trChildren = [];
-        for (var i=0; i<fields.length; i++) {
-            var field = fields[i];
-            trChildren.push(
-                field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
-              :  field == 'cellLines.name' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
-              : '<th class="sort">'+controller.columnHeadersMap[field]+'</th>'
-            );
-        }
-        return trChildren;
-    };
-
-    this.compileRow = function(fields) {
-        var trChildren = [];
-        for (var i=0; i<fields.length; i++) {
-            var field = fields[i];
+    for (var i=0; i<this.fields.length; i++) {
+        var field = this.fields[i];
+        if (field.visible || field.selectable) {
+            field.th = 
+                field.esName == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+field.label+'</span></div></th>'
+              :  field.esName == 'cellLines.name' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
+              : '<th>'+field.label+'</th>'
             var hitStr = 'hit['+i+']';
-            trChildren.push(
-                field == 'bioSamplesAccession' ? '<td class="matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item biosample" popover="Biosample" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
-              : field == 'cellLines.name' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.join(\', \')}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.length"></span></div></td>'
-              : field == 'name' ? '<td class="name"><a ng-href="#/donors/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
+            field.td = 
+                field.esName == 'bioSamplesAccession' ? '<td class="matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item biosample" popover="Biosample" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
+              : field.esName == 'cellLines.name' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.join(\', \')}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.length"></span></div></td>'
+              : field.esName == 'name' ? '<td class="name"><a ng-href="#/donors/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
-            );
         }
-        return trChildren;
-    };
+    }
 
     this.processHitFields = function(hitFields, fields) {
         var processedFields = [];
         for (var i=0; i<fields.length; i++) {
             var field = fields[i];
-            processedFields[i] = ! hitFields.hasOwnProperty(field) ? undefined
-                    : field == 'cellLines.name' ? hitFields[field]
-                    : hitFields[field][0];
+            processedFields[i] = ! hitFields.hasOwnProperty(field.esName) ? undefined
+                    : field.esName == 'cellLines.name' ? hitFields[field.esName]
+                    : hitFields[field.esName][0];
         }
         return processedFields;
     };
@@ -134,85 +149,57 @@ controllers.controller('LineListCtrl', function() {
     var controller = this;
     this.documentType = 'cellLine';
 
-    this.initFields =  ['name', 'diseaseStatus.value', 'donor.sex.value', 'sourceMaterial.value', 'tissueProvider', 'openAccess', 'bankingStatus', 'bioSamplesAccession', 'calculated.assays'];
-    this.assays = ['gtarray', 'gexarray', 'exomeseq', 'rnaseq', 'mtarray', 'proteomics', 'cellbiol-fn'];
+    this.assays = [
+                {short: 'gtarray', long: 'Genotyping array'},
+                {short: 'gexarray', long: 'Expression array'},
+                {short: 'exomeseq', long: 'Exome-seq'},
+                {short: 'rnaseq', long: 'RNA-seq'},
+                {short: 'mtarray', long: 'Methylation array'},
+                {short: 'proteomics', long: 'Proteomics'},
+                {short: 'cellbiol-fn', long: 'Cellular phenotyping'},
+        ];
 
-    //this.assays = [ 'Genotyping array', 'Expression array', 'Exome-seq', 'RNA-seq', 'Methylation array', 'Proteomics', 'Cellular phenotyping', ];
-    this.assayNamesMap = {
-        gtarray: 'Genotyping array',
-        gexarray: 'Expression array',
-        exomeseq: 'Exome-seq',
-        rnaseq: 'RNA-seq',
-        mtarray: 'Methylation array',
-        proteomics: 'Proteomics',
-        'cellbiol-fn': 'Cellular phenotyping',
-    };
+    this.fields = [
+        {visible: true,  sortable: true,  selectable: false, esName: 'name', label: 'Name'},
+        {visible: true,  sortable: true,  selectable: false, esName: 'diseaseStatus.value', label: 'Disease Status'},
+        {visible: true,  sortable: true,  selectable: false, esName: 'donor.sex.value', label: 'Sex'},
+        {visible: true,  sortable: true,  selectable: false, esName: 'sourceMaterial.value', label: 'Source Material'},
+        {visible: true,  sortable: true,  selectable: false, esName: 'tissueProvider', label: 'Tissue Provider'},
+        {visible: true,  sortable: false,  selectable: false, esName: 'bioSamplesAccession', label: 'Biosample'},
+        {visible: true,  sortable: false, selectable: false, esName: 'openAccess', label: 'Open access data'},
+        {visible: true,  sortable: false, selectable: false, esName: 'bankingStatus', label: 'Bank status'},
 
-    this.columnHeadersMap = {
-        name: 'Name',
-        'diseaseStatus.value': 'Disease Status',
-        'donor.sex.value': 'Sex',
-        'sourceMaterial.value': 'Source Material',
-        tissueProvider: 'Tissue Provider',
-        bioSamplesAccession: 'Biosample',
-        openAccess: 'Open access data',
-        bankingStatus: 'Bank status',
-        'calculated.assays': 'Assays data available',
-    };
+        {visible: true,  sortable: false, selectable: false, esName: 'calculated.assays', label: 'Assays data available'},
+    ];
 
-    this.compileHead = function(esFields) {
-        var trChildren = [];
-        for (var i=0; i<controller.initFields.length; i++) {
-            var field = controller.initFields[i];
-            if (field == 'calculated.assays') {
-                for (var j=0; j<controller.assays.length; j++) {
-                    trChildren.push(
-                        '<th class="matrix-dot assay"><div><span>'+controller.assays[j]+'</span></div></th>'
-                    );
-                }
-            }
-            else {
-                trChildren.push(
-                    field == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
-                  :  field == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+controller.columnHeadersMap[field]+'</span></div></th>'
-                  :  field == 'openAccess' ? '<th class="matrix-dot"><div><span>Data access</span></div></th>'
-                  : '<th class="sort">'+controller.columnHeadersMap[field]+'</th>'
-                );
-            }
-        }
-        return trChildren;
-    };
-
-    this.compileRow = function(esFields) {
-        var trChildren = [];
-        for (var i=0; i<esFields.length-1; i++) {
-            var field = esFields[i];
+    for (var i=0; i<this.fields.length; i++) {
+        var field = this.fields[i];
+        if (field.visible || field.selectable) {
+            field.th = 
+                field.esName == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+field.label+'</span></div></th>'
+              : field.esName == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
+              : field.esName == 'openAccess' ? '<th class="matrix-dot"><div><span>Data access</span></div></th>'
+              : field.esName == 'calculated.assays' ? '<th ng-repeat="assay in compileParams.assays" class="matrix-dot assay"><div><span ng-bind="assay.short"></span></div></th>'
+              : '<th>'+field.label+'</th>'
             var hitStr = 'hit['+i+']';
-            trChildren.push(
-                field == 'bioSamplesAccession' ? '<td class="matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item biosample" popover="Biosample" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
-              : field == 'bankingStatus' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
-              : field == 'openAccess' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
-              : field == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
+            field.td = 
+                field.esName == 'bioSamplesAccession' ? '<td class="matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item biosample" popover="Biosample" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
+              : field.esName == 'bankingStatus' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
+              : field.esName == 'openAccess' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
+              : field.esName == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
+              : field.esName == 'calculated.assays' ? '<td ng-repeat="assay in compileParams.assays" class="matrix-dot"><a ng-if="'+hitStr+'[$index]" ng-href="#/lines/{{hit[0]}}"><div class="matrix-dot-item assay" popover="{{assay.long}}" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
-            );
         }
-        for (var i=0; i<controller.assays.length; i++) {
-            var hitStr = 'hit['+(i+esFields.length-1)+']';
-            trChildren.push(
-              '<td class="matrix-dot"><a ng-if="'+hitStr+'" ng-href="#/lines/{{'+hitStr+'}}"><div class="matrix-dot-item assay" popover="'+controller.assayNamesMap[controller.assays[i]]+'" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
-            );
-        }
-        return trChildren;
-    };
+    }
 
-    this.processHitFields = function(hitFields, esFields) {
+    this.processHitFields = function(hitFields, fields) {
         var processedFields = [];
-        for (var i=0; i<controller.initFields.length-1; i++) {
-            var field = controller.initFields[i];
-            if (field == 'bankingStatus') {
+        for (var i=0; i<fields.length; i++) {
+            var field = fields[i];
+            if (field.esName == 'bankingStatus') {
                 processedFields[i] = {letter: '', text: ''};
-                if (hitFields.hasOwnProperty(field)) {
-                    processedFields[i].text = jQuery.grep(hitFields[field], function(str) {return ! /shipped/i.test(str)}).join(', ');
+                if (hitFields.hasOwnProperty(field.esName)) {
+                    processedFields[i].text = jQuery.grep(hitFields[field.esName], function(str) {return ! /shipped/i.test(str)}).join(', ');
                     processedFields[i].letter = /banked/i.test(processedFields[i].text) ? 'B'
                                             : /pending/i.test(processedFields[i].text) ? 'P'
                                             : /not selected/i.test(processedFields[i].text) ? 'N'
@@ -220,21 +207,22 @@ controllers.controller('LineListCtrl', function() {
                                             : '';
                 }
             }
-            else if (field == 'openAccess') {
+            else if (field.esName == 'openAccess') {
                 processedFields[i] = {letter: '', text: ''};
-                if (hitFields.hasOwnProperty(field)) {
-                    processedFields[i].text = hitFields[field][0] ? 'Open access' : 'Managed access';
-                    processedFields[i].letter = hitFields[field][0] ? 'O' : 'M';
+                if (hitFields.hasOwnProperty(field.esName)) {
+                    processedFields[i].text = hitFields[field.esName][0] ? 'Open access' : 'Managed access';
+                    processedFields[i].letter = hitFields[field.esName][0] ? 'O' : 'M';
+                }
+            }
+            else if (field.esName == 'calculated.assays') {
+                processedFields[i] = [];
+                for (var j=0; j<controller.assays.length; j++) {
+                    processedFields[i].push(jQuery.inArray(controller.assays[j].long, hitFields[field.esName]) > -1 ? true: false);
                 }
             }
             else {
-                processedFields[i] = ! hitFields.hasOwnProperty(field) ? undefined
-                        : hitFields[field][0];
-            }
-        }
-        if (hitFields.hasOwnProperty('calculated.assays')) {
-            for (var j=0; j<controller.assays.length; j++) {
-                processedFields.push(jQuery.inArray(controller.assayNamesMap[controller.assays[j]], hitFields['calculated.assays']) > -1 ? hitFields.name[0] : undefined);
+                processedFields[i] = ! hitFields.hasOwnProperty(field.esName) ? undefined
+                        : hitFields[field.esName][0];
             }
         }
         return processedFields;
@@ -256,80 +244,70 @@ controllers.controller('LineListCtrl', function() {
 controllers.controller('FileListCtrl', function() {
     var controller=this;
     this.documentType = 'file';
-    this.esFields = ['files.name', 'files.md5', 'archive.ftpUrl', 'assay.type', 'description', 'samples.name', 'samples.cellType',
-        'samples.bioSamplesAccession', 'archive.name', 'archive.accessionType',
-        'archive.accession', 'archive.url',
-        'assay.growingConditions', 'samples.diseaseStatus', 'samples.sex', 'assay.description'];
-
-    this.columnHeadersMap = {
-        'files.name': 'File name',
-        'files.md5': 'md5',
-        'archive.ftpUrl': 'FTP url',
-        'assay.type': 'Assay',
-        'description': 'Description',
-        'samples.name': 'Cell line',
-        'samples.cellType': 'Cell type',
-        'samples.bioSamplesAccession': 'Biosample',
-        'archive.name': 'Archive',
-        'archive.accessionType': 'Accession type',
-        'archive.accession': 'Accession',
-        'archive.url': 'Archive url',
-        'assay.growingConditions': 'Cell line growing conditions for this assay',
-        'samples.diseaseStatus': 'Disease status',
-        'samples.sex': 'Sex',
-        'assay.description': 'Assay description',
-    };
 
     this.htmlFields = [
-        'samples.name', 'assay.type', 'description', 'file', 'archive'
+      {visible: true,  selectable: false, sortable: true,  esName: 'samples.name',     label: 'Cell line'},
+      {visible: true,  selectable: false, sortable: true,  esName: 'assay.type',       label: 'Assay'},
+      {visible: true,  selectable: false, sortable: true,  esName: 'description',      label: 'Description'},
+      {visible: true,  selectable: true,  sortable: false, esName: 'archive.ftpUrl',   label: 'File download'},
+      {visible: true,  selectable: true,  sortable: true,  esName: 'archive.name',     label: 'Archive'},
+      {visible: false, selectable: true,  sortable: true,  esName: 'archive.accession',label: 'Accession'},
+      {visible: false, selectable: true,  sortable: true,  esName: 'samples.sex',      label: 'Sex'},
+      {visible: false, selectable: true,  sortable: true,  esName: 'assay.growingConditions', label: 'Culture'},
+
+      {visible: false, selectable: false, esName: 'archive.url'},
+      {visible: false, selectable: false, esName: 'samples.cellType'},
     ];
 
-    this.htmlHeadersMap = {
-        'samples.name': 'Cell line',
-        'assay.type': 'Assay',
-        'description': 'Description',
-        'file': 'File download',
-        'archive': 'Archive'
-    };
+    this.exportFields = [
+      {esName: 'files.name',       label: 'File name'},
+      {esName: 'files.md5',        label: 'md5'},
+      {esName: 'archive.ftpUrl',   label: 'FTP url'},
+      {esName: 'assay.type',       label: 'Assay'},
+      {esName: 'description',      label: 'Description'},
+      {esName: 'samples.name',     label: 'Cell line'},
+      {esName: 'samples.cellType', label: 'Cell type'},
+      {esName: 'samples.bioSamplesAccession', label: 'Biosample'},
+      {esName: 'archive.name',     label: 'Archive'},
+      {esName: 'archive.accessionType', label: 'Accession type'},
+      {esName: 'archive.accession',label: 'Accession'},
+      {esName: 'archive.url',      label: 'Archive url'},
+      {esName: 'assay.growingConditions', label: 'Cell line growing conditions for this assay'},
+      {esName: 'samples.diseaseStatus', label: 'Disease status'},
+      {esName: 'samples.sex',      label: 'Sex'},
+      {esName: 'assay.description',label: 'Assay description'},
+    ];
 
-    this.compileHead = function(fields) {
-        var trChildren = [];
-        for (var i=0; i<controller.htmlFields.length; i++) {
-            var field = controller.htmlFields[i];
-            trChildren.push(
-              '<th class="sort">'+controller.htmlHeadersMap[field]+'</th>'
-            );
-        }
-        return trChildren;
-    };
-
-    this.compileRow = function(fields) {
-        var trChildren = [];
-        for (var i=0; i<controller.htmlFields.length; i++) {
-            var field = controller.htmlFields[i];
+    for (var i=0; i<this.htmlFields.length; i++) {
+        var field = this.htmlFields[i];
+        if (field.visible || field.selectable) {
+            field.th = '<th>'+field.label+'</th>'
             var hitStr = 'hit['+i+']';
-            trChildren.push(
-              field == 'samples.name' ? '<td class="name"><a ng-if="'+hitStr+'.isIPS" ng-href="#/lines/{{'+hitStr+'.name}}" ng-bind="'+hitStr+'.name"></a><span ng-if="!'+hitStr+'.isIPS" ng-bind="'+hitStr+'.name" ></span></td>'
-              : field == 'file' ? '<td class="name"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
-              : field == 'archive' ? '<td class="name"><a ng-href="{{'+hitStr+'.url}}" target="_blank" ng-bind="'+hitStr+'.name"></a></td>'
-              : '<td ng-bind="'+hitStr+'"></td>'
-            );
+            field.td = 
+                  field.esName == 'samples.name' ? '<td class="name"><a ng-if="'+hitStr+'.isIPS" ng-href="#/lines/{{'+hitStr+'.name}}" ng-bind="'+hitStr+'.name"></a><span ng-if="!'+hitStr+'.isIPS" ng-bind="'+hitStr+'.name" ></span></td>'
+                  : field.esName == 'archive.ftpUrl' ? '<td class="name"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
+                  : field.esName == 'archive.name' ? '<td class="name"><a ng-href="{{'+hitStr+'.url}}" target="_blank" ng-bind="'+hitStr+'.name"></a></td>'
+                  : '<td ng-bind="'+hitStr+'"></td>'
         }
-        return trChildren;
-    };
+    }
 
     this.processHitFields = function(hitFields, fields) {
         var processedFields = [];
-        processedFields[0] = hitFields['samples.name'].length == 1 ? {name: hitFields['samples.name'][0], isIPS: hitFields['samples.cellType'][0] == 'iPSC' ? true : false}
+        for (var i=0; i<fields.length; i++) {
+            if (fields[i].esName == 'samples.name') {
+                processedFields[i] = hitFields['samples.name'].length == 1 ?  {name: hitFields['samples.name'][0], isIPS: hitFields['samples.cellType'][0] == 'iPSC' ? true : false}
                             : {name: hitFields['samples.name'].length + ' cell lines', isIPS: false};
-        processedFields[1] = hitFields['assay.type'][0];
-        processedFields[2] = hitFields.description[0];
-        processedFields[3] = hitFields['archive.ftpUrl'][0];
-        processedFields[4] = {
-            name: hitFields.hasOwnProperty('archive.name') ? hitFields['archive.name'][0] : undefined,
-            url: hitFields.hasOwnProperty('archive.url') ? hitFields['archive.url'][0] : undefined,
-        };
-
+            }
+            else if (fields[i].esName == 'archive.name') {
+                processedFields[i] = {
+                    name: hitFields.hasOwnProperty('archive.name') ? hitFields['archive.name'][0] : undefined,
+                    url: hitFields.hasOwnProperty('archive.url') ? hitFields['archive.url'][0] : undefined,
+                }
+            }
+            else {
+                processedFields[i] = hitFields.hasOwnProperty(fields[i].esName) ? hitFields[fields[i].esName][0] : undefined;
+            }
+        }
         return processedFields;
     };
 

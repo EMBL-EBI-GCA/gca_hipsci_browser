@@ -37,7 +37,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
               unbindWatch();
               if (controller.listTableCtrl) {
                 controller.listTableCtrl.resetSortOrder(firstView);
-                controller.listTableCtrl.compileTable(controller.fields);
+                controller.listTableCtrl.compileTable(controller.cache.htmlFields);
               }
               controller.loadFromUrl(firstView);
           }
@@ -46,7 +46,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
     },
     controller: ['$timeout', '$location', 'routeCache', '$scope', function ($timeout, $location, routeCache, $scope) {
       var c = this;
-      c.exportHeadersMap = {};
+      c.exportHeaders = [];
       c.apiStatus = {error: false, code: '', text: ''};
       c.delayedSearchActivated = false;
       c.aggsFilterCtrls = {};
@@ -54,6 +54,8 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
       c.unbindRouteUpdate = null;
       c.hitsPerPage = 25;
       c.fields = [];
+      c.exportFields = [];
+      c.exportFieldHeaders = [];
       c.lastUrlChange = null;
 
       c.cache = routeCache.get('listPanel', c.documentType);
@@ -65,6 +67,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
               aggsFilters: {},
               sortFields: [],
               esResps : [],
+              visibleFields : {},
               lastUrl : '',
           });
       }
@@ -121,7 +124,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
           if (resp.hasOwnProperty('hits')) {
               c.cache.numHits = resp.hits.total;
               if (c.listTableCtrl) {
-                  c.listTableCtrl.processHits(resp.hits.hits, c.fields);
+                  c.listTableCtrl.processHits(resp.hits.hits, c.cache.htmlFields);
               }
           }
 
@@ -308,13 +311,9 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
   
       c.exportData = function(format) {
         var form = document.createElement('form');
-        var columnNames = [];
-        for (var i=0; i<c.fields.length; i++) {
-            columnNames.push(c.exportHeadersMap[c.fields[i]]);
-        }
         var searchBody = {
-        fields: c.fields,
-        column_names: columnNames,
+        fields: c.exportFields,
+        column_names: c.exportFieldHeaders,
         from: 0,
         size: c.cache.numHits,
         };

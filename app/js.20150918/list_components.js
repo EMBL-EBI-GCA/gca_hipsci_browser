@@ -298,9 +298,8 @@ listComponents.directive('listTable', function() {
   return {
     restrict: 'E',
     scope: {
-        compileHead: '=',
-        compileRow: '=',
         processHitFields: '=',
+        compileParams: '=',
         defaultSortFields: '@',
     },
     require: ['listTable', '^listPanel'],
@@ -338,26 +337,31 @@ listComponents.directive('listTable', function() {
         };
 
         this.compileTable = function (fields) {
-            var headEl = this.iElement.find('thead');
-            var bodyEl = this.iElement.find('tbody');
-            var headTrEl = headEl.find('tr');
+            $scope.fields = fields;
             var tableEl = this.iElement.find('table');
-            var headTrChildren = $scope.compileHead(fields);
-            for (var i=0; i<headTrChildren.length; i++) {
-                headTrEl.append(headTrChildren[i]);
-                var appended = headTrEl.children().last();
-                if (appended.hasClass('sort')) {
-                    var fieldsStr = "'"+fields[i]+"'";
-                    appended.attr('ng-class', '{sortAsc: (sortField=='+fieldsStr+' && sortAscending), sortDesc: (sortField=='+fieldsStr+' && !sortAscending)}');
-                    appended.attr('ng-click', 'registerSortOrder('+fieldsStr+')');
-                }
-            };
+            var headTrEl = tableEl.find('thead > tr');
+            var rowEl = $('<tr ng-repeat="hit in processedHits"></tr>');
+            tableEl.find('tbody').append(rowEl);
 
-            bodyEl.append('<tr ng-repeat="hit in processedHits"></tr>');
-            var rowEl = bodyEl.find('tr');
-            var rowTrChildren = $scope.compileRow(fields);
-            for (var i=0; i<rowTrChildren.length; i++) {
-                rowEl.append(rowTrChildren[i]);
+            for (var i=0; i<fields.length; i++) {
+                if (fields[i].visible || fields[i].selectable) {
+                    var thEl = $(fields[i].th || '<th></th>');
+                    var tdEl = $(fields[i].td || '<td></td>');
+
+                    if (fields[i].sortable) {
+                        var fieldsStr = "'"+fields[i].esName+"'";
+                        thEl.attr('ng-class', '{sortAsc: (sortField=='+fieldsStr+' && sortAscending), sortDesc: (sortField=='+fieldsStr+' && !sortAscending)}');
+                        thEl.attr('ng-click', 'registerSortOrder('+fieldsStr+')');
+                        thEl.addClass('sort');
+                    }
+                    if (fields[i].selectable) {
+                        thEl.attr('ng-if', 'fields['+i+'].visible');
+                        tdEl.attr('ng-if', 'fields['+i+'].visible');
+                    }
+                    headTrEl.append(thEl);
+                    rowEl.append(tdEl);
+
+                }
             }
 
             var linkFunc = $compile(tableEl);
@@ -404,10 +408,20 @@ listComponents.directive('listInitFields', function() {
   return {
     restrict: 'E',
     require: '^listPanel',
-    scope: {exportHeadersMap : '=', fields: '=' },
+    scope: {htmlFields : '=', exportFields: '=', text: '@'},
     link: function(scope, iElement, iAttrs, ListPanelController) {
-        ListPanelController.fields = scope.fields;
-        ListPanelController.exportHeadersMap = scope.exportHeadersMap;
+        if( jQuery.isEmptyObject(ListPanelController.cache.htmlFields)) {
+            for (var i=0; i<scope.htmlFields.length; i++) {
+                ListPanelController.cache.htmlFields = scope.htmlFields
+            }
+        }
+        for (var i=0; i<scope.htmlFields.length; i++) {
+            ListPanelController.fields.push(scope.htmlFields[i].esName);
+        }
+        for (var i=0; i<scope.exportFields.length; i++) {
+            ListPanelController.exportFields.push(scope.exportFields[i].esName);
+            ListPanelController.exportFieldHeaders.push(scope.exportFields[i].label);
+        }
         iAttrs.$set('list-panel-registered', true);
     },
   };

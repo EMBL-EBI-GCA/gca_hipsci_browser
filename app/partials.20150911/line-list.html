@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-body">
     <list-panel document-type="LineCtrl.documentType" >
-    <list-init-fields fields="LineCtrl.initFields" export-headers-map="LineCtrl.columnHeadersMap"></list-init-fields>
+    <list-init-fields html-fields="LineCtrl.fields" export-fields="LineCtrl.fields"></list-init-fields>
         <h1>Cell Lines</h1>
         <hr/>
         <div class="row list-panel">
@@ -46,7 +46,7 @@
                 </div>
 
             <div class="matrix-wrapper table-responsive">
-                <list-table class="matrix table table-striped" compile-head="LineCtrl.compileHead" compile-row="LineCtrl.compileRow" process-hit-fields="LineCtrl.processHitFields"
+                <list-table class="matrix table table-striped" process-hit-fields="LineCtrl.processHitFields" compile-params="{assays: LineCtrl.assays}"
                         default-sort-fields="[['_score', false],['calculated.assayCount',false]]">
                 </list-table>
             </div>

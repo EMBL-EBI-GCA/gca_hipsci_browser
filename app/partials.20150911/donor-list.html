@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-body">
     <list-panel document-type="DonorCtrl.documentType" >
-    <list-init-fields fields="DonorCtrl.initFields" export-headers-map="DonorCtrl.columnHeadersMap"></list-init-fields>
+    <list-init-fields html-fields="DonorCtrl.fields" export-fields="DonorCtrl.fields"></list-init-fields>
 
         <h1>Donors</h1>
         <hr/>
@@ -39,7 +39,7 @@
                 </div>
 
             <div class="matrix-wrapper table-responsive">
-                <list-table class="matrix table table-striped" compile-head="DonorCtrl.compileHead" compile-row="DonorCtrl.compileRow" process-hit-fields="DonorCtrl.processHitFields"
+                <list-table class="matrix table table-striped" process-hit-fields="DonorCtrl.processHitFields"
                         default-sort-fields="[['_score', false],['assays.count',false]]">
                 </list-table>
             </div>
