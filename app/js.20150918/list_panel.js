@@ -67,8 +67,8 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
               aggsFilters: {},
               sortFields: [],
               esResps : [],
-              visibleFields : {},
-              lastUrl : '',
+              lastUrl: '',
+              htmlFields: [],
           });
       }
 

@@ -161,11 +161,12 @@ controllers.controller('LineListCtrl', function() {
 
     this.fields = [
         {visible: true,  sortable: true,  selectable: false, esName: 'name', label: 'Name'},
-        {visible: true,  sortable: true,  selectable: false, esName: 'diseaseStatus.value', label: 'Disease Status'},
-        {visible: true,  sortable: true,  selectable: false, esName: 'donor.sex.value', label: 'Sex'},
-        {visible: true,  sortable: true,  selectable: false, esName: 'sourceMaterial.value', label: 'Source Material'},
-        {visible: true,  sortable: true,  selectable: false, esName: 'tissueProvider', label: 'Tissue Provider'},
-        {visible: true,  sortable: false,  selectable: false, esName: 'bioSamplesAccession', label: 'Biosample'},
+        {visible: true,  sortable: true,  selectable: true,  esName: 'diseaseStatus.value', label: 'Disease Status'},
+        {visible: true,  sortable: true,  selectable: true,  esName: 'donor.sex.value', label: 'Sex'},
+        {visible: false, sortable: true,  selectable: true,  esName: 'donor.ethnicity', label: 'Ethnicity'},
+        {visible: true,  sortable: true,  selectable: true,  esName: 'sourceMaterial.value', label: 'Source Material'},
+        {visible: true,  sortable: true,  selectable: true,  esName: 'tissueProvider', label: 'Tissue Provider'},
+        {visible: true,  sortable: false, selectable: false, esName: 'bioSamplesAccession', label: 'Biosample'},
         {visible: true,  sortable: false, selectable: false, esName: 'openAccess', label: 'Open access data'},
         {visible: true,  sortable: false, selectable: false, esName: 'bankingStatus', label: 'Bank status'},
 
@@ -305,7 +306,7 @@ controllers.controller('FileListCtrl', function() {
                 }
             }
             else {
-                processedFields[i] = hitFields.hasOwnProperty(fields[i].esName) ? hitFields[fields[i].esName][0] : undefined;
+                processedFields[i] = hitFields.hasOwnProperty(fields[i].esName) && hitFields[fields[i].esName].length == 1 ? hitFields[fields[i].esName][0] : undefined;
             }
         }
         return processedFields;

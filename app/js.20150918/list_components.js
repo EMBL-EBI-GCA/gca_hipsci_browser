@@ -410,10 +410,8 @@ listComponents.directive('listInitFields', function() {
     require: '^listPanel',
     scope: {htmlFields : '=', exportFields: '=', text: '@'},
     link: function(scope, iElement, iAttrs, ListPanelController) {
-        if( jQuery.isEmptyObject(ListPanelController.cache.htmlFields)) {
-            for (var i=0; i<scope.htmlFields.length; i++) {
-                ListPanelController.cache.htmlFields = scope.htmlFields
-            }
+        if( ListPanelController.cache.htmlFields.length == 0) {
+            ListPanelController.cache.htmlFields = scope.htmlFields
         }
         for (var i=0; i<scope.htmlFields.length; i++) {
             ListPanelController.fields.push(scope.htmlFields[i].esName);
@@ -426,3 +424,22 @@ listComponents.directive('listInitFields', function() {
     },
   };
 });
+
+listComponents.directive('listSelectColumns', function() {
+  return {
+    restrict: 'E',
+    scope: true,
+    template: '<div class="btn-group" dropdown>'
+    +'<button id="selColBtn" type="button" class="btn btn-primary dropdown-toggle">More columns<span class="caret"></span></button>'
+    + '<ul class="dropdown-menu" role="menu" aria-labelledby="selColBtn">'
+    + '<li role="menuItem" ng-repeat="field in listPanelCtrl.cache.htmlFields | filter: {selectable: true}">'
+    + '<div class="checkbox"><label><input type="checkbox" ng-model="field.visible"><span ng-bind="field.label"></span></label></div>'
+    +'</li></ul></div>',
+    require: '^listPanel',
+    link: function(scope, iElement, iAttr, listPanelCtrl) {
+        scope.listPanelCtrl = listPanelCtrl;
+        scope.isOpen = false;
+    },
+  };
+});
+
