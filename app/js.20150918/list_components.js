@@ -425,21 +425,26 @@ listComponents.directive('listInitFields', function() {
   };
 });
 
-listComponents.directive('listSelectColumns', function() {
+listComponents.directive('listSelectColumns', ['$timeout', function($timeout) {
   return {
     restrict: 'E',
     scope: true,
-    template: '<div class="btn-group" dropdown>'
+    template: '<div class="btn-group" dropdown is-open="isOpen">'
     +'<button id="selColBtn" type="button" class="btn btn-primary dropdown-toggle">More columns<span class="caret"></span></button>'
     + '<ul class="dropdown-menu" role="menu" aria-labelledby="selColBtn">'
     + '<li role="menuItem" ng-repeat="field in listPanelCtrl.cache.htmlFields | filter: {selectable: true}">'
-    + '<div class="checkbox"><label><input type="checkbox" ng-model="field.visible"><span ng-bind="field.label"></span></label></div>'
+    + '<div class="checkbox"><label><input type="checkbox" ng-model="field.visible" ng-change="keepOpen()"><span ng-bind="field.label"></span></label></div>'
     +'</li></ul></div>',
     require: '^listPanel',
     link: function(scope, iElement, iAttr, listPanelCtrl) {
         scope.listPanelCtrl = listPanelCtrl;
         scope.isOpen = false;
+        scope.keepOpen = function() {
+            $timeout(function() {
+            scope.isOpen = true;
+            });
+        }
     },
   };
-});
+}]);
 

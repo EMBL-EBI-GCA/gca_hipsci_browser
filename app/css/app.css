@@ -272,6 +272,10 @@ div.search-box > input {
     width: 250px;
 }
 
+ul.dropdown-menu div.checkbox {
+    margin-left: 5px;
+}
+
 
 
 /* sum HipSci branding with colours */
