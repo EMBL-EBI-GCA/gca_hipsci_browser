@@ -9,16 +9,14 @@ services.service('apiClient', ['$http', function($http) {
         getSource: function (searchObj) {
             var type = searchObj.hasOwnProperty('type') ? searchObj.type : '';
             var id = searchObj.id;
-            //var url = 'api/';
-            var url = 'http://test.hipsci.org/lines/api/';
+            var url = 'api/';
             url = url.concat(type, '/', id);
             return $http.get(url, {cache: true});
         },
         search: function (searchObj) {
             var type = searchObj.hasOwnProperty('type') ? searchObj.type : '';
             var body = searchObj.hasOwnProperty('body') ? searchObj.body : {};
-            //var url = 'api/';
-            var url = 'http://test.hipsci.org/lines/api/';
+            var url = 'api/';
             url = url.concat(type, '/', '_search');
             return $http.post(url, body);
         },
@@ -27,8 +25,7 @@ services.service('apiClient', ['$http', function($http) {
             var type = searchObj.hasOwnProperty('type') ? searchObj.type : '';
             var body = searchObj.hasOwnProperty('body') ? searchObj.body : {};
             var format = searchObj.hasOwnProperty('format') ? searchObj.format : 'tsv';
-            //var url = 'api/';
-            var url = 'http://test.hipsci.org/lines/api/';
+            var url = 'api/';
             url = url.concat(type, '/', '_search' , '.', format);
             form.action= url;
             form.method='POST';
