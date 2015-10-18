@@ -302,7 +302,7 @@ controllers.controller('FileListCtrl', function() {
     this.processHitFields = function(hitFields, fields) {
         var processedFields = [];
         for (var i=0; i<fields.length; i++) {
-            if (fields[i].esName == 'samples.name') {
+            if (fields[i].esName == 'samples.name' && hitFields.hasOwnProperty('samples.name')) {
                 processedFields[i] = hitFields['samples.name'].length == 1 ?  {name: hitFields['samples.name'][0], isIPS: hitFields['samples.cellType'][0] == 'iPSC' ? true : false}
                             : {name: hitFields['samples.name'].length + ' cell lines', isIPS: false};
             }
