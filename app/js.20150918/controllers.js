@@ -41,6 +41,8 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
       {visible: true,  selectable: true,  sortable: true,  esName: 'archive.name',     label: 'Archive'},
       {visible: false, selectable: true,  sortable: true,  esName: 'archive.accession',label: 'Accession'},
       {visible: true, selectable: true,  sortable: true,  esName: 'assay.growingConditions', label: 'Culture'},
+      {visible: false, selectable: true,  sortable: false,  esName: 'files.name', label: 'File name'},
+      {visible: false, selectable: true,  sortable: false,  esName: 'files.md5', label: 'File md5'},
 
       {visible: false, selectable: false, esName: 'archive.url'},
       {visible: false, selectable: false, esName: 'samples.cellType'},
@@ -53,8 +55,9 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
           field.th = '<th>'+field.label+'</th>'
           var hitStr = 'hit['+i+']';
           field.td = 
-                field.esName == 'archive.ftpUrl' ? '<td class="name"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
+                field.esName == 'archive.ftpUrl' ? '<td><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
                 : field.esName == 'archive.name' ? '<td class="name"><a ng-href="{{'+hitStr+'.url}}" target="_blank" ng-bind="'+hitStr+'.name"></a></td>'
+                : field.esName == 'files.name' || field.esName == 'files.md5' ? '<td class="name"><div class="wide-td"><div ng-repeat="file in '+hitStr+'"><span ng-bind="file"></span><br ng-if="!$last"></div></div></td>'
                : '<td ng-bind="'+hitStr+'"></td>';
       }
     }
@@ -256,6 +259,8 @@ controllers.controller('FileListCtrl', function() {
       {visible: false, selectable: true,  sortable: true,  esName: 'archive.accession',label: 'Accession'},
       {visible: false, selectable: true,  sortable: true,  esName: 'samples.sex',      label: 'Sex'},
       {visible: false, selectable: true,  sortable: true,  esName: 'assay.growingConditions', label: 'Culture'},
+      {visible: false, selectable: true,  sortable: false,  esName: 'files.name', label: 'File name'},
+      {visible: false, selectable: true,  sortable: false,  esName: 'files.md5', label: 'File md5'},
 
       {visible: false, selectable: false, esName: 'archive.url'},
       {visible: false, selectable: false, esName: 'samples.cellType'},
@@ -283,12 +288,13 @@ controllers.controller('FileListCtrl', function() {
     for (var i=0; i<this.htmlFields.length; i++) {
         var field = this.htmlFields[i];
         if (field.visible || field.selectable) {
-            field.th = '<th>'+field.label+'</th>'
+            field.th = '<th>'+field.label+'</th>';
             var hitStr = 'hit['+i+']';
             field.td = 
                   field.esName == 'samples.name' ? '<td class="name"><a ng-if="'+hitStr+'.isIPS" ng-href="#/lines/{{'+hitStr+'.name}}" ng-bind="'+hitStr+'.name"></a><span ng-if="!'+hitStr+'.isIPS" ng-bind="'+hitStr+'.name" ></span></td>'
-                  : field.esName == 'archive.ftpUrl' ? '<td class="name"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
-                  : field.esName == 'archive.name' ? '<td class="name"><a ng-href="{{'+hitStr+'.url}}" target="_blank" ng-bind="'+hitStr+'.name"></a></td>'
+                  : field.esName == 'archive.ftpUrl' ? '<td><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
+                  : field.esName == 'archive.name' ? '<td><a ng-href="{{'+hitStr+'.url}}" target="_blank" ng-bind="'+hitStr+'.name"></a></td>'
+                  : field.esName == 'files.name' || field.esName == 'files.md5' ? '<td style="white-space: nowrap; max-width: 300px"><div style="overflow: scroll"><div ng-repeat="file in '+hitStr+'"><span ng-bind="file"></span><br ng-if="!$last"></div></div></td>'
                   : '<td ng-bind="'+hitStr+'"></td>'
         }
     }
@@ -305,6 +311,9 @@ controllers.controller('FileListCtrl', function() {
                     name: hitFields.hasOwnProperty('archive.name') ? hitFields['archive.name'][0] : undefined,
                     url: hitFields.hasOwnProperty('archive.url') ? hitFields['archive.url'][0] : undefined,
                 }
+            }
+            else if (fields[i].esName == 'files.name' || fields[i].esName == 'files.md5') {
+                processedFields[i] = hitFields.hasOwnProperty(fields[i].esName) ? hitFields[fields[i].esName] : [];
             }
             else {
                 processedFields[i] = hitFields.hasOwnProperty(fields[i].esName) && hitFields[fields[i].esName].length == 1 ? hitFields[fields[i].esName][0] : undefined;

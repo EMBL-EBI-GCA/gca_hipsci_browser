@@ -195,6 +195,11 @@ table.matrix td.name {
   white-space: nowrap;
 }
 
+table.matrix td div.wide-td{
+  max-width: 300px;
+  overflow: scroll;
+}
+
 table.matrix td.matrix-dot .matrix-dot-item:hover {
   background-color: #b3d4fc;
 }
