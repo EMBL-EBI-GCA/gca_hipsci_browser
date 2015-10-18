@@ -40,7 +40,6 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
       {visible: true,  selectable: true,  sortable: false, esName: 'archive.ftpUrl',   label: 'File download'},
       {visible: true,  selectable: true,  sortable: true,  esName: 'archive.name',     label: 'Archive'},
       {visible: false, selectable: true,  sortable: true,  esName: 'archive.accession',label: 'Accession'},
-      {visible: false, selectable: true,  sortable: true,  esName: 'samples.sex',      label: 'Sex'},
       {visible: true, selectable: true,  sortable: true,  esName: 'assay.growingConditions', label: 'Culture'},
 
       {visible: false, selectable: false, esName: 'archive.url'},
