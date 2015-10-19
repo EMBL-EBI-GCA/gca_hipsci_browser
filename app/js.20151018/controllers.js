@@ -163,6 +163,7 @@ controllers.controller('LineListCtrl', function() {
 
     this.fields = [
         {visible: true,  sortable: true,  selectable: false, esName: 'name', label: 'Name'},
+        {visible: false,  sortable: true,  selectable: true,  esName: 'cellType.value', label: 'Cell Type'},
         {visible: true,  sortable: true,  selectable: true,  esName: 'diseaseStatus.value', label: 'Disease Status'},
         {visible: true,  sortable: true,  selectable: true,  esName: 'donor.sex.value', label: 'Sex'},
         {visible: false, sortable: true,  selectable: true,  esName: 'donor.ethnicity', label: 'Ethnicity'},
@@ -291,7 +292,7 @@ controllers.controller('FileListCtrl', function() {
             field.th = '<th>'+field.label+'</th>';
             var hitStr = 'hit['+i+']';
             field.td = 
-                  field.esName == 'samples.name' ? '<td class="name"><a ng-if="'+hitStr+'.isIPS" ng-href="#/lines/{{'+hitStr+'.name}}" ng-bind="'+hitStr+'.name"></a><span ng-if="!'+hitStr+'.isIPS" ng-bind="'+hitStr+'.name" ></span></td>'
+                  field.esName == 'samples.name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"></a></td>'
                   : field.esName == 'archive.ftpUrl' ? '<td><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
                   : field.esName == 'archive.name' ? '<td><a ng-href="{{'+hitStr+'.url}}" target="_blank" ng-bind="'+hitStr+'.name"></a></td>'
                   : field.esName == 'files.name' || field.esName == 'files.md5' ? '<td style="white-space: nowrap; max-width: 300px"><div style="overflow: scroll"><div ng-repeat="file in '+hitStr+'"><span ng-bind="file"></span><br ng-if="!$last"></div></div></td>'
@@ -302,11 +303,7 @@ controllers.controller('FileListCtrl', function() {
     this.processHitFields = function(hitFields, fields) {
         var processedFields = [];
         for (var i=0; i<fields.length; i++) {
-            if (fields[i].esName == 'samples.name' && hitFields.hasOwnProperty('samples.name')) {
-                processedFields[i] = hitFields['samples.name'].length == 1 ?  {name: hitFields['samples.name'][0], isIPS: hitFields['samples.cellType'][0] == 'iPSC' ? true : false}
-                            : {name: hitFields['samples.name'].length + ' cell lines', isIPS: false};
-            }
-            else if (fields[i].esName == 'archive.name') {
+            if (fields[i].esName == 'archive.name') {
                 processedFields[i] = {
                     name: hitFields.hasOwnProperty('archive.name') ? hitFields['archive.name'][0] : undefined,
                     url: hitFields.hasOwnProperty('archive.url') ? hitFields['archive.url'][0] : undefined,

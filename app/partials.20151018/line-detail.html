@@ -13,6 +13,11 @@
         <section>
         <dl class="dl-horizontal">
 
+            <div ng-if="data.cellType.value">
+                <dt>Cell line type:</dt>
+                <dd ng-bind="data.cellType.value"></dd>
+            </div>
+
             <div ng-if="data.bankingStatus.length">
                 <dt>Banking status:</dt>
                 <dd ng-bind="data.bankingStatus.join(', ')"></dd>
