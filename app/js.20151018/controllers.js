@@ -55,12 +55,14 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
           field.th = '<th>'+field.label+'</th>'
           var hitStr = 'hit['+i+']';
           field.td = 
-                field.esName == 'archive.ftpUrl' ? '<td><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
-                : field.esName == 'archive.name' ? '<td class="name"><a ng-href="{{'+hitStr+'.url}}" target="_blank" ng-bind="'+hitStr+'.name"></a></td>'
-                : field.esName == 'files.name' || field.esName == 'files.md5' ? '<td class="name"><div class="wide-td"><div ng-repeat="file in '+hitStr+'"><span ng-bind="file"></span><br ng-if="!$last"></div></div></td>'
-               : '<td ng-bind="'+hitStr+'"></td>';
+                field.esName == 'samples.name' ? '<td class="name valign"><div class="tall-td"><div ng-repeat="name in '+hitStr+'"><a ng-href="#/lines/{{name}}" ng-bind="name"></a><br ng-if="!$last"></div></div></td>'
+                : field.esName == 'archive.ftpUrl' ? '<td class="valign"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
+                : field.esName == 'archive.name' ? '<td class="name valign"><a ng-href="{{'+hitStr+'.url}}" target="_blank" ng-bind="'+hitStr+'.name"></a></td>'
+                : field.esName == 'files.name' || field.esName == 'files.md5' ? '<td class="name valign"><div class="wide-td"><div ng-repeat="file in '+hitStr+'"><span ng-bind="file"></span><br ng-if="!$last"></div></div></td>'
+               : '<td class="valign" ng-bind="'+hitStr+'"></td>';
       }
     }
+
   }
 ]);
 
@@ -292,11 +294,11 @@ controllers.controller('FileListCtrl', function() {
             field.th = '<th>'+field.label+'</th>';
             var hitStr = 'hit['+i+']';
             field.td = 
-                  field.esName == 'samples.name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"></a></td>'
-                  : field.esName == 'archive.ftpUrl' ? '<td><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
-                  : field.esName == 'archive.name' ? '<td><a ng-href="{{'+hitStr+'.url}}" target="_blank" ng-bind="'+hitStr+'.name"></a></td>'
-                  : field.esName == 'files.name' || field.esName == 'files.md5' ? '<td style="white-space: nowrap; max-width: 300px"><div style="overflow: scroll"><div ng-repeat="file in '+hitStr+'"><span ng-bind="file"></span><br ng-if="!$last"></div></div></td>'
-                  : '<td ng-bind="'+hitStr+'"></td>'
+                  field.esName == 'samples.name' ? '<td class="name valign"><div class="chevron" ng-if="'+[hitStr]+'.length>5"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></div><div class="tall-td"><div ng-repeat="name in '+hitStr+'"><a ng-href="#/lines/{{name}}" ng-bind="name"></a><br ng-if="!$last"></div></div><div class="chevron bottom-chevron" ng-if="'+[hitStr]+'.length>5"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></div></td>'
+                  : field.esName == 'archive.ftpUrl' ? '<td class="valign"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
+                  : field.esName == 'archive.name' ? '<td class="valign"><a ng-href="{{'+hitStr+'.url}}" target="_blank" ng-bind="'+hitStr+'.name"></a></td>'
+                  : field.esName == 'files.name' || field.esName == 'files.md5' ? '<td class="name valign"><div class="wide-td"><div ng-repeat="file in '+hitStr+'"><span ng-bind="file"></span><br ng-if="!$last"></div></div></td>'
+                  : '<td class="valign" ng-bind="'+hitStr+'"></td>'
         }
     }
 
@@ -309,7 +311,7 @@ controllers.controller('FileListCtrl', function() {
                     url: hitFields.hasOwnProperty('archive.url') ? hitFields['archive.url'][0] : undefined,
                 }
             }
-            else if (fields[i].esName == 'files.name' || fields[i].esName == 'files.md5') {
+            else if (fields[i].esName == 'files.name' || fields[i].esName == 'files.md5' || fields[i].esName == 'samples.name') {
                 processedFields[i] = hitFields.hasOwnProperty(fields[i].esName) ? hitFields[fields[i].esName] : [];
             }
             else {

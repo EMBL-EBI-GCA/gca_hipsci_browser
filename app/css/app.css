@@ -185,6 +185,9 @@ html[data-useragent*='MSIE 8'] table.matrix th.matrix-dot > div > span {
   border: none;
   padding: 0;
 }
+table.matrix td.valign {
+    vertical-align: middle;
+}
 table.matrix td.matrix-dot {
   text-align: center;
   border-left: thin solid #ddd;
@@ -198,6 +201,16 @@ table.matrix td.name {
 table.matrix td div.wide-td{
   max-width: 300px;
   overflow: scroll;
+}
+table.matrix td div.tall-td{
+  max-height: 110px;
+  overflow: scroll;
+}
+table.matrix td div.chevron span{
+    margin-left: 40px;
+}
+table.matrix td div.bottom-chevron{
+    margin-top: 8px;
 }
 
 table.matrix td.matrix-dot .matrix-dot-item:hover {
