@@ -301,9 +301,10 @@ listComponents.directive('listTable', function() {
         processHitFields: '=',
         compileParams: '=',
         defaultSortFields: '@',
+        trClass: '@'
     },
     require: ['listTable', '^listPanel'],
-    template: '<table><thead ><tr class="slanted"></tr></thead><tbody></tbody></table>',
+    template: '<table><thead ><tr></tr></thead><tbody></tbody></table>',
     link: function(scope, iElement, iAttrs, ctrls) {
         var listTableCtrl = ctrls[0];
         var listPanelCtrl = ctrls[1];
@@ -342,6 +343,9 @@ listComponents.directive('listTable', function() {
             var headTrEl = tableEl.find('thead > tr');
             var rowEl = $('<tr ng-repeat="hit in processedHits"></tr>');
             tableEl.find('tbody').append(rowEl);
+            if ($scope.trClass) {
+                headTrEl.addClass($scope.trClass);
+            }
 
             for (var i=0; i<fields.length; i++) {
                 if (fields[i].visible || fields[i].selectable) {
