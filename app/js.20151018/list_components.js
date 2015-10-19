@@ -235,7 +235,7 @@ listComponents.directive('aggsFilter', function() {
         var aggsFilterCtrl = ctrls[0];
         var listPanelCtrl = ctrls[1];
         aggsFilterCtrl.sortFunction = scope.$parent.$eval(scope.sortFunction)
-            || function(a, b) {b.unfilteredCount - a.unfilteredCount};
+            || function(a, b) {return b.unfilteredCount - a.unfilteredCount};
 
         listPanelCtrl.aggsFilterCtrls[scope.field] = aggsFilterCtrl;
         aggsFilterCtrl.initCache(listPanelCtrl);
