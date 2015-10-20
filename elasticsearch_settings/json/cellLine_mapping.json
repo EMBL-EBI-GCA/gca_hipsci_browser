@@ -51,6 +51,14 @@
                     }
                 }
             },
+            "certificateOfAnalysis": {
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    }
+                }
+            },
             "assays": {
                 "properties": {
                     "cellbiol-fn": {
