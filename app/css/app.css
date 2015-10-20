@@ -200,18 +200,18 @@ table.matrix td.name {
 
 table.matrix td div.wide-td{
   max-width: 300px;
-  overflow: scroll;
+  overflow-x: scroll;
 }
 table.matrix td div.tall-td{
   max-height: 110px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 table.matrix td div.chevron span{
     font-size: 80%;
     margin-left: 50px;
 }
 table.matrix td div.bottom-chevron{
-    margin-top: 5px;
+    margin-top: 4px;
 }
 
 table.matrix td.matrix-dot .matrix-dot-item:hover {

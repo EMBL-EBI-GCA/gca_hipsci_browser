@@ -55,7 +55,7 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
           field.th = '<th>'+field.label+'</th>'
           var hitStr = 'hit['+i+']';
           field.td = 
-                field.esName == 'samples.name' ? '<td class="name valign"><div class="tall-td"><div ng-repeat="name in '+hitStr+'"><a ng-href="#/lines/{{name}}" ng-bind="name"></a><br ng-if="!$last"></div></div></td>'
+                field.esName == 'samples.name' ? '<td class="name valign"><div class="chevron" ng-if="'+[hitStr]+'.length>5"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></div><div ng-class="{\'tall-td\': '+[hitStr]+'.length>5}"><div ng-repeat="name in '+hitStr+'"><a ng-href="#/lines/{{name}}" ng-bind="name"></a><br ng-if="!$last"></div></div><div class="chevron bottom-chevron" ng-if="'+[hitStr]+'.length>5"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></div></td>'
                 : field.esName == 'archive.ftpUrl' ? '<td class="valign"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
                 : field.esName == 'archive.name' ? '<td class="name valign"><a ng-href="{{'+hitStr+'.url}}" target="_blank" ng-bind="'+hitStr+'.name"></a></td>'
                 : field.esName == 'files.name' || field.esName == 'files.md5' ? '<td class="name valign"><div class="wide-td"><div ng-repeat="file in '+hitStr+'"><span ng-bind="file"></span><br ng-if="!$last"></div></div></td>'
@@ -294,7 +294,7 @@ controllers.controller('FileListCtrl', function() {
             field.th = '<th>'+field.label+'</th>';
             var hitStr = 'hit['+i+']';
             field.td = 
-                  field.esName == 'samples.name' ? '<td class="name valign"><div class="chevron" ng-if="'+[hitStr]+'.length>5"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></div><div class="tall-td"><div ng-repeat="name in '+hitStr+'"><a ng-href="#/lines/{{name}}" ng-bind="name"></a><br ng-if="!$last"></div></div><div class="chevron bottom-chevron" ng-if="'+[hitStr]+'.length>5"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></div></td>'
+                  field.esName == 'samples.name' ? '<td class="name valign"><div class="chevron" ng-if="'+[hitStr]+'.length>5"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></div><div ng-class="{\'tall-td\': '+[hitStr]+'.length>5}"><div ng-repeat="name in '+hitStr+'"><a ng-href="#/lines/{{name}}" ng-bind="name"></a><br ng-if="!$last"></div></div><div class="chevron bottom-chevron" ng-if="'+[hitStr]+'.length>5"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></div></td>'
                   : field.esName == 'archive.ftpUrl' ? '<td class="valign"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
                   : field.esName == 'archive.name' ? '<td class="valign"><a ng-href="{{'+hitStr+'.url}}" target="_blank" ng-bind="'+hitStr+'.name"></a></td>'
                   : field.esName == 'files.name' || field.esName == 'files.md5' ? '<td class="name valign"><div class="wide-td"><div ng-repeat="file in '+hitStr+'"><span ng-bind="file"></span><br ng-if="!$last"></div></div></td>'
