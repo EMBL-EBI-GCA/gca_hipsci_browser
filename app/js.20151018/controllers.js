@@ -40,7 +40,7 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
       {visible: true,  selectable: true,  sortable: false, esName: 'archive.ftpUrl',   label: 'File download'},
       {visible: true,  selectable: true,  sortable: true,  esName: 'archive.name',     label: 'Archive'},
       {visible: false, selectable: true,  sortable: true,  esName: 'archive.accession',label: 'Accession'},
-      {visible: true, selectable: true,  sortable: true,  esName: 'assay.growingConditions', label: 'Culture'},
+      {visible: true, selectable: true,  sortable: true,  esName: 'samples.growingConditions', label: 'Culture'},
       {visible: false, selectable: true,  sortable: false,  esName: 'files.name', label: 'File name'},
       {visible: false, selectable: true,  sortable: false,  esName: 'files.md5', label: 'File md5'},
 
@@ -62,6 +62,29 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
                : '<td class="valign" ng-bind="'+hitStr+'"></td>';
       }
     }
+
+    this.processHitFields = function(hitFields, fields) {
+        var processedFields = [];
+        for (var i=0; i<fields.length; i++) {
+            if (fields[i].esName == 'archive.name') {
+                processedFields[i] = {
+                    name: hitFields.hasOwnProperty('archive.name') ? hitFields['archive.name'][0] : undefined,
+                    url: hitFields.hasOwnProperty('archive.url') ? hitFields['archive.url'][0] : undefined,
+                }
+            }
+            else if (fields[i].esName == 'samples.growingConditions' && hitFields.hasOwnProperty(fields[i].esName)) {
+                var j = hitFields['samples.name'].indexOf($scope.ipscName);
+                processedFields[i] = j>-1 ? hitFields[fields[i].esName][j] : undefined;
+            }
+            else if (fields[i].esName == 'files.name' || fields[i].esName == 'files.md5' || fields[i].esName == 'samples.name') {
+                processedFields[i] = hitFields.hasOwnProperty(fields[i].esName) ? hitFields[fields[i].esName] : [];
+            }
+            else {
+                processedFields[i] = hitFields.hasOwnProperty(fields[i].esName) && hitFields[fields[i].esName].length == 1 ? hitFields[fields[i].esName][0] : undefined;
+            }
+        }
+        return processedFields;
+    };
 
   }
 ]);
@@ -261,7 +284,7 @@ controllers.controller('FileListCtrl', function() {
       {visible: true,  selectable: true,  sortable: true,  esName: 'archive.name',     label: 'Archive'},
       {visible: false, selectable: true,  sortable: true,  esName: 'archive.accession',label: 'Accession'},
       {visible: false, selectable: true,  sortable: true,  esName: 'samples.sex',      label: 'Sex'},
-      {visible: false, selectable: true,  sortable: true,  esName: 'assay.growingConditions', label: 'Culture'},
+      {visible: false, selectable: true,  sortable: true,  esName: 'samples.growingConditions', label: 'Culture'},
       {visible: false, selectable: true,  sortable: false,  esName: 'files.name', label: 'File name'},
       {visible: false, selectable: true,  sortable: false,  esName: 'files.md5', label: 'File md5'},
 
@@ -282,7 +305,7 @@ controllers.controller('FileListCtrl', function() {
       {esName: 'archive.accessionType', label: 'Accession type'},
       {esName: 'archive.accession',label: 'Accession'},
       {esName: 'archive.url',      label: 'Archive url'},
-      {esName: 'assay.growingConditions', label: 'Cell line growing conditions for this assay'},
+      {esName: 'samples.growingConditions', label: 'Cell line growing conditions for this assay'},
       {esName: 'samples.diseaseStatus', label: 'Disease status'},
       {esName: 'samples.sex',      label: 'Sex'},
       {esName: 'assay.description',label: 'Assay description'},
