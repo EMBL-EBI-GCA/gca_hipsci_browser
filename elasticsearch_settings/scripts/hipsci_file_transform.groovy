@@ -2,6 +2,9 @@
 ctx._source.calculated = [:]
 
 ctx._source.calculated.access = ctx._source.archive.openAccess ? 'Open access' : ctx._source.archive.openAccess != null ? 'Managed access' : ''
+if (ctx._source.samples) {
+    ctx._source.calculated.sampleCount = ctx._source.samples.size()
+}
 
 ctx._source.searchable = [:]
 ctx._source.searchable.fixed = []
