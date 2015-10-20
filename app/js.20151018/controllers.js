@@ -15,7 +15,7 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
     }).then(function(resp) {
         $scope.apiSuccess = true;
         $scope.data = resp.data['_source'];
-        $scope.data.bankingStatus = jQuery.grep($scope.data.bankingStatus, function(str) {return ! /shipped/i.test(str)});
+        $scope.data.bankingStatus = $scope.data.bankingStatus ? jQuery.grep($scope.data.bankingStatus, function(str) {return ! /shipped/i.test(str)}) : undefined;
     }, function(resp) {
         $scope.apiError = true;
         $scope.apiStatus = resp.status;
@@ -122,7 +122,7 @@ controllers.controller('DonorListCtrl', function() {
         var field = this.fields[i];
         if (field.visible || field.selectable) {
             field.th = 
-                field.esName == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+field.label+'</span></div></th>'
+                field.esName == 'bioSamplesAccession' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
               :  field.esName == 'cellLines.name' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
               : '<th>'+field.label+'</th>'
             var hitStr = 'hit['+i+']';
@@ -184,7 +184,7 @@ controllers.controller('LineListCtrl', function() {
         var field = this.fields[i];
         if (field.visible || field.selectable) {
             field.th = 
-                field.esName == 'bioSamplesAccession' ? '<th class="matrix-dot biosamplesaccession"><div><span>'+field.label+'</span></div></th>'
+                field.esName == 'bioSamplesAccession' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
               : field.esName == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
               : field.esName == 'openAccess' ? '<th class="matrix-dot"><div><span>Data access</span></div></th>'
               : field.esName == 'calculated.assays' ? '<th ng-repeat="assay in compileParams.assays" class="matrix-dot assay"><div><span ng-bind="assay.short"></span></div></th>'
