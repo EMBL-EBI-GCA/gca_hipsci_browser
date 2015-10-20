@@ -207,10 +207,11 @@ table.matrix td div.tall-td{
   overflow: scroll;
 }
 table.matrix td div.chevron span{
-    margin-left: 40px;
+    font-size: 80%;
+    margin-left: 50px;
 }
 table.matrix td div.bottom-chevron{
-    margin-top: 8px;
+    margin-top: 5px;
 }
 
 table.matrix td.matrix-dot .matrix-dot-item:hover {
