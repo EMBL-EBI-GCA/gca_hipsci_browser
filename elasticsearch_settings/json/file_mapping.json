@@ -33,7 +33,7 @@
             },
             "calculated": {
                 "properties": {
-                    "sampleCount": {
+                    "sampleCountScore": {
                         "type": "integer"
                     },
                     "access": {
