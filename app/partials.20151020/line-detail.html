@@ -128,20 +128,20 @@
                 <dt>Novelty score:</dt>
                 <dd ng-bind="data.pluritest.novelty"></dd>
             </div>
-
-            <div class="row">
-            <div class="col-md-6" ng-if="data.pluritest.hasOwnProperty('pluripotency_image')">
-                <div class="item-detail-img">
-                <a ng-href="ftp://ftp.hipsci.ebi.ac.uk{{data.pluritest.pluripotency_image}}"><img class="img-responsive center-block" ng-src="http://ftp.hipsci.ebi.ac.uk{{data.pluritest.pluripotency_image}}" alt="Pluritest pluripotency plot"></img></a>
-                </div>
-            </div>
-            <div class="col-md-6" ng-if="data.pluritest.hasOwnProperty('novelty_image')">
-                <div class="item-detail-img">
-                <a ng-href="ftp://ftp.hipsci.ebi.ac.uk{{data.pluritest.novelty_image}}"><img class="img-responsive center-block" ng-src="http://ftp.hipsci.ebi.ac.uk{{data.pluritest.novelty_image}}" alt="Pluritest novelty plot"></img></a>
-                </div>
-            </div>
-            </div>
         </dl>
+
+        <div class="row">
+        <div class="col-md-6" ng-if="data.pluritest.hasOwnProperty('pluripotency_image')">
+            <div class="item-detail-img">
+            <a ng-href="ftp://ftp.hipsci.ebi.ac.uk{{data.pluritest.pluripotency_image}}"><img class="img-responsive center-block" ng-src="http://ftp.hipsci.ebi.ac.uk{{data.pluritest.pluripotency_image}}" alt="Pluritest pluripotency plot"></img></a>
+            </div>
+        </div>
+        <div class="col-md-6" ng-if="data.pluritest.hasOwnProperty('novelty_image')">
+            <div class="item-detail-img">
+            <a ng-href="ftp://ftp.hipsci.ebi.ac.uk{{data.pluritest.novelty_image}}"><img class="img-responsive center-block" ng-src="http://ftp.hipsci.ebi.ac.uk{{data.pluritest.novelty_image}}" alt="Pluritest novelty plot"></img></a>
+            </div>
+        </div>
+        </div>
         </section>
 
         <section ng-if="data.cnv">
@@ -156,14 +156,19 @@
                 <dt>Length of differences from primary tissue:</dt>
                 <dd><span ng-bind="data.cnv.length_different_regions_Mbp"></span> Mbp</dd>
             </div>
-            <div class="row">
-            <div class="col-md-6" ng-repeat="image in data.cnv.aberrant_images">
-                <div class="item-detail-img">
-                <a ng-href="ftp://ftp.hipsci.ebi.ac.uk{{image}}"><img class="img-responsive center-block" ng-src="http://ftp.hipsci.ebi.ac.uk{{image}}" alt="Pluritest novelty plot"></img></a>
-                </div>
-            </div>
-            </div>
         </dl>
+        <div class="row">
+        <div class="col-md-6" ng-if="data.cnv.summary_image">
+            <div class="item-detail-img">
+            <a ng-href="ftp://ftp.hipsci.ebi.ac.uk{{data.cnv.summary_image}}"><img class="img-responsive center-block" ng-src="http://ftp.hipsci.ebi.ac.uk{{data.cnv.summary_image}}" alt="CNV summary"></img></a>
+            </div>
+        </div>
+        <div class="col-md-6" ng-repeat="image in data.cnv.aberrant_images">
+            <div class="item-detail-img">
+            <a ng-href="ftp://ftp.hipsci.ebi.ac.uk{{image}}"><img class="img-responsive center-block" ng-src="http://ftp.hipsci.ebi.ac.uk{{image}}" alt="CNV aberrant region plot"></img></a>
+            </div>
+        </div>
+        </div>
         </section>
 
         </div>
