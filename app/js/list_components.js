@@ -84,7 +84,7 @@ listComponents.directive('aggsFilter', function() {
         modalMd: '@',
     },
     require: ['aggsFilter', '^listPanel'],
-    templateUrl: 'partials.20151029/uiFacet.html',
+    templateUrl: 'partials/uiFacet.html?ver=20151030',
     controller: ['$scope', '$location', function($scope, $location) {
         var c = this;
         c.esAggRequest = { terms: {field: $scope.field, size: 20}};
