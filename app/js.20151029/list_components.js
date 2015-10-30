@@ -81,6 +81,7 @@ listComponents.directive('aggsFilter', function() {
         field: '@',
         sortFunction: '@',
         multiBoolean: '@',
+        modalMd: '@',
     },
     require: ['aggsFilter', '^listPanel'],
     templateUrl: 'partials.20151029/uiFacet.html',

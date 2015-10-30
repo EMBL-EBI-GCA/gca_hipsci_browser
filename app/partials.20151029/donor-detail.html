@@ -14,7 +14,7 @@
             
             <div ng-if="data.diseaseStatus.value">
                 <dt>Disease status:</dt>
-                <dd ng-bind="data.diseaseStatus.value"></dd>
+                <dd><span ng-bind="data.diseaseStatus.value"></span><md-modal modal-md="disease" title="Disease status"></md-modal></dd>
             </div>
 
             <div ng-if="data.age">

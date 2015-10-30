@@ -60,3 +60,31 @@ services.service('routeCache', ['$location', function($location) {
         return cache[path][ctrlName][id];
     };
 }]);
+
+services.directive('mdModal', ['$modal', '$http', function($modal, $http) {
+  return {
+    restrict: 'E',
+    scope: {
+        modalMd: '@',
+        title: '@',
+    },
+    template: '<a class="modal-link" href="" ng-click="showModal()"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>',
+    link: function(scope, iElement, iAttrs, ctrls) {
+        scope.showModal = function() {
+            if (!scope.modalContent) {
+                $http.get('md.20151018/'+scope.modalMd+'.md', {responseType: 'text', cache: true
+                }).success(function(data) {
+                    scope.modalContent = data;
+                });
+            }
+            scope.modalInstance = $modal.open({
+                templateUrl: 'partials.20151029/modal.html',
+                scope: scope,
+            });
+            scope.unbindRouteUpdate = scope.$on('$routeChangeStart', function(event, object) {
+                scope.modalInstance.close();
+                scope.unbindRouteUpdate();
+            });
+        };
+    }
+}}]);

@@ -52,7 +52,8 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
     for (var i=0; i<this.fileFields.length; i++) {
       var field = this.fileFields[i];
       if (field.visible || field.selectable) {
-          field.th = '<th>'+field.label+'</th>'
+        field.th = field.esName == 'assay.type' ? '<th>'+field.label+'<md-modal modal-md="assays" title="Assays"></md-modal></th>'
+            : '<th>'+field.label+'</th>';
           var hitStr = 'hit['+i+']';
           field.td = 
                 field.esName == 'samples.name' ? '<td class="name valign"><div class="chevron" ng-if="'+[hitStr]+'.length>5"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></div><div ng-class="{\'tall-td\': '+[hitStr]+'.length>5}"><div ng-repeat="name in '+hitStr+'"><a ng-href="#/lines/{{name}}" ng-bind="name"></a><br ng-if="!$last"></div></div><div class="chevron bottom-chevron" ng-if="'+[hitStr]+'.length>5"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></div></td>'
@@ -146,7 +147,8 @@ controllers.controller('DonorListCtrl', function() {
         if (field.visible || field.selectable) {
             field.th = 
                 field.esName == 'bioSamplesAccession' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
-              :  field.esName == 'cellLines.name' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
+              : field.esName == 'cellLines.name' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
+              : field.esName == 'diseaseStatus.value' ? '<th>'+field.label+'<md-modal modal-md="disease" title="Disease status"></md-modal></th>'
               : '<th>'+field.label+'</th>'
             var hitStr = 'hit['+i+']';
             field.td = 
@@ -208,9 +210,10 @@ controllers.controller('LineListCtrl', function() {
         if (field.visible || field.selectable) {
             field.th = 
                 field.esName == 'bioSamplesAccession' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
-              : field.esName == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
-              : field.esName == 'openAccess' ? '<th class="matrix-dot"><div><span>Data access</span></div></th>'
+              : field.esName == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+field.label+'</span><md-modal modal-md="banking_status" title="Banked status"></md-modal></div></th>'
+              : field.esName == 'openAccess' ? '<th class="matrix-dot"><div><span>Data access</span><md-modal modal-md="access" title="Data access"></md-modal></div></th>'
               : field.esName == 'calculated.assays' ? '<th ng-repeat="assay in compileParams.assays" class="matrix-dot assay"><div><span ng-bind="assay.short"></span></div></th>'
+              : field.esName == 'diseaseStatus.value' ? '<th>'+field.label+'<md-modal modal-md="disease" title="Disease status"></md-modal></th>'
               : '<th>'+field.label+'</th>'
             var hitStr = 'hit['+i+']';
             field.td = 
@@ -314,7 +317,8 @@ controllers.controller('FileListCtrl', function() {
     for (var i=0; i<this.htmlFields.length; i++) {
         var field = this.htmlFields[i];
         if (field.visible || field.selectable) {
-            field.th = '<th>'+field.label+'</th>';
+            field.th = field.esName == 'assay.type' ? '<th>'+field.label+'<md-modal modal-md="assays" title="Assays"></md-modal></th>'
+                : '<th>'+field.label+'</th>';
             var hitStr = 'hit['+i+']';
             field.td = 
                   field.esName == 'samples.name' ? '<td class="name valign"><div class="chevron" ng-if="'+[hitStr]+'.length>5"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></div><div ng-class="{\'tall-td\': '+[hitStr]+'.length>5}"><div ng-repeat="name in '+hitStr+'"><a ng-href="#/lines/{{name}}" ng-bind="name"></a><br ng-if="!$last"></div></div><div class="chevron bottom-chevron" ng-if="'+[hitStr]+'.length>5"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></div></td>'

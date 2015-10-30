@@ -136,6 +136,14 @@ p .left-image{
   color:rgb(200, 200, 200);
 }
 
+a.modal-link {
+    color: inherit;
+    margin-left: 5px;
+}
+.facet h3.panel-title a.modal-link {
+    margin-left: 10px;
+}
+
 /*Download link symbol is a bit weedy, make it bigger and bolder*/
 a.download {
   font-size: 1.3em;
@@ -173,7 +181,7 @@ table.matrix th.matrix-dot > div {
 }
 table.matrix th.matrix-dot > div > span {
   border-bottom: 1px solid #ccc;
-  padding: 5px 10px;
+  padding: 5px 0px 5px 10px;
 }
 html[data-useragent*='MSIE 8'] table.matrix th.matrix-dot > div { /* for IE8 only */
   font-size: 65%;

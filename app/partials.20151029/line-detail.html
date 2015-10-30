@@ -20,7 +20,7 @@
 
             <div ng-if="data.bankingStatus.length">
                 <dt>Banking status:</dt>
-                <dd ng-bind="data.bankingStatus.join(', ')"></dd>
+                <dd><span ng-bind="data.bankingStatus.join(', ')"></span><md-modal modal-md="banking_status" title="Banked status"></md-modal></dd>
             </div>
 
             <div ng-if="data.donor.name">
@@ -30,7 +30,7 @@
 
             <div ng-if="data.diseaseStatus.value">
                 <dt>Disease status:</dt>
-                <dd ng-bind="data.diseaseStatus.value"></dd>
+                <dd><span ng-bind="data.diseaseStatus.value"></span><md-modal modal-md="disease" title="Disease status"></md-modal></dd>
             </div>
 
             <div ng-if="data.sourceMaterial.value">

@@ -1,7 +1,7 @@
 <div class="facet">
 	<ul class="list-group" ng-class="{collapsed: collapsed}">
 		<li class="list-group-item heading">
-			<h3 class="panel-title" ng-bind="title"></h3>
+			<h3 class="panel-title"><span ng-bind="title"></span><md-modal ng-if="modalMd" modal-md="{{modalMd}}" title="{{title}}"></md-modal></h3>
 			<button type="button" class="btn btn-xs btn-primary" ng-show="buttonRequired()" ng-click="toggleCollapse()" ng-bind="collapsed ? '+': '-'"></button>
 		</li>
 		<li ng-repeat="agg in aggs" class="list-group-item facet-term " 

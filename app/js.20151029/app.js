@@ -9,6 +9,7 @@ var dependencies = [
   'hipsciBrowser.listPanel',
   'hipsciBrowser.listComponents',
   'ui.bootstrap',
+  'markdown'
 ];
 
 // Declare app level module which depends on filters, and services

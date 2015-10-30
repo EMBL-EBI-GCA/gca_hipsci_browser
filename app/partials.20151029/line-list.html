@@ -9,19 +9,19 @@
                 <facets-clear text="Clear filters"></facets-clear>
                 <div class="row">
                 <div class="col-sm-6 col-md-12">
-                <aggs-filter title="Data Access" field="calculated.access"></aggs-filter>
+                <aggs-filter title="Data Access" field="calculated.access" modal-md="access"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
-                <aggs-filter title="Assays" field="calculated.assays" multi-boolean="and"></aggs-filter>
+                <aggs-filter title="Assays" field="calculated.assays" multi-boolean="and" modal-md="assays"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
                 <aggs-filter title="Source Material" field="sourceMaterial.value"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
-                <aggs-filter title="Disease Status" field="diseaseStatus.value"></aggs-filter>
+                <aggs-filter title="Disease Status" field="diseaseStatus.value" modal-md="disease"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
-                <aggs-filter title="Banked Status" field="calculated.bankingStatus" sort-function="LineCtrl.bankingStatusSort" multi-boolean="and"></aggs-filter>
+                <aggs-filter title="Banked Status" field="calculated.bankingStatus" sort-function="LineCtrl.bankingStatusSort" multi-boolean="and" modal-md="banking_status"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
                 <aggs-filter title="Tissue Provider" field="tissueProvider"></aggs-filter>
