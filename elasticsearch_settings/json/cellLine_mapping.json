@@ -26,7 +26,7 @@
                     "free": {
                         "type": "string",
                         "index": "analyzed",
-                        "search_sanalyzer": "standard",
+                        "search_analyzer": "standard",
                         "index_analyzer": "prefixes"
                     }
                 }
