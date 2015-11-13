@@ -387,6 +387,9 @@
                 "type": "string",
                 "index": "not_analyzed"
             },
+            "ecaccCatalogNumber": {
+                "type": "integer"
+            },
             "openAccess": {
                 "type": "boolean"
             },
