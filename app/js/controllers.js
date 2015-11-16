@@ -128,6 +128,7 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient'
 controllers.controller('DonorListCtrl', function() {
     var controller=this;
     this.documentType = 'donor';
+    this.exportFilename = 'hipsci_donors';
 
     this.initFields = ['name', 'sex.value', 'ethnicity', 'diseaseStatus.value', 'age', 'tissueProvider', 'bioSamplesAccession', 'cellLines.name'];
 
@@ -177,6 +178,7 @@ controllers.controller('DonorListCtrl', function() {
 controllers.controller('LineListCtrl', function() {
     var controller = this;
     this.documentType = 'cellLine';
+    this.exportFilename = 'hipsci_lines';
 
     this.assays = [
                 {short: 'gtarray', long: 'Genotyping array'},
@@ -278,6 +280,7 @@ controllers.controller('LineListCtrl', function() {
 controllers.controller('FileListCtrl', function() {
     var controller=this;
     this.documentType = 'file';
+    this.exportFilename = 'hipsci_files';
 
     this.htmlFields = [
       {visible: true,  selectable: false, sortable: true,  esName: 'samples.name',     label: 'Cell line'},

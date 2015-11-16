@@ -7,6 +7,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
     scope: false,
     link: function(scope, iElement, iAttrs, controller) {
       controller.documentType = scope.$eval(iAttrs.documentType);
+      controller.exportFilename = scope.$eval(iAttrs.exportFilename);
       scope.exportData = controller.exportData;
 
       var firstView = true;
@@ -352,7 +353,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
             }
         }
 
-        return apiClient.exportData({type: c.documentType, body: searchBody, format: format});
+        return apiClient.exportData({type: c.documentType, body: searchBody, format: format, filename: c.exportFilename});
       };
   
       c.clearFilters = function() {

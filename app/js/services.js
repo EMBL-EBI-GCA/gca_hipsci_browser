@@ -17,7 +17,7 @@ services.service('apiClient', ['$http', function($http) {
             var type = searchObj.hasOwnProperty('type') ? searchObj.type : '';
             var body = searchObj.hasOwnProperty('body') ? searchObj.body : {};
             var url = 'api/';
-            url = url.concat(type, '/', '_search');
+            url = url.concat(type, '/_search');
             return $http.post(url, body);
         },
         exportData: function(searchObj) {
@@ -25,8 +25,9 @@ services.service('apiClient', ['$http', function($http) {
             var type = searchObj.hasOwnProperty('type') ? searchObj.type : '';
             var body = searchObj.hasOwnProperty('body') ? searchObj.body : {};
             var format = searchObj.hasOwnProperty('format') ? searchObj.format : 'tsv';
+            var filename = searchObj.hasOwnProperty('filename') ? searchObj.filename : type;
             var url = 'api/';
-            url = url.concat(type, '/', '_search' , '.', format);
+            url = url.concat(type, '/_search/', filename, '.', format);
             form.action= url;
             form.method='POST';
             form.target="_self";
