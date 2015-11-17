@@ -45,6 +45,7 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
       {visible: false, selectable: true,  sortable: false,  esName: 'files.md5', label: 'File md5'},
 
       {visible: false, selectable: false, esName: 'archive.url'},
+      {visible: false, selectable: false, esName: 'archive.openAccess'},
       {visible: false, selectable: false, esName: 'samples.cellType'},
       {visible: false,  selectable: false, esName: 'samples.name'},
     ];
@@ -76,6 +77,9 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
             else if (fields[i].esName == 'samples.growingConditions' && hitFields.hasOwnProperty(fields[i].esName)) {
                 var j = hitFields['samples.name'].indexOf($scope.ipscName);
                 processedFields[i] = j>-1 ? hitFields[fields[i].esName][j] : undefined;
+            }
+            else if (fields[i].esName == 'archive.ftpUrl') {
+                processedFields[i] = hitFields.hasOwnProperty(fields[i].esName) && hitFields.hasOwnProperty('archive.openAccess') && hitFields['archive.openAccess'][0] ? hitFields[fields[i].esName][0] : undefined;
             }
             else if (fields[i].esName == 'files.name' || fields[i].esName == 'files.md5' || fields[i].esName == 'samples.name') {
                 processedFields[i] = hitFields.hasOwnProperty(fields[i].esName) ? hitFields[fields[i].esName] : [];
@@ -295,6 +299,7 @@ controllers.controller('FileListCtrl', function() {
       {visible: false, selectable: true,  sortable: false,  esName: 'files.md5', label: 'File md5'},
 
       {visible: false, selectable: false, esName: 'archive.url'},
+      {visible: false, selectable: false, esName: 'archive.openAccess'},
       {visible: false, selectable: false, esName: 'samples.cellType'},
     ];
 
@@ -340,6 +345,9 @@ controllers.controller('FileListCtrl', function() {
                     name: hitFields.hasOwnProperty('archive.name') ? hitFields['archive.name'][0] : undefined,
                     url: hitFields.hasOwnProperty('archive.url') ? hitFields['archive.url'][0] : undefined,
                 }
+            }
+            else if (fields[i].esName == 'archive.ftpUrl') {
+                processedFields[i] = hitFields.hasOwnProperty(fields[i].esName) && hitFields.hasOwnProperty('archive.openAccess') && hitFields['archive.openAccess'][0] ? hitFields[fields[i].esName][0] : undefined;
             }
             else if (fields[i].esName == 'files.name' || fields[i].esName == 'files.md5' || fields[i].esName == 'samples.name') {
                 processedFields[i] = hitFields.hasOwnProperty(fields[i].esName) ? hitFields[fields[i].esName] : [];
