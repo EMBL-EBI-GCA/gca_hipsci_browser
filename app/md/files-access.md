@@ -1,4 +1,6 @@
 
+This table has a file download option only for open access data. Managed access data are available by following the links to the dataset in the EGA archive.
+
 ###Managed access data
 
 The consent agreement of some HipSci donors authorises release of [individually unique data](/data/access#unique)

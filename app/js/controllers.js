@@ -54,6 +54,7 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
       var field = this.fileFields[i];
       if (field.visible || field.selectable) {
         field.th = field.esName == 'assay.type' ? '<th>'+field.label+'<md-modal modal-md="assays" title="Assays"></md-modal></th>'
+            : field.esName == 'archive.ftpUrl' ? '<th>'+field.label+'<md-modal modal-md="files-access" title="Data access"></md-modal></th>'
             : '<th>'+field.label+'</th>';
           var hitStr = 'hit['+i+']';
           field.td = 
@@ -326,6 +327,7 @@ controllers.controller('FileListCtrl', function() {
         var field = this.htmlFields[i];
         if (field.visible || field.selectable) {
             field.th = field.esName == 'assay.type' ? '<th>'+field.label+'<md-modal modal-md="assays" title="Assays"></md-modal></th>'
+                : field.esName == 'archive.ftpUrl' ? '<th>'+field.label+'<md-modal modal-md="files-access" title="Data access"></md-modal></th>'
                 : '<th>'+field.label+'</th>';
             var hitStr = 'hit['+i+']';
             field.td = 
