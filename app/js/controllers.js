@@ -22,6 +22,7 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
         $scope.apiStatusText = resp.statusText;
     });
 
+
     this.assayToHref = function(assayObj) {
         if (assayObj.hasOwnProperty('archive') && assayObj.archive == 'EGA') {
             return 'https://www.ebi.ac.uk/ega/studies/'+assayObj.study;
@@ -91,6 +92,76 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
         }
         return processedFields;
     };
+
+  }
+]);
+
+controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 'apiClient',
+  function($scope, $routeParams, $location, apiClient) {
+    $scope.ipscName = $routeParams.ipscName;
+    $scope.apiError = false;
+    $scope.apiSuccess = false;
+    var assayMap = {
+                'gtarray': 'Genotyping array',
+                'gexarray': 'Expression array',
+                'exomeseq': 'Exome-seq',
+                'rnaseq': 'RNA-seq',
+                'mtarray': 'Methylation array',
+                'proteomics': 'Proteomics',
+                'cellbiol-fn': 'Cellular phenotyping',
+        };
+    $scope.assay = assayMap[$routeParams.assay];
+    if (!$scope.assay) {
+        $location.path('lines/'+$scope.ipscName);
+    }
+
+    $scope.files = apiClient.search({
+        type: 'file',
+        body: {
+          size: 50,
+          query: {
+              filtered: {
+                  filter: {
+                      and: [
+                          {term: {'samples.name': $scope.ipscName}},
+                          {term: {'assay.type': $scope.assay}}
+                      ]
+                  }
+              }
+          }
+        }
+    }).then(function(resp) {
+        $scope.apiSuccess = true;
+        $scope.files = resp.data['hits']['hits'];
+        if ($scope.files.length == 0) {
+            $location.path('lines/'+$scope.ipscName);
+        }
+        for (var i=0; i<$scope.files.length; i++) {
+            for (var j=0; j<$scope.files[i]._source.samples.length; j++) {
+                if ($scope.files[i]._source.samples[j].name == $scope.ipscName) {
+                    $scope.files[i].growingConditions = $scope.files[i]._source.samples[j]['growingConditions'];
+                    break;
+                }
+            }
+        }
+    }, function(resp) {
+        $scope.apiError = true;
+        $scope.apiStatus = resp.status;
+        $scope.apiStatusText = resp.statusText;
+    });
+
+    $scope.lineData = apiClient.getSource({
+        type: 'cellLine',
+        id: $routeParams.ipscName
+    }).then(function(resp) {
+        $scope.apiSuccess = true;
+        $scope.lineData = resp.data['_source'];
+        $scope.lineData.bankingStatus = $scope.lineData.bankingStatus ? jQuery.grep($scope.lineData.bankingStatus, function(str) {return ! /shipped/i.test(str)}) : undefined;
+    }, function(resp) {
+        $scope.apiError = true;
+        $scope.apiStatus = resp.status;
+        $scope.apiStatusText = resp.statusText;
+    });
 
   }
 ]);
@@ -228,7 +299,7 @@ controllers.controller('LineListCtrl', function() {
               : field.esName == 'bankingStatus' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field.esName == 'openAccess' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field.esName == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
-              : field.esName == 'calculated.assays' ? '<td ng-repeat="assay in compileParams.assays" class="matrix-dot"><a ng-if="'+hitStr+'[$index]" ng-href="#/lines/{{hit[0]}}"><div class="matrix-dot-item assay" popover="{{assay.long}}" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
+              : field.esName == 'calculated.assays' ? '<td ng-repeat="assay in compileParams.assays" class="matrix-dot"><a ng-if="'+hitStr+'[$index]" ng-href="#/lines/{{hit[0]}}/{{assay.short}}"><div class="matrix-dot-item assay" popover="{{assay.long}}" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
         }
     }

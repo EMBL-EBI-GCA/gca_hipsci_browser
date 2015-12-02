@@ -1,0 +1,118 @@
+<div class="panel panel-default">
+<div class="panel-body">
+
+    <h1><span ng-bind="assay"></span> data files for <span ng-bind="ipscName"></span></h1>
+    <hr/>
+
+        <div ng-if="apiError">
+            <span>API response: {{apiStatus}} {{apiStatusText}}</span>
+        </div>
+
+    <div ng-if="apiSuccess">
+    <section>
+        <dl class="dl-horizontal">
+            <dt>HipSci cell line:</dt>
+            <dd><a ng-bind="ipscName" ng-href="#/lines/{{ipscName}}"></a></dd>
+            <div ng-if="lineData.cellType.value">
+                <dt>Cell line type:</dt>
+                <dd ng-bind="lineData.cellType.value"></dd>
+            </div>
+
+            <div ng-if="lineData.bankingStatus.length">
+                <dt>Banking status:</dt>
+                <dd><span ng-bind="lineData.bankingStatus.join(', ')"></span><md-modal modal-md="banking_status" title="Banked status"></md-modal></dd>
+            </div>
+
+            <div ng-if="lineData.donor.name">
+                <dt>Donor:</dt>
+                <dd><a ng-href="#/donors/{{lineData.donor.name}}" ng-bind="lineData.donor.name"></a></dd>
+            </div>
+
+            <div ng-if="lineData.diseaseStatus.value">
+                <dt>Disease status:</dt>
+                <dd><span ng-bind="lineData.diseaseStatus.value"></span><md-modal modal-md="disease" title="Disease status"></md-modal></dd>
+            </div>
+
+            <div ng-if="lineData.sourceMaterial.value">
+                <dt>Source material:</dt>
+                <dd ng-bind="lineData.sourceMaterial.value"></dd>
+            </div>
+
+            <div ng-if="lineData.tissueProvider">
+                <dt>Tissue provider:</dt>
+                <dd ng-bind="lineData.tissueProvider"></dd>
+            </div>
+
+            <div ng-if="lineData.reprogramming.methodOfDerivation">
+                <dt>Method of derivation:</dt>
+                <dd ng-bind="lineData.reprogramming.methodOfDerivation"></dd>
+            </div>
+
+            <div ng-if="lineData.reprogramming.dateOfDerivation">
+                <dt>Date of derivation:</dt>
+                <dd ng-bind="lineData.reprogramming.dateOfDerivation"></dd>
+            </div>
+
+            <div ng-if="lineData.donor.age">
+                <dt>Donor age:</dt>
+                <dd ng-bind="lineData.donor.age"></dd>
+            </div>
+
+            <div ng-if="lineData.donor.ethnicity">
+                <dt>Donor ethnicity:</dt>
+                <dd ng-bind="lineData.donor.ethnicity"></dd>
+            </div>
+
+            <div ng-if="lineData.donor.sex.value">
+                <dt>Donor sex:</dt>
+                <dd ng-bind="lineData.donor.sex.value"></dd>
+            </div>
+
+            <div ng-if="lineData.bioSamplesAccession">
+                <dt>Biosample:</dt>
+                <dd><a data-toggle="tooltip" title="test" ng-href="http://www.ebi.ac.uk/biosamples/sample/{{lineData.bioSamplesAccession}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="lineData.bioSamplesAccession"></span></a></dd>
+            </div>
+
+            <div ng-if="lineData.certificateOfAnalysis.url">
+                <dt>Certificate of analysis:</dt>
+                <dd><a ng-href="{{lineData.certificateOfAnalysis.url}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> PDF</a></dd>
+            </div>
+        </dl>
+    </section>
+    </div>
+
+    <section ng-repeat="fileGroup in files">
+    <h3 class="item-detail-section" ng-bind="fileGroup._source.description"></h3>
+    <hr/>
+    <dl class="dl-horizontal">
+    <div ng-if="fileGroup._source.assay.hasOwnProperty('type')">
+        <dt>Assay:</dt>
+        <dd><span ng-bind="fileGroup._source.assay.type"></span><md-modal modal-md="assays" title="Assays"></md-modal></dd>
+    </div>
+    <div ng-if="fileGroup._source.hasOwnProperty('description')">
+        <dt>Description:</dt>
+        <dd ng-bind="fileGroup._source.description"></dd>
+    </div>
+    <div ng-if="fileGroup._source.archive.hasOwnProperty('name')">
+        <dt>Archive:</dt>
+        <dd><a ng-href="{{fileGroup._source.archive.url}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="fileGroup._source.archive.name"></span></a><md-modal ng-if="!fileGroup._source.archive.openAccess" modal-md="files-access" title="Data access"></md-modal></dd>
+    </div>
+    <div ng-if="fileGroup._source.archive.hasOwnProperty('accession')">
+        <dt><span ng-bind="fileGroup._source.archive.name"></span> <span ng-bind="fileGroup._source.archive.accessionType"></span>:</dt>
+        <dd><a ng-href="{{fileGroup._source.archive.url}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="fileGroup._source.archive.accession"></span></a></dd>
+    </div>
+    <div ng-repeat="file in fileGroup._source.files">
+        <dt><span ng-bind="file.type"></span> file:</dt>
+        <dd ng-if="fileGroup._source.archive.openAccess"><a ng-href="{{fileGroup._source.archive.ftpUrl}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> <span ng-bind="file.name"></span></a></dd>
+        <dd ng-if="!fileGroup._source.archive.openAccess" ng-bind="file.name"></dd>
+    </div>
+    <div ng-if="fileGroup.growingConditions">
+        <dt>Growing conditions:</dt>
+        <dd ng-bind="fileGroup.growingConditions"></dd>
+    </div>
+    </dl>
+
+    </section>
+
+</div>
+</div>
