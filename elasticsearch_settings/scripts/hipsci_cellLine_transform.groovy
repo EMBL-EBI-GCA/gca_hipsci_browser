@@ -6,35 +6,30 @@ ctx._source.searchable.free = []
 
 ctx._source.calculated.assayCount = ctx._source.assays ? ctx._source.assays.size() : 0
 
-ctx._source.calculated.assays = []
 if (ctx._source.assays) {
-  if (ctx._source.assays.gtarray) {
-      ctx._source.calculated.assays << 'Genotyping array'
-      ctx._source.searchable.free << 'genotyping'
-  }
-  if (ctx._source.assays.gexarray) {
-      ctx._source.calculated.assays << 'Expression array'
-      ctx._source.searchable.free << 'expression'
-  }
-  if (ctx._source.assays.exomeseq) {
-      ctx._source.calculated.assays << 'Exome-seq'
-      ctx._source.searchable.free << 'exome'
-  }
-  if (ctx._source.assays.rnaseq) {
-      ctx._source.calculated.assays << 'RNA-seq'
-      ctx._source.searchable.fixed << 'RNA-seq'
-      ctx._source.searchable.free << 'rnaseq'
-  }
-  if (ctx._source.assays.mtarray) {
-      ctx._source.calculated.assays << 'Methylation array'
-      ctx._source.searchable.free << 'methylation'
-  }
-  if (ctx._source.assays.proteomics) {
-      ctx._source.calculated.assays << 'Proteomics'
-      ctx._source.searchable.free << 'proteomics'
-  }
-  if (ctx._source.assays['cellbiol-fn']) {
-      ctx._source.calculated.assays << 'Cellular phenotyping'
+  for (assay in ctx._source.assays) {
+      if (assay.name && (assay.name == 'Genotyping array')) {
+          ctx._source.searchable.free << 'genotyping'
+      }
+      if (assay.name && (assay.name == 'Expression array')) {
+          ctx._source.searchable.free << 'expression'
+      }
+      if (assay.name && (assay.name == 'Exome-seq')) {
+          ctx._source.searchable.free << 'exome'
+      }
+      if (assay.name && (assay.name == 'RNA-seq')) {
+          ctx._source.searchable.free << 'rnaseq'
+          ctx._source.searchable.fixed << 'RNA-seq'
+      }
+      if (assay.name && (assay.name == 'Methylation array')) {
+          ctx._source.searchable.free << 'methylation'
+      }
+      if (assay.name && (assay.name == 'Proteomics')) {
+          ctx._source.searchable.free << 'proteomics'
+      }
+      if (assay.name && (assay.name == 'Whole genome sequencing')) {
+          ctx._source.searchable.free << 'wgs'
+      }
   }
 }
 

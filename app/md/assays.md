@@ -51,3 +51,7 @@ The cell phenotyping project at KCL aims to discover how genetic variation
 contributes to variation in cell behaviour. We thus measure how cells respond
 to specific extrinsic stimuli that represent key components of the stem cell
 microenvironment (niche) in vivo.
+
+### Whole genome sequencing
+
+A small selection of cell lines have been selected for deep whole genome sequencing by Illumina XTen.

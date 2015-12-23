@@ -106,6 +106,7 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
                 'gexarray': 'Expression array',
                 'exomeseq': 'Exome-seq',
                 'rnaseq': 'RNA-seq',
+                'wgs seq': 'Whole genome sequencing',
                 'mtarray': 'Methylation array',
                 'proteomics': 'Proteomics',
                 'cellbiol-fn': 'Cellular phenotyping',
@@ -261,6 +262,7 @@ controllers.controller('LineListCtrl', function() {
                 {short: 'gexarray', long: 'Expression array'},
                 {short: 'exomeseq', long: 'Exome-seq'},
                 {short: 'rnaseq', long: 'RNA-seq'},
+                {short: 'wgs seq', long: 'Whole genome sequencing'},
                 {short: 'mtarray', long: 'Methylation array'},
                 {short: 'proteomics', long: 'Proteomics'},
                 {short: 'cellbiol-fn', long: 'Cellular phenotyping'},
@@ -280,7 +282,7 @@ controllers.controller('LineListCtrl', function() {
         {visible: true,  sortable: false, selectable: false, esName: 'openAccess', label: 'Open access data'},
         {visible: true,  sortable: false, selectable: false, esName: 'bankingStatus', label: 'Bank status'},
 
-        {visible: true,  sortable: false, selectable: false, esName: 'calculated.assays', label: 'Assays data available'},
+        {visible: true,  sortable: false, selectable: false, esName: 'assays.name', label: 'Assays data available'},
     ];
 
     for (var i=0; i<this.fields.length; i++) {
@@ -290,7 +292,7 @@ controllers.controller('LineListCtrl', function() {
                 field.esName == 'bioSamplesAccession' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
               : field.esName == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+field.label+'</span><md-modal modal-md="banking_status" title="Banked status"></md-modal></div></th>'
               : field.esName == 'openAccess' ? '<th class="matrix-dot"><div><span>Data access</span><md-modal modal-md="access" title="Data access"></md-modal></div></th>'
-              : field.esName == 'calculated.assays' ? '<th ng-repeat="assay in compileParams.assays" class="matrix-dot assay"><div><span ng-bind="assay.short"></span></div></th>'
+              : field.esName == 'assays.name' ? '<th ng-repeat="assay in compileParams.assays" class="matrix-dot assay"><div><span ng-bind="assay.short"></span></div></th>'
               : field.esName == 'diseaseStatus.value' ? '<th>'+field.label+'<md-modal modal-md="disease" title="Disease status"></md-modal></th>'
               : '<th>'+field.label+'</th>'
             var hitStr = 'hit['+i+']';
@@ -299,7 +301,7 @@ controllers.controller('LineListCtrl', function() {
               : field.esName == 'bankingStatus' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field.esName == 'openAccess' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field.esName == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
-              : field.esName == 'calculated.assays' ? '<td ng-repeat="assay in compileParams.assays" class="matrix-dot"><a ng-if="'+hitStr+'[$index]" ng-href="#/lines/{{hit[0]}}/{{assay.short}}"><div class="matrix-dot-item assay" popover="{{assay.long}}" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
+              : field.esName == 'assays.name' ? '<td ng-repeat="assay in compileParams.assays" class="matrix-dot"><a ng-if="'+hitStr+'[$index]" ng-href="#/lines/{{hit[0]}}/{{assay.short}}"><div class="matrix-dot-item assay" popover="{{assay.long}}" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
         }
     }
@@ -326,7 +328,7 @@ controllers.controller('LineListCtrl', function() {
                     processedFields[i].letter = hitFields[field.esName][0] ? 'O' : 'M';
                 }
             }
-            else if (field.esName == 'calculated.assays') {
+            else if (field.esName == 'assays.name') {
                 processedFields[i] = [];
                 for (var j=0; j<controller.assays.length; j++) {
                     processedFields[i].push(jQuery.inArray(controller.assays[j].long, hitFields[field.esName]) > -1 ? true: false);

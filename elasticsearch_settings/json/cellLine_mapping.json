@@ -36,11 +36,6 @@
                     "assayCount": {
                         "type": "integer"
                     },
-                    "assays": {
-                        "type": "string",
-                        "index": "not_analyzed",
-                        "store": "yes"
-                    },
                     "bankingStatus": {
                         "type": "string",
                         "index": "not_analyzed"
@@ -61,150 +56,13 @@
             },
             "assays": {
                 "properties": {
-                    "cellbiol-fn": {
-                        "properties": {
-                            "archive": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            },
-                            "path": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            },
-                            "ontologyPURL": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            },
-                            "name": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            }
-                        }
+                    "name": {
+                        "type": "string",
+                        "index": "not_analyzed"
                     },
-                    "exomeseq": {
-                        "properties": {
-                            "archive": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            },
-                            "study": {
-                                "type": "string",
-                                "index": "not_analyzed",
-                                "copy_to": "searchable.fixed"
-                            },
-                            "ontologyPURL": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            },
-                            "name": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            }
-                        }
-                    },
-                    "gexarray": {
-                        "properties": {
-                            "archive": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            },
-                            "study": {
-                                "type": "string",
-                                "index": "not_analyzed",
-                                "copy_to": "searchable.fixed"
-                            },
-                            "ontologyPURL": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            },
-                            "name": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            }
-                        }
-                    },
-                    "gtarray": {
-                        "properties": {
-                            "archive": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            },
-                            "study": {
-                                "type": "string",
-                                "index": "not_analyzed",
-                                "copy_to": "searchable.fixed"
-                            },
-                            "ontologyPURL": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            },
-                            "name": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            }
-                        }
-                    },
-                    "mtarray": {
-                        "properties": {
-                            "archive": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            },
-                            "study": {
-                                "type": "string",
-                                "index": "not_analyzed",
-                                "copy_to": "searchable.fixed"
-                            },
-                            "ontologyPURL": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            },
-                            "name": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            }
-                        }
-                    },
-                    "proteomics": {
-                        "properties": {
-                            "archive": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            },
-                            "path": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            },
-                            "ontologyPURL": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            },
-                            "name": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            }
-                        }
-                    },
-                    "rnaseq": {
-                        "properties": {
-                            "archive": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            },
-                            "study": {
-                                "type": "string",
-                                "index": "not_analyzed",
-                                "copy_to": "searchable.fixed"
-                            },
-                            "ontologyPURL": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            },
-                            "name": {
-                                "type": "string",
-                                "index": "not_analyzed"
-                            }
-                        }
+                    "ontologyPURL": {
+                        "type": "string",
+                        "index": "not_analyzed"
                     }
                 }
             },
