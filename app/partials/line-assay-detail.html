@@ -93,6 +93,10 @@
         <dt>Description:</dt>
         <dd ng-bind="fileGroup._source.description"></dd>
     </div>
+    <div ng-if="fileGroup._source.assay.hasOwnProperty('instrument')">
+        <dt>Instrument:</dt>
+        <dd ng-bind="fileGroup._source.assay.instrument"></dd>
+    </div>
     <div ng-if="fileGroup._source.archive.hasOwnProperty('name')">
         <dt>Archive:</dt>
         <dd><a ng-href="{{fileGroup._source.archive.url}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="fileGroup._source.archive.name"></span></a><md-modal ng-if="!fileGroup._source.archive.openAccess" modal-md="files-access" title="Data access"></md-modal></dd>
