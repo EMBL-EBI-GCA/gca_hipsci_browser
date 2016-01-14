@@ -52,6 +52,8 @@ listComponents.directive('invisibleFilter', function() {
     scope: {
         field: '@',
         term: '@',
+        custom: '=',
+        watchCustom: '@'
     },
     require: ['invisibleFilter', '^listPanel'],
     controller: ['$scope', '$location', function($scope, $location) {
@@ -67,7 +69,18 @@ listComponents.directive('invisibleFilter', function() {
         var invisibleFilterCtrl = ctrls[0];
         var listPanelCtrl = ctrls[1];
         listPanelCtrl.aggsFilterCtrls[scope.field] = invisibleFilterCtrl;
-        invisibleFilterCtrl.createFilterRequest(scope.$parent.$eval(scope.term));
+        if (scope.custom) {
+            invisibleFilterCtrl.esFilterRequest = scope.custom;
+            if (scope.$parent.$eval(scope.watchCustom)) {
+                scope.$watch('custom', function(newCustom) {
+                    invisibleFilterCtrl.esFilterRequest = newCustom;
+                    listPanelCtrl.search();
+                });
+            }
+        }
+        else {
+            invisibleFilterCtrl.createFilterRequest(scope.$parent.$eval(scope.term));
+        }
         iAttrs.$set('list-panel-registered', true);
     }
   };
