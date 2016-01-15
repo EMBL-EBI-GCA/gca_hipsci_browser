@@ -52,15 +52,20 @@ listComponents.directive('invisibleFilter', function() {
     scope: {
         field: '@',
         term: '@',
-        custom: '=',
-        watchCustom: '@'
+        active: '=?',
     },
     require: ['invisibleFilter', '^listPanel'],
     controller: ['$scope', '$location', function($scope, $location) {
         var c = this;
-        c.createFilterRequest = function(term) {
-            c.esFilterRequest = {term: {}};
-            c.esFilterRequest.term[$scope.field] = term;
+        c.createFilterRequest = function(active) {
+            if (active) {
+                c.esFilterRequest = {term: {}};
+                c.esFilterRequest.term[$scope.field] = c.term;
+            }
+            else {
+                c.esFilterRequest = null;
+            }
+            c.active = active;
         };
         c.esFilterIsGlobal = true;
 
@@ -68,18 +73,19 @@ listComponents.directive('invisibleFilter', function() {
     link: function(scope, iElement, iAttrs, ctrls) {
         var invisibleFilterCtrl = ctrls[0];
         var listPanelCtrl = ctrls[1];
-        listPanelCtrl.aggsFilterCtrls[scope.field] = invisibleFilterCtrl;
-        if (scope.custom) {
-            invisibleFilterCtrl.esFilterRequest = scope.custom;
-            if (scope.$parent.$eval(scope.watchCustom)) {
-                scope.$watch('custom', function(newCustom) {
-                    invisibleFilterCtrl.esFilterRequest = newCustom;
+        invisibleFilterCtrl.term = scope.$parent.$eval(scope.term);
+        listPanelCtrl.aggsFilterCtrls['invisible-'+scope.field] = invisibleFilterCtrl;
+        if (angular.isDefined(scope.active)) {
+            invisibleFilterCtrl.createFilterRequest(scope.active);
+            scope.$watch('active', function(newActive) {
+                if (invisibleFilterCtrl.active != newActive) {
+                    invisibleFilterCtrl.createFilterRequest(newActive);
                     listPanelCtrl.search();
-                });
-            }
+                }
+            });
         }
         else {
-            invisibleFilterCtrl.createFilterRequest(scope.$parent.$eval(scope.term));
+            invisibleFilterCtrl.createFilterRequest(true);
         }
         iAttrs.$set('list-panel-registered', true);
     }

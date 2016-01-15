@@ -356,13 +356,6 @@ controllers.controller('LineListCtrl', function() {
 
 
     this.tickedPublishFilter = true;
-    this.togglePublishFilter = function() {
-        controller.publishFilter = controller.tickedPublishFilter ? {or: [
-                    {term: {'calculated.bankingStatus': 'Selected for banking'}},
-                    {exists: {field: 'assays'}}
-                    ]} : null;
-    };
-    this.togglePublishFilter();
 
 });
 
