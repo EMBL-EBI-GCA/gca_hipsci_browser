@@ -33,7 +33,7 @@ hipsciBrowser.config(['$routeProvider',
       controller: 'DonorDetailCtrl'
     }).
     when('/lines', {
-      templateUrl: 'partials/line-list.html?ver=20160114',
+      templateUrl: 'partials/line-list.html?ver=20160115',
       controller: 'LineListCtrl',
       controllerAs: 'LineCtrl',
       reloadOnSearch: false,
