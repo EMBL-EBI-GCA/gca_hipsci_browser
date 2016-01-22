@@ -15,7 +15,31 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
     }).then(function(resp) {
         $scope.apiSuccess = true;
         $scope.data = resp.data['_source'];
-        $scope.data.bankingStatus = $scope.data.bankingStatus ? jQuery.grep($scope.data.bankingStatus, function(str) {return ! /shipped/i.test(str)}) : undefined;
+        if ($scope.data.bankingStatus) {
+            var banked = false;
+            var bankingStatus = [];
+            for (var i=0; i<$scope.data.bankingStatus.length; i++) {
+                if (/shipped/i.test($scope.data.bankingStatus[i])) {
+                    continue;
+                }
+                if ($scope.data.ecaccCatalogNumber && /banked.*ecacc/i.test($scope.data.bankingStatus[i])) {
+                    bankingStatus.push({
+                        text: $scope.data.bankingStatus[i],
+                        url: 'http://www.phe-culturecollections.org.uk/products/celllines/ipsc/detail.jsp?refId='+$scope.data.ecaccCatalogNumber+'&collection=ecacc_ipsc',
+                    });
+                    banked = true;
+                }
+                else {
+                    bankingStatus.push({
+                        text: $scope.data.bankingStatus[i]
+                    });
+                }
+            }
+            if (banked) {
+                bankingStatus = jQuery.grep(bankingStatus, function(obj) {return ! /selected/i.test(obj.text)});
+            }
+            $scope.data.bankingStatus = bankingStatus;
+        }
     }, function(resp) {
         $scope.apiError = true;
         $scope.apiStatus = resp.status;
