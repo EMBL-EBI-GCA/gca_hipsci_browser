@@ -125,6 +125,19 @@
                         "index": "analyzed",
                         "copy_to": "searchable.free"
                     },
+                    "sex": {
+                        "properties": {
+                            "value": {
+                                "type": "string",
+                                "index": "not_analyzed",
+                                "copy_to": "searchable.free"
+                            },
+                            "ontologyPURL": {
+                                "type": "string",
+                                "index": "not_analyzed"
+                            }
+                        }
+                    },
                     "bioSamplesAccession": {
                         "type": "string",
                         "index": "not_analyzed",
@@ -200,19 +213,6 @@
                         "type": "float"
                     },
                     "pluripotency_image": {
-                        "type": "string",
-                        "index": "not_analyzed"
-                    }
-                }
-            },
-            "sex": {
-                "properties": {
-                    "value": {
-                        "type": "string",
-                        "index": "not_analyzed",
-                        "copy_to": "searchable.free"
-                    },
-                    "ontologyPURL": {
                         "type": "string",
                         "index": "not_analyzed"
                     }
