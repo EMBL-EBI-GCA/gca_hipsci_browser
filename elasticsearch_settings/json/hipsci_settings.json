@@ -5,7 +5,8 @@
                 "fixed_text": {
                     "type": "custom",
                     "tokenizer": "whitespace",
-                    "filter": ["lowercase"]
+                    "filter": ["lowercase"],
+                    "char_filter": ["alphabetic"]
                 },
                 "prefixes": {
                     "type": "custom",
@@ -19,6 +20,13 @@
                 "min_gram": 4,
                 "max_gram": 20
               }
+            },
+            "char_filter": {
+                "alphabetic": {
+                    "type": "pattern_replace",
+                    "pattern": "[^A-Za-z0-9]+",
+                    "replacement": ""
+                }
             }
         }
     }
