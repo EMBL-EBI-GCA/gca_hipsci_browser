@@ -9,14 +9,14 @@ services.service('apiClient', ['$http', function($http) {
         getSource: function (searchObj) {
             var type = searchObj.hasOwnProperty('type') ? searchObj.type : '';
             var id = searchObj.id;
-            var url = 'api/';
+            var url = 'http://test.hipsci.org/lines/api/';
             url = url.concat(type, '/', id);
             return $http.get(url, {cache: true});
         },
         search: function (searchObj) {
             var type = searchObj.hasOwnProperty('type') ? searchObj.type : '';
             var body = searchObj.hasOwnProperty('body') ? searchObj.body : {};
-            var url = 'api/';
+            var url = 'http://test.hipsci.org/lines/api/';
             url = url.concat(type, '/_search');
             return $http.post(url, body);
         },
@@ -26,7 +26,7 @@ services.service('apiClient', ['$http', function($http) {
             var body = searchObj.hasOwnProperty('body') ? searchObj.body : {};
             var format = searchObj.hasOwnProperty('format') ? searchObj.format : 'tsv';
             var filename = searchObj.hasOwnProperty('filename') ? searchObj.filename : type;
-            var url = 'api/';
+            var url = 'http://test.hipsci.org/lines/api/';
             url = url.concat(type, '/_search/', filename, '.', format);
             form.action= url;
             form.method='POST';
@@ -73,13 +73,13 @@ services.directive('mdModal', ['$modal', '$http', function($modal, $http) {
     link: function(scope, iElement, iAttrs, ctrls) {
         scope.showModal = function() {
             if (!scope.modalContent) {
-                $http.get('md/'+scope.modalMd+'.md?ver=20151223', {responseType: 'text', cache: true
+                $http.get('md/'+scope.modalMd+'.md?ver=20160204', {responseType: 'text', cache: true
                 }).success(function(data) {
                     scope.modalContent = data;
                 });
             }
             scope.modalInstance = $modal.open({
-                templateUrl: 'partials/modal.html?ver=20151030',
+                templateUrl: 'partials/modal.html?ver=20160204',
                 scope: scope,
             });
             scope.unbindRouteUpdate = scope.$on('$routeChangeStart', function(event, object) {
