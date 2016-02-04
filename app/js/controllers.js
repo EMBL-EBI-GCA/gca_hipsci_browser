@@ -29,6 +29,13 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
                     });
                     banked = true;
                 }
+                else if ($scope.data.ebiscName && /banked.*ebisc/i.test($scope.data.bankingStatus[i])) {
+                    bankingStatus.push({
+                        text: $scope.data.bankingStatus[i],
+                        url: 'https://cells.ebisc.org/'+$scope.data.ebiscName+'/',
+                    });
+                    banked = true;
+                }
                 else {
                     bankingStatus.push({
                         text: $scope.data.bankingStatus[i]
@@ -380,6 +387,18 @@ controllers.controller('LineListCtrl', function() {
 
 
     this.tickedPublishFilter = true;
+
+    var bankingSortOrder = {};
+    bankingSortOrder['Banked at ECACC'] = 1;
+    bankingSortOrder['Banked at EBiSC'] = 2;
+    bankingSortOrder['Selected for banking'] = 3;
+    bankingSortOrder['Pending selection'] = 4;
+    this.bankingSortFn = function(a, b) {
+        return (bankingSortOrder[a.term] && bankingSortOrder[b.term]) ? bankingSortOrder[a.term] - bankingSortOrder[b.term] || b.unfilteredCount - a.unfilteredCount
+                : bankingSortOrder[a.term] ? -1
+                : bankingSortOrder[b.term] ? 1
+                : b.unfilteredCount - a.unfilteredCount;
+    }
 
 });
 

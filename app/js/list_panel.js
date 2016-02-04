@@ -157,6 +157,21 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
                 searchBody.aggs[field] = c.aggsFilterCtrls[field].esAggRequest;
             }
         };
+
+        var globalFilterReqArr = []
+        for (var field in c.aggsFilterCtrls) {
+            if (c.aggsFilterCtrls[field].esFilterRequest && c.aggsFilterCtrls[field].esFilterIsInvisible) {
+              globalFilterReqArr.push(c.aggsFilterCtrls[field].esFilterRequest);
+            }
+        }
+        if (globalFilterReqArr.length >1) {
+            searchBody['query'] = {filtered: {filter: {and: globalFilterReqArr}}};
+        }
+        else if (globalFilterReqArr.length ==1) {
+            searchBody['query'] = {filtered: {filter: globalFilterReqArr[0]}};
+        }
+
+
         searchBody.size = 0;
         apiClient.search( {
           type: c.documentType,
@@ -187,7 +202,7 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
         }
 
         var postFilterReqArr = [];
-        var globalFilterReqArr = []
+        var globalFilterReqArr = [];
         //var filterReqArr = [];
         var filterReqObj = {};
         var postFilteredFields = [];

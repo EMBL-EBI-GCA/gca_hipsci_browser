@@ -68,6 +68,7 @@ listComponents.directive('invisibleFilter', function() {
             c.active = active;
         };
         c.esFilterIsGlobal = true;
+        c.esFilterIsInvisible = true;
 
     }],
     link: function(scope, iElement, iAttrs, ctrls) {
@@ -80,7 +81,20 @@ listComponents.directive('invisibleFilter', function() {
             scope.$watch('active', function(newActive) {
                 if (invisibleFilterCtrl.active != newActive) {
                     invisibleFilterCtrl.createFilterRequest(newActive);
-                    listPanelCtrl.search();
+
+                    var refreshRequired = false;
+                    for (var field in listPanelCtrl.cache.aggsFilters) {
+                      if (listPanelCtrl.cache.aggsFilters.hasOwnProperty(field)) {
+                          delete listPanelCtrl.cache.aggsFilters[field].aggs;
+                          refreshRequired = true;
+                      }
+                    }
+                    if (refreshRequired) {
+                        listPanelCtrl.aggsOnlySearch(listPanelCtrl.search);
+                    }
+                    else {
+                        listPanelCtrl.search();
+                    }
                 }
             });
         }

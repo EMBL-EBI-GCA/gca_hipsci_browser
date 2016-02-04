@@ -18,17 +18,14 @@
                 <dd ng-bind="data.cellType.value"></dd>
             </div>
 
-            <div ng-if="data.bankingStatus.length">
-                <dt>Banking status:</dt>
+            <div ng-if="data.bankingStatus.length"><div ng-repeat="status in data.bankingStatus">
+                <dt><span ng-if="$first">Banking status:</span></dt>
                 <dd>
-                    <span ng-repeat="status in data.bankingStatus">
-                        <a ng-if="status.url" ng-href="{{status.url}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="status.text"></span></a>
-                        <span ng-if="!status.url" ng-bind="status.text"></span>
-                        <span ng-if="!$last" ng-bind="', '"></span>
-                    </span>
-                    <md-modal modal-md="banking_status" title="Banked status"></md-modal>
+                    <a ng-if="status.url" ng-href="{{status.url}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="status.text"></span></a>
+                    <span ng-if="!status.url" ng-bind="status.text"></span>
+                    <md-modal ng-if="$last" modal-md="banking_status" title="Banked status"></md-modal>
                 </dd>
-            </div>
+            </div></div>
 
             <div ng-if="data.donor.name">
                 <dt>Donor:</dt>
