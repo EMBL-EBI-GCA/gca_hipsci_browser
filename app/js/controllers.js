@@ -207,7 +207,7 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
             archiveUrl: archive.url
         };
         var modalInstance = $modal.open({
-          templateUrl: 'partials/ega_modal.html',
+          templateUrl: 'partials/ega_modal.html?ver=20160506',
           scope: $scope
         });
         c.unbindEgaModal = $scope.$on('$routeChangeStart', function(event, object) {

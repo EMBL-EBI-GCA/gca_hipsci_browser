@@ -24,7 +24,7 @@ hipsciBrowser.config(['$routeProvider',
       controllerAs: 'LineCtrl',
     }).
     when('/lines/:ipscName/:assay', {
-      templateUrl: 'partials/line-assay-detail.html?ver=20160202',
+      templateUrl: 'partials/line-assay-detail.html?ver=20160506',
       controller: 'LineAssayCtrl',
       controllerAs: 'LineCtrl',
     }).
