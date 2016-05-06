@@ -99,11 +99,22 @@
     </div>
     <div ng-if="fileGroup._source.archive.hasOwnProperty('name')">
         <dt>Archive:</dt>
-        <dd><a ng-href="{{fileGroup._source.archive.url}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="fileGroup._source.archive.name"></span></a><md-modal ng-if="!fileGroup._source.archive.openAccess" modal-md="files-access" title="Data access"></md-modal></dd>
+        <dd ng-if="!fileGroup._source.archive.openAccess">
+            <a href="" ng-click="showEGAModal(fileGroup._source.archive)"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="fileGroup._source.archive.name"></span></a>
+            <md-modal modal-md="files-access" title="Data access"></md-modal>
+        </dd>
+        <dd ng-if="fileGroup._source.archive.openAccess">
+            <a ng-href="{{fileGroup._source.archive.url}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="fileGroup._source.archive.name"></span></a>
+        </dd>
     </div>
     <div ng-if="fileGroup._source.archive.hasOwnProperty('accession')">
         <dt><span ng-bind="fileGroup._source.archive.name"></span> <span ng-bind="fileGroup._source.archive.accessionType"></span>:</dt>
-        <dd><a ng-href="{{fileGroup._source.archive.url}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="fileGroup._source.archive.accession"></span></a></dd>
+        <dd ng-if="!fileGroup._source.archive.openAccess">
+            <a href="" ng-click="showEGAModal(fileGroup._source.archive)"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="fileGroup._source.archive.accession"></span></a>
+        </dd>
+        <dd ng-if="fileGroup._source.archive.openAccess">
+            <a ng-href="{{fileGroup._source.archive.url}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="fileGroup._source.archive.accession"></span></a>
+        </dd>
     </div>
     <div ng-repeat="file in fileGroup._source.files">
         <dt><span ng-bind="file.type"></span> file:</dt>

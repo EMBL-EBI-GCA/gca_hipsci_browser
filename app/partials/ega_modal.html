@@ -1,0 +1,15 @@
+<div>
+<div class="modal-header">
+<button type="button" class="close" ng-click="$dismiss()"><span aria-hidden="true">&times;</span></button>
+<h2 ng-bind="egaModal.datasetId"></h2>
+</div>
+<div class="modal-body">
+<p>Visit our <a href="/data/access#managed">data access page</a> to apply for access to this data set.
+Register for access via WTSI's <a href="https://www.sanger.ac.uk/legal/DAA/MasterController">Electronic Data Access Mechanism</a></p>
+
+<p><strong>Specifiy that you want access to dataset {{egaModal.datasetId}}.</strong></p>
+
+<p>Go directly to dataset <a ng-href="{{egaModal.archiveUrl}}" target="_blank">{{egaModal.datasetId}}</a> in EGA if you already have access permission.</p>
+
+</div>
+</div>

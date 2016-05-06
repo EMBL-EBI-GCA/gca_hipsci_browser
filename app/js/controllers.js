@@ -128,8 +128,9 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
   }
 ]);
 
-controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 'apiClient',
-  function($scope, $routeParams, $location, apiClient) {
+controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 'apiClient', '$modal',
+  function($scope, $routeParams, $location, apiClient, $modal) {
+    var c = this;
     $scope.ipscName = $routeParams.ipscName;
     $scope.apiError = false;
     $scope.apiSuccess = false;
@@ -195,6 +196,26 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
         $scope.apiStatus = resp.status;
         $scope.apiStatusText = resp.statusText;
     });
+
+    $scope.showEGAModal = function(archive) {
+      console.log('here1');
+      console.log(archive.name);
+      console.log(archive.accessionType);
+      if (archive && archive.name === 'EGA' && archive.accessionType === 'DATASET_ID') {
+        $scope.egaModal = {
+            datasetId: archive.accession,
+            archiveUrl: archive.url
+        };
+        var modalInstance = $modal.open({
+          templateUrl: 'partials/ega_modal.html',
+          scope: $scope
+        });
+        c.unbindEgaModal = $scope.$on('$routeChangeStart', function(event, object) {
+            modalInstance.close();
+            c.unbindEgaModal();
+        });
+      }
+    };
 
   }
 ]);
