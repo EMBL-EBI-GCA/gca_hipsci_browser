@@ -193,6 +193,10 @@ html[data-useragent*='MSIE 8'] table.matrix th.matrix-dot > div > span {
   border: none;
   padding: 0;
 }
+table.matrix th.purchase-button {
+  border: none;
+  width: 0px;
+}
 table.matrix td.valign {
     vertical-align: middle;
 }
@@ -200,6 +204,14 @@ table.matrix td.matrix-dot {
   text-align: center;
   border-left: thin solid #ddd;
   overflow: hidden;
+}
+table.matrix td.purchase-button {
+  border-top: 0px;
+  background-color: rgb(255, 255, 255);
+  width: 110px;
+}
+table.matrix td.purchase-button a.btn {
+  width: 100%;
 }
 
 table.matrix td.name {

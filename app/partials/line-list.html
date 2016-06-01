@@ -52,9 +52,9 @@
                     <list-search-box label="Search cell lines"></list-search-box>
                 </div>
 
-            <div class="matrix-wrapper table-responsive">
+            <div class="table-responsive">
                 <list-table class="matrix table table-striped" process-hit-fields="LineCtrl.processHitFields" compile-params="{assays: LineCtrl.assays}"
-                        default-sort-fields="[['_score', false],['calculated.assayCount',false]]" tr-class="slanted">
+                        default-sort-fields="[['_score', false],['calculated.assayCount',false],['bankingStatus', true]]" tr-class="slanted">
                 </list-table>
             </div>
 

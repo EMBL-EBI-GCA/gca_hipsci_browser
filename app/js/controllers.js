@@ -337,6 +337,7 @@ controllers.controller('LineListCtrl', function() {
         {visible: true,  sortable: false, selectable: false, esName: 'bankingStatus', label: 'Bank status'},
 
         {visible: true,  sortable: false, selectable: false, esName: 'assays.name', label: 'Assays data available'},
+        {visible: true, sortable: false, selectable: false, esName: 'ecaccCatalogNumber'},
     ];
 
     for (var i=0; i<this.fields.length; i++) {
@@ -348,6 +349,7 @@ controllers.controller('LineListCtrl', function() {
               : field.esName == 'openAccess' ? '<th class="matrix-dot"><div><span>Data access</span><md-modal modal-md="access" title="Data access"></md-modal></div></th>'
               : field.esName == 'assays.name' ? '<th ng-repeat="assay in compileParams.assays" class="matrix-dot assay"><div><span ng-bind="assay.short"></span></div></th>'
               : field.esName == 'diseaseStatus.value' ? '<th>'+field.label+'<md-modal modal-md="disease" title="Disease status"></md-modal></th>'
+              : field.esName == 'ecaccCatalogNumber' ? '<th class="purchase-button"></th>'
               : '<th>'+field.label+'</th>'
             var hitStr = 'hit['+i+']';
             field.td = 
@@ -356,12 +358,17 @@ controllers.controller('LineListCtrl', function() {
               : field.esName == 'openAccess' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field.esName == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
               : field.esName == 'assays.name' ? '<td ng-repeat="assay in compileParams.assays" class="matrix-dot"><a ng-if="'+hitStr+'[$index]" ng-href="#/lines/{{hit[0]}}/{{assay.short}}"><div class="matrix-dot-item assay" popover="{{assay.long}}" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
+              : field.esName == 'ecaccCatalogNumber' ? '<td class="purchase-button"><a ng-if="'+hitStr+'" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Purchase</a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
         }
     }
 
     this.processHitFields = function(hitFields, fields) {
         var processedFields = [];
+
+        var purchaseUrl;
+        var iPurchaseUrl;
+
         for (var i=0; i<fields.length; i++) {
             var field = fields[i];
             if (field.esName == 'bankingStatus') {
@@ -373,7 +380,13 @@ controllers.controller('LineListCtrl', function() {
                                             : /not selected/i.test(processedFields[i].text) ? 'N'
                                             : /selected/i.test(processedFields[i].text) ? 'S'
                                             : '';
+                    if (/ecacc/i.test(processedFields[i].text)) {
+                      purchaseUrl = 'http://www.phe-culturecollections.org.uk/products/celllines/ipsc/detail.jsp?refId='+hitFields.ecaccCatalogNumber[0]+'&collection=ecacc_ipsc';
+                    }
                 }
+            }
+            else if (field.esName == 'ecaccCatalogNumber') {
+              iPurchaseUrl = i;
             }
             else if (field.esName == 'openAccess') {
                 processedFields[i] = {letter: '', text: ''};
@@ -393,6 +406,10 @@ controllers.controller('LineListCtrl', function() {
                         : hitFields[field.esName][0];
             }
         }
+        if (iPurchaseUrl) {
+          processedFields[iPurchaseUrl] = purchaseUrl;
+        }
+        console.log(processedFields);
         return processedFields;
     };
 
