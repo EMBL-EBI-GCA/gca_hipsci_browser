@@ -23,9 +23,10 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
                     continue;
                 }
                 if ($scope.data.ecaccCatalogNumber && /banked.*ecacc/i.test($scope.data.bankingStatus[i])) {
+                    $scope.data.purchaseUrl = 'http://www.phe-culturecollections.org.uk/products/celllines/ipsc/detail.jsp?refId='+$scope.data.ecaccCatalogNumber+'&collection=ecacc_ipsc';
                     bankingStatus.push({
                         text: $scope.data.bankingStatus[i],
-                        url: 'http://www.phe-culturecollections.org.uk/products/celllines/ipsc/detail.jsp?refId='+$scope.data.ecaccCatalogNumber+'&collection=ecacc_ipsc',
+                        url: $scope.data.purchaseUrl,
                     });
                     banked = true;
                 }

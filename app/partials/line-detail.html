@@ -1,7 +1,9 @@
 <div class="panel panel-default">
     <div class="panel-body">
 
-    <h1 ng-bind="ipscName"></h1>
+    <h1><span ng-bind="ipscName"></span>
+    <a role="button" class="btn btn-primary purchase-btn" ng-if="data.purchaseUrl" ng-href="{{data.purchaseUrl}}">Purchase <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></a>
+    </h1>
     <h2>HipSci cell line</h2>
     <hr/>
 

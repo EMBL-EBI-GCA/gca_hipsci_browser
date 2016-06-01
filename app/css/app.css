@@ -391,3 +391,7 @@ ul.dropdown-menu div.checkbox {
         height: 40px;
     }
 }
+
+a.purchase-btn {
+  margin-left: 30px;
+}
