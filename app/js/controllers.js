@@ -337,7 +337,7 @@ controllers.controller('LineListCtrl', function() {
         {visible: true,  sortable: false, selectable: false, esName: 'bankingStatus', label: 'Bank status'},
 
         {visible: true,  sortable: false, selectable: false, esName: 'assays.name', label: 'Assays data available'},
-        {visible: true, sortable: false, selectable: false, esName: 'ecaccCatalogNumber'},
+        {visible: true, sortable: false, selectable: false, esName: 'ecaccCatalogNumber', label: 'ECACC catalog number'},
     ];
 
     for (var i=0; i<this.fields.length; i++) {
