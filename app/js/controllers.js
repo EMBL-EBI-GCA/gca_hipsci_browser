@@ -199,9 +199,6 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
     });
 
     $scope.showEGAModal = function(archive) {
-      console.log('here1');
-      console.log(archive.name);
-      console.log(archive.accessionType);
       if (archive && archive.name === 'EGA' && archive.accessionType === 'DATASET_ID') {
         $scope.egaModal = {
             datasetId: archive.accession,
@@ -358,7 +355,7 @@ controllers.controller('LineListCtrl', function() {
               : field.esName == 'openAccess' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field.esName == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
               : field.esName == 'assays.name' ? '<td ng-repeat="assay in compileParams.assays" class="matrix-dot"><a ng-if="'+hitStr+'[$index]" ng-href="#/lines/{{hit[0]}}/{{assay.short}}"><div class="matrix-dot-item assay" popover="{{assay.long}}" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
-              : field.esName == 'ecaccCatalogNumber' ? '<td class="purchase-button"><a ng-if="'+hitStr+'" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Purchase</a></td>'
+              : field.esName == 'ecaccCatalogNumber' ? '<td class="purchase-button"><a ng-if="'+hitStr+'" class="btn btn-sm btn-primary" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Purchase</a></td>'
               : '<td ng-bind="'+hitStr+'"></td>'
         }
     }
@@ -409,7 +406,6 @@ controllers.controller('LineListCtrl', function() {
         if (iPurchaseUrl) {
           processedFields[iPurchaseUrl] = purchaseUrl;
         }
-        console.log(processedFields);
         return processedFields;
     };
 
