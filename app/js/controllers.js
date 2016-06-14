@@ -32,7 +32,7 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
                 }
                 else if ($scope.data.ebiscName && /banked.*ebisc/i.test($scope.data.bankingStatus[i])) {
                     bankingStatus.push({
-                        text: $scope.data.bankingStatus[i],
+                        text: $scope.data.bankingStatus[i] + ' as ' + $scope.data.ebiscName,
                         url: 'https://cells.ebisc.org/'+$scope.data.ebiscName+'/',
                     });
                     banked = true;
