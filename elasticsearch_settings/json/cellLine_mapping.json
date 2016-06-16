@@ -243,10 +243,12 @@
             },
             "ebiscName": {
                 "type": "string",
-                "index": "not_analyzed"
+                "index": "not_analyzed",
+                "copy_to": "searchable.fixed"
             },
             "ecaccCatalogNumber": {
-                "type": "integer"
+                "type": "integer",
+                "copy_to": "searchable.fixed"
             },
             "openAccess": {
                 "type": "boolean"
