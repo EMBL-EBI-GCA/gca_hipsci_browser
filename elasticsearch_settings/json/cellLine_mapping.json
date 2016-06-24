@@ -118,7 +118,8 @@
                     "age": {
                         "type": "string",
                         "index": "not_analyzed",
-                        "copy_to": "searchable.fixed"
+                        "copy_to": "searchable.fixed",
+                        "fields": {"indexed":{"type":"string", "index":"not_analyzed"}}
                     },
                     "ethnicity": {
                         "type": "string",
