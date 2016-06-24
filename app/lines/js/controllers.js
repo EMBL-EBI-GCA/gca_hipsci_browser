@@ -325,6 +325,7 @@ controllers.controller('LineListCtrl', function() {
         {visible: true,  sortable: true,  selectable: true,  esName: 'diseaseStatus.value', label: 'Disease Status'},
         {visible: true,  sortable: true,  selectable: true,  esName: 'donor.sex.value', label: 'Sex'},
         {visible: false, sortable: true,  selectable: true,  esName: 'donor.ethnicity', label: 'Ethnicity'},
+        {visible: false, sortable: true,  selectable: true,  esName: 'donor.age', label: 'Age'},
         {visible: true,  sortable: true,  selectable: true,  esName: 'sourceMaterial.value', label: 'Source Material'},
         {visible: true,  sortable: true,  selectable: true,  esName: 'tissueProvider', label: 'Tissue Provider'},
         {visible: false, sortable: true,  selectable: true,  esName: 'reprogramming.methodOfDerivation', label: 'Method of derivation'},
