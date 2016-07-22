@@ -145,7 +145,7 @@
                         "copy_to": "searchable.free"
                     },
                     "passageNumber": {
-                        "type": "integer",
+                        "type": "integer"
                     }
                 }
             }
