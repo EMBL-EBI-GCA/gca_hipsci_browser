@@ -75,6 +75,7 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
       {visible: true,  selectable: true,  sortable: true,  esName: 'archive.name',     label: 'Archive'},
       {visible: false, selectable: true,  sortable: true,  esName: 'archive.accession',label: 'Accession'},
       {visible: true, selectable: true,  sortable: true,  esName: 'samples.growingConditions', label: 'Culture'},
+      {visible: true, selectable: true,  sortable: true,  esName: 'samples.passageNumber', label: 'Passage'},
       {visible: false, selectable: true,  sortable: false,  esName: 'files.name', label: 'File name'},
       {visible: false, selectable: true,  sortable: false,  esName: 'files.md5', label: 'File md5'},
 
@@ -110,6 +111,10 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
                 }
             }
             else if (fields[i].esName == 'samples.growingConditions' && hitFields.hasOwnProperty(fields[i].esName)) {
+                var j = hitFields['samples.name'].indexOf($scope.ipscName);
+                processedFields[i] = j>-1 ? hitFields[fields[i].esName][j] : undefined;
+            }
+            else if (fields[i].esName == 'samples.passageNumber' && hitFields.hasOwnProperty(fields[i].esName)) {
                 var j = hitFields['samples.name'].indexOf($scope.ipscName);
                 processedFields[i] = j>-1 ? hitFields[fields[i].esName][j] : undefined;
             }
@@ -175,6 +180,7 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
             for (var j=0; j<$scope.files[i]._source.samples.length; j++) {
                 if ($scope.files[i]._source.samples[j].name == $scope.ipscName) {
                     $scope.files[i].growingConditions = $scope.files[i]._source.samples[j]['growingConditions'];
+                    $scope.files[i].passageNumber = $scope.files[i]._source.samples[j]['passageNumber'];
                     break;
                 }
             }
@@ -453,6 +459,7 @@ controllers.controller('FileListCtrl', function() {
       {visible: false, selectable: true,  sortable: true,  esName: 'archive.accession',label: 'Accession'},
       {visible: false, selectable: true,  sortable: true,  esName: 'samples.sex',      label: 'Sex'},
       {visible: false, selectable: true,  sortable: true,  esName: 'samples.growingConditions', label: 'Culture'},
+      {visible: false, selectable: true,  sortable: true,  esName: 'samples.passageNumber', label: 'Passage'},
       {visible: false, selectable: true,  sortable: false,  esName: 'files.name', label: 'File name'},
       {visible: false, selectable: true,  sortable: false,  esName: 'files.md5', label: 'File md5'},
 
@@ -476,6 +483,7 @@ controllers.controller('FileListCtrl', function() {
       {esName: 'archive.accession',label: 'Accession'},
       {esName: 'archive.url',      label: 'Archive url'},
       {esName: 'samples.growingConditions', label: 'Cell line growing conditions for this assay'},
+      {esName: 'samples.passageNumber', label: 'Cell line passage number for this assay'},
       {esName: 'samples.diseaseStatus', label: 'Disease status'},
       {esName: 'samples.sex',      label: 'Sex'},
       {esName: 'assay.description',label: 'Assay description'},

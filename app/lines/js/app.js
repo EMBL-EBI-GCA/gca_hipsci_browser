@@ -19,39 +19,39 @@ hipsciBrowser.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
     when('/lines/:ipscName', {
-      templateUrl: 'partials/line-detail.html?ver=20160601',
+      templateUrl: 'partials/line-detail.html?ver=20160722',
       controller: 'LineDetailCtrl',
       controllerAs: 'LineCtrl',
     }).
     when('/lines/:ipscName/:assay', {
-      templateUrl: 'partials/line-assay-detail.html?ver=20160506',
+      templateUrl: 'partials/line-assay-detail.html?ver=20160722',
       controller: 'LineAssayCtrl',
       controllerAs: 'LineCtrl',
     }).
     when('/donors/:donorName', {
-      templateUrl: 'partials/donor-detail.html?ver=20160202',
+      templateUrl: 'partials/donor-detail.html?ver=20160722',
       controller: 'DonorDetailCtrl'
     }).
     when('/lines', {
-      templateUrl: 'partials/line-list.html?ver=20160601',
+      templateUrl: 'partials/line-list.html?ver=20160722',
       controller: 'LineListCtrl',
       controllerAs: 'LineCtrl',
       reloadOnSearch: false,
     }).
     when('/donors', {
-      templateUrl: 'partials/donor-list.html?ver=20160202',
+      templateUrl: 'partials/donor-list.html?ver=20160722',
       controller: 'DonorListCtrl',
       controllerAs: 'DonorCtrl',
       reloadOnSearch: false,
     }).
     when('/files', {
-      templateUrl: 'partials/file-list.html?ver=20160202',
+      templateUrl: 'partials/file-list.html?ver=20160722',
       controller: 'FileListCtrl',
       controllerAs: 'FileCtrl',
       reloadOnSearch: false,
     }).
     when('/api', {
-      templateUrl: 'partials/api.html?ver=20160202',
+      templateUrl: 'partials/api.html?ver=20160722',
     }).
     otherwise({
       redirectTo: '/lines/'
