@@ -73,7 +73,7 @@ services.directive('mdModal', ['$modal', '$http', function($modal, $http) {
     link: function(scope, iElement, iAttrs, ctrls) {
         scope.showModal = function() {
             if (!scope.modalContent) {
-                $http.get('md/'+scope.modalMd+'.md?ver=20160204', {responseType: 'text', cache: true
+                $http.get('md/'+scope.modalMd+'.md?ver=20160908', {responseType: 'text', cache: true
                 }).success(function(data) {
                     scope.modalContent = data;
                 });
