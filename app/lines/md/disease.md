@@ -6,12 +6,12 @@ iPSC technology provides opportunity for modelling human disease in the culture 
 [Bardet-Biedl syndrome](/disease/bardet-biedl) (BBS) is a ciliopathy with multisystem involvement.
 University College London contributed the tissue samples to the HipSci project.
 
-###Monogenic diabetes
+###Maturity onset diabetes of the young
 
-[Monogenic diabetes](/disease/diabetes) refers to forms of the disease which are
+[Maturity onset diabetes of the young](/disease/diabetes) refers to forms of the disease which are
 attributable to a mutation in a single gene of the individual.
 Exeter Medical School contributed the tissue samples to the HipSci project.
-This cohort represents any monogenic form of disease; the gene responsible could be different
+This cohort represents monogenic forms of disease; the gene responsible could be different
 across the different tissue donors.
 
 ###Normal
