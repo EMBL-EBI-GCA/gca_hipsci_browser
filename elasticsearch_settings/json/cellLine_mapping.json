@@ -63,6 +63,10 @@
                     "ontologyPURL": {
                         "type": "string",
                         "index": "not_analyzed"
+                    },
+                    "peptrackerURL": {
+                        "type": "string",
+                        "index": "not_analyzed"
                     }
                 }
             },
