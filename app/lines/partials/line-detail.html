@@ -123,6 +123,19 @@
 
         </section>
 
+      <section ng-if="peptrackerUrl">
+      <h3 class="item-detail-section">Encyclopedia of Protein Dynamics</h3>
+      <hr/>
+      <div class="row"><div class="col-md-8 col-lg-8 col-sm-10 col-md-offset-2 col-lg-offset-2 col-sm-offset-1">
+      <p>Mass spectrometry data from {{ipscName}} has been analyzed in the <a ng-href="{{peptrackerUrl}}" target="_blank">Encyclopedia of Protein Dynamics</a></p>
+      <ol>
+        <li>View the <a ng-href="{{peptrackerUrl}}" target="_blank">HipSci data</a> at the Encyclopedia of Protein Dynamics</li>
+        <li>Click on a bubble to view the bubble plot or histogram of peptide abundances</li>
+        <li>Select this cell line from the drop down list</li>
+      </ol>
+      </div></div>
+      </section>
+
 
         <section ng-if="data.pluritest">
         <h3 class="item-detail-section">Pluritest assessment for pluripotency</h3>

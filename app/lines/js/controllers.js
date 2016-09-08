@@ -48,6 +48,11 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
             }
             $scope.data.bankingStatus = bankingStatus;
         }
+
+        var proteomics = jQuery.grep($scope.data.assays, function(obj) {return obj.name === 'Proteomics' ? 1 : 0});
+        if (proteomics.length > 0) {
+          $scope.peptrackerUrl = proteomics[0].peptrackerURL;
+        };
     }, function(resp) {
         $scope.apiError = true;
         $scope.apiStatus = resp.status;
