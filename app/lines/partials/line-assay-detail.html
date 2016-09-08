@@ -79,6 +79,20 @@
             </div>
         </dl>
     </section>
+
+    <section ng-if="peptrackerUrl">
+    <h3 class="item-detail-section">Encyclopedia of Protein Dynamics</h3>
+    <hr/>
+    <div class="row"><div class="col-md-6 col-lg-6 col-sm-6 col-md-offset-2 col-lg-offset-2 col-sm-offset-2">
+    <p>Mass spectrometry data from {{ipscName}} has been analyzed in the <a ng-href="{{peptrackerUrl}}">Encyclopedia of Protein Dynamics</a></p>
+    <ol>
+      <li>View the <a ng-href="{{peptrackerUrl}}">HipSci data</a> at the Encyclopedia of Protein Dynamics</li>
+      <li>Click on a bubble to view the bubble plot or histogram of peptide abundances</li>
+      <li>Select this cell line from the drop down list</li>
+    </ol>
+    </div></div>
+    </section>
+
     </div>
 
     <section ng-repeat="fileGroup in files">

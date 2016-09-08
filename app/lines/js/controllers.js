@@ -173,9 +173,6 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
     }).then(function(resp) {
         $scope.apiSuccess = true;
         $scope.files = resp.data['hits']['hits'];
-        if ($scope.files.length == 0) {
-            $location.path('lines/'+$scope.ipscName);
-        }
         for (var i=0; i<$scope.files.length; i++) {
             for (var j=0; j<$scope.files[i]._source.samples.length; j++) {
                 if ($scope.files[i]._source.samples[j].name == $scope.ipscName) {
@@ -198,6 +195,13 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
         $scope.apiSuccess = true;
         $scope.lineData = resp.data['_source'];
         $scope.lineData.bankingStatus = $scope.lineData.bankingStatus ? jQuery.grep($scope.lineData.bankingStatus, function(str) {return ! /shipped/i.test(str)}) : undefined;
+        if ($scope.assay !== 'Proteomics') {
+          return;
+        }
+        var proteomics = jQuery.grep($scope.lineData.assays, function(obj) {return obj.name === 'Proteomics' ? 1 : 0});
+        if (proteomics) {
+          $scope.peptrackerUrl = proteomics.peptrackerUrl;
+        };
     }, function(resp) {
         $scope.apiError = true;
         $scope.apiStatus = resp.status;
@@ -219,6 +223,10 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
             c.unbindEgaModal();
         });
       }
+    };
+
+     var  function() {
+
     };
 
   }
