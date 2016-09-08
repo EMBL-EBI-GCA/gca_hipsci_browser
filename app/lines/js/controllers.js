@@ -225,10 +225,6 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
       }
     };
 
-     var  function() {
-
-    };
-
   }
 ]);
 
