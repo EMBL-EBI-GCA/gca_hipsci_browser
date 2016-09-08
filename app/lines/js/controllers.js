@@ -199,8 +199,8 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
           return;
         }
         var proteomics = jQuery.grep($scope.lineData.assays, function(obj) {return obj.name === 'Proteomics' ? 1 : 0});
-        if (proteomics) {
-          $scope.peptrackerUrl = proteomics.peptrackerUrl;
+        if (proteomics.length > 0) {
+          $scope.peptrackerUrl = proteomics[0].peptrackerURL;
         };
     }, function(resp) {
         $scope.apiError = true;
