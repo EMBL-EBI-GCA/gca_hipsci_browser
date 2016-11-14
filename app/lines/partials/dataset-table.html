@@ -1,0 +1,14 @@
+<table class="table table-striped">
+  <thead><tr>
+    <th>Cohort</th>
+    <th ng-repeat="assay in DSCtrl.assays">{{assay}}</th>
+  </tr></thead>
+  <tbody><tr ng-repeat="cohort in DSCtrl.cohorts">
+    <td>{{cohort.name}}</td>
+    <td ng-repeat="assay in DSCtrl.assays">
+      <span ng-if="DSCtrl.cohortDatasets[cohort.name] && DSCtrl.cohortDatasets[cohort.name][assay]">
+      {{DSCtrl.cohortDatasets[cohort.name][assay].accession}}
+      </span>
+    </td>
+  </tr></tbody>
+</table>
