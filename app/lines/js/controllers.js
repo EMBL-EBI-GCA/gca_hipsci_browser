@@ -539,8 +539,8 @@ controllers.controller('FileListCtrl', function() {
 
 });
 
-controllers.controller('DatasetTableCtrl', ['$scope', 'apiClient', '$modal', '$scope',
-  function($scope, apiClient, $modal, $scope) {
+controllers.controller('DatasetTableCtrl', ['$scope', 'apiClient', '$modal',
+  function($scope, apiClient, $modal) {
     var c = this;
     c.apiError = false;
     c.apiSuccess = false;
@@ -557,7 +557,7 @@ controllers.controller('DatasetTableCtrl', ['$scope', 'apiClient', '$modal', '$s
 
     c.showModal = function(cohort, assay) {
       $scope.selectedAssay = assay;
-      $scope.selectedCohort = cohort;
+      $scope.selectedCohort = cohort['_source'];
       var modalInstance = $modal.open({
         templateUrl: 'partials/ega_dataset_modal.html?ver=20161114',
         scope: $scope
