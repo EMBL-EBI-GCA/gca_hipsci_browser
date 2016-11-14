@@ -558,23 +558,24 @@ controllers.controller('DatasetTableCtrl', ['$scope', 'apiClient',
     apiClient.search({
         type: 'cohort',
         body: {
-          size: -1
+          size: -1,
           sort: {"donors.count": "desc"}
         }
     }).then(function(resp) {
         c.apiSuccess = true;
-        c.cohorts = $resp.data['hits']['hits'];
+        c.cohorts = resp.data['hits']['hits'];
         for (var i=0; i< c.cohorts.length; i++) {
-          var hit = c.cohorts[i];
+          var hit = c.cohorts[i]['_source'];
           var datasets = {}
           for (var j=0; j< hit.datasets.length; j++) {
             var dataset = hit.datasets[j];
             if (dataset.hasOwnProperty('assay')) {
-              datasets{dataset.assay} = dataset;
+              datasets[dataset.assay] = dataset;
             }
           }
-          c.cohortDatasets{hit.name} = datasets;
+          c.cohortDatasets[hit.name] = datasets;
         }
+console.log(c);
     }, function(resp) {
         c.apiError = true;
         c.apiStatus = resp.status;
