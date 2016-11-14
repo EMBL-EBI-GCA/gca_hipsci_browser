@@ -16,10 +16,11 @@
   <tbody><tr ng-repeat="cohort in DSCtrl.cohorts">
     <td>{{cohort['_source'].name}}</td>
     <td ng-repeat="assay in DSCtrl.assays">
-      <span ng-if="DSCtrl.cohortDatasets[cohort['_source'].name] && DSCtrl.cohortDatasets[cohort['_source'].name][assay]">
-      {{DSCtrl.cohortDatasets[cohort['_source'].name][assay].accession}}
-      </span>
-      <span ng-if="! DSCtrl.cohortDatasets[cohort['_source'].name] || ! DSCtrl.cohortDatasets[cohort['_source'].name][assay]">
+      <a ng-if="cohortDatasets[cohort['_source'].name] && cohortDatasets[cohort['_source'].name][assay]"
+       href="" ng-click="showModal(cohort, assay)">
+      {{cohortDatasets[cohort['_source'].name][assay].accession}}
+      </a>
+      <span ng-if="! cohortDatasets[cohort['_source'].name] || ! cohortDatasets[cohort['_source'].name][assay]">
       Coming soon
       </span>
     </td>

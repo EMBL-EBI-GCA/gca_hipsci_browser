@@ -1,0 +1,19 @@
+<div>
+<div class="modal-header">
+<button type="button" class="close" ng-click="$dismiss()"><span aria-hidden="true">&times;</span></button>
+<h2>{{selectedCohort.name <small>{{assay}}</small></h2>
+</div>
+<div class="modal-body">
+<h4>1. Looking for data access?</h4>
+<p>Visit our <a href="/data/access#managed">data access page</a> to apply for data access to this cohort.
+Register for access via WTSI's <a href="https://www.sanger.ac.uk/legal/DAA/MasterController">Electronic Data Access Mechanism</a></p>
+
+<h4>2. Want to download the data?</h4>
+If you have been granted data access for this cohort, go to the EGA website and click to download <a ng-href="{{cohortDatasets[selectedCohort['_source'].name][assay].url}}">
+   dataset {{cohortDatasets[selectedCohort['_source'].name][assay].accession}}</a>
+
+<h4>3. What is in the dataset?</h4>
+<a ng-href="files/q={{cohortDatasets[selectedCohort['_source'].name][assay].accession}}">Search for dataset {{cohortDatasets[selectedCohort['_source'].name][assay].accession}}</a> in our files browser to discover what data comprise this dataset.
+
+</div>
+</div>

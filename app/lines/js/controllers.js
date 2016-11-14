@@ -539,13 +539,13 @@ controllers.controller('FileListCtrl', function() {
 
 });
 
-controllers.controller('DatasetTableCtrl', ['$scope', 'apiClient',
-  function($scope, apiClient) {
+controllers.controller('DatasetTableCtrl', ['$scope', 'apiClient', '$modal', '$scope',
+  function($scope, apiClient, $modal, $scope) {
     var c = this;
     c.apiError = false;
     c.apiSuccess = false;
     c.cohorts = [];
-    c.cohortDatasets = {};
+    $scope.cohortDatasets = {};
 
     c.assays = [
                 'Genotyping array',
@@ -554,6 +554,19 @@ controllers.controller('DatasetTableCtrl', ['$scope', 'apiClient',
                 'RNA-seq',
                 'Methylation array',
     ];
+
+    c.showModal = function(cohort, assay) {
+      $scope.selectedAssay = assay;
+      $scope.selectedCohort = cohort;
+      var modalInstance = $modal.open({
+        templateUrl: 'partials/ega_dataset_modal.html?ver=20161114',
+        scope: $scope
+      });
+      c.unbindModal = $scope.$on('$routeChangeStart', function(event, object) {
+          modalInstance.close();
+          c.unbindModal();
+      });
+    }
 
     apiClient.search({
         type: 'cohort',
@@ -573,9 +586,8 @@ controllers.controller('DatasetTableCtrl', ['$scope', 'apiClient',
               datasets[dataset.assay] = dataset;
             }
           }
-          c.cohortDatasets[hit.name] = datasets;
+          $scope.cohortDatasets[hit.name] = datasets;
         }
-console.log(c);
     }, function(resp) {
         c.apiError = true;
         c.apiStatus = resp.status;
