@@ -51,7 +51,7 @@ hipsciBrowser.config(['$routeProvider',
       reloadOnSearch: false,
     }).
     when('/datasets', {
-      templateUrl: 'partials/dataset-table.html?ver=20160722',
+      templateUrl: 'partials/dataset-table.html?ver=20161114',
       controller: 'DatasetTableCtrl',
       controllerAs: 'DSCtrl',
     }).
