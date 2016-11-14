@@ -1,0 +1,53 @@
+{
+    "cohort": {
+        "_all": {"enabled": false},
+        "properties": {
+            "datasets": {
+                "properties": {
+                    "assay": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    },
+                    "archive": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    },
+                    "accession": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    },
+                    "accessionType": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    },
+                    "url": {
+                        "type": "string",
+                        "index": "no"
+                    }
+                }
+            },
+            "diseaseStatus": {
+                "properties": {
+                    "value": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    },
+                    "ontologyPURL": {
+                        "type": "string"
+                    }
+                }
+            },
+            "name": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "donors": {
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    }
+                }
+            }
+        }
+    }
+}
