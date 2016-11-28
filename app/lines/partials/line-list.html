@@ -14,7 +14,7 @@
     <h4>Feeder-free panel</h4>
     <table class="table table-striped table-condensed">
     <tr ng-repeat="line in LineCtrl.panelLines.ff" >
-      <td ng-bind="line.name" ng-href="#/lines/{{line.name}}"></td>
+      <td><a ng-bind="line.name" ng-href="#/lines/{{line.name}}"></a></td>
       <td class="purchase-button"><a class="btn btn-sm btn-primary" ng-href="http://www.phe-culturecollections.org.uk/products/celllines/ipsc/detail.jsp?refId={{line.ecaccId}}&collection=ecacc_ipsc" target="_blank"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Purchase</a></td>
     </tr>
     </table>
@@ -23,7 +23,7 @@
     <h4>Feeder dependent panel</h4>
     <table class="table table-striped table-condensed">
     <tr ng-repeat="line in LineCtrl.panelLines.fd" >
-      <td ng-bind="line.name" ng-href="#/lines/{{line.name}}"></td>
+      <td><a ng-bind="line.name" ng-href="#/lines/{{line.name}}"></a></td>
       <td class="purchase-button"><a class="btn btn-sm btn-primary" ng-href="http://www.phe-culturecollections.org.uk/products/celllines/ipsc/detail.jsp?refId={{line.ecaccId}}&collection=ecacc_ipsc" target="_blank"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Purchase</a></td>
     </tr>
     </table>
