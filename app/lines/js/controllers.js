@@ -452,13 +452,13 @@ controllers.controller('LineListCtrl', function() {
     };
 
     this.panelLines = {
-      ff: [
+      fd: [
         {name: "HPSI0613i-zisa_3", ecaccId: "77650017"},
         {name: "HPSI0813i-voas_2", ecaccId: "77650254"},
         {name: "HPSI0513i-cuau_2", ecaccId: "77650222"},
         {name: "HPSI0713i-kaks_3", ecaccId: "77650234"},
       ],
-      fd: [
+      ff: [
         {name: "HPSI0214i-wibj_2", ecaccId: "77650057"},
         {name: "HPSI0214i-kucg_2", ecaccId: "77650065"},
         {name: "HPSI0314i-hoik_1", ecaccId: "77650129"},
