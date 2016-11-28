@@ -5,6 +5,36 @@
     <invisible-filter field="calculated.bankingStatus" term="'Selected for banking'" active="LineCtrl.tickedPublishFilter"></invisible-filter>
         <h1>Cell Lines</h1>
         <hr/>
+    <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1">
+    <p>For new users of our iPSC resource, we have composed two panels of lines from the HipSci iPSC collection that we would recommend. These lines have been selected based on their high pluritest scores, low CNV’s, comprehensively characterised assay data, and their ability to differentiate.<p>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-lg-3 col-lg-offset-2 col-md-5 col-md-offset-1 col-sm-5 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+    <h4>Feeder-free panel</h4>
+    <table class="table table-striped table-condensed">
+    <tr ng-repeat="line in LineCtrl.panelLines.ff" >
+      <td ng-bind="line.name" ng-href="#/lines/{{line.name}}"></td>
+      <td class="purchase-button"><a class="btn btn-sm btn-primary" ng-href="http://www.phe-culturecollections.org.uk/products/celllines/ipsc/detail.jsp?refId={{line.ecaccId}}&collection=ecacc_ipsc" target="_blank"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Purchase</a></td>
+    </tr>
+    </table>
+    </div>
+    <div class="col-log-6 col-log-offset-1 col-lg-3 col-lg-offset-2 col-md-5 col-md-offset-0 col-sm-5 col-sm-offset-0 col-xs-10 col-xs-offset-1">
+    <h4>Feeder dependent panel</h4>
+    <table class="table table-striped table-condensed">
+    <tr ng-repeat="line in LineCtrl.panelLines.fd" >
+      <td ng-bind="line.name" ng-href="#/lines/{{line.name}}"></td>
+      <td class="purchase-button"><a class="btn btn-sm btn-primary" ng-href="http://www.phe-culturecollections.org.uk/products/celllines/ipsc/detail.jsp?refId={{line.ecaccId}}&collection=ecacc_ipsc" target="_blank"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Purchase</a></td>
+    </tr>
+    </table>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1">
+    <p>These lines are available to order as individual lines, but will also be available to order as a panel pack in the near future.</p>
+    </div>
+    </div>
+
+    <hr/>
         <div class="row list-panel">
             <div class="col-md-3 fixd-width-lhs">
                 <facets-clear text="Clear filters"></facets-clear>
