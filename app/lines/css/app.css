@@ -408,7 +408,7 @@ a.purchase-btn {
   margin-left: 30px;
 }
 
-@media (max-width: 1199px) { /* @screen-md-min */
+@media (max-width: 1440px) { /* @screen-md-min */
   h1.browser-heading {
     margin-top: 0px;
     margin-bottom: 0px;
