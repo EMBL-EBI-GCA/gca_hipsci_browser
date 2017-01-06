@@ -4,17 +4,16 @@
     <list-init-fields html-fields="LineCtrl.fields" export-fields="LineCtrl.fields"></list-init-fields>
     <invisible-filter field="calculated.bankingStatus" term="'Selected for banking'" active="LineCtrl.tickedPublishFilter"></invisible-filter>
     <h1 class="browser-heading">Cell Lines</h1>
-
-    <div ng-if="!LineCtrl.cache.panelsDismissed">
     <hr/>
-    <div class="row">
+
+    <div class="row" ng-if="LineCtrl.cache.showPanels">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1">
     <div class="row">
     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
     <p>For new users of our iPSC resource, we have composed two panels of lines from the HipSci iPSC collection that we would recommend. These lines have been selected based on their high pluritest scores, low CNV’s, comprehensively characterised assay data, and their ability to differentiate.</p>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 dismiss-button-container">
-      <button type="button" class="btn btn-small btn-primary dropdown-toggle center-block" ng-click="LineCtrl.cache.panelsDismissed = true">Dismiss this message</button>
+      <button type="button" class="btn btn-small btn-primary dropdown-toggle center-block" ng-click="LineCtrl.cache.showPanels = false">Dismiss this message</button>
     </div>
     </div>
     </div>
@@ -45,7 +44,11 @@
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1">
     <p>These lines are available to order as individual lines, but will also be available to order as a panel pack in the near future.</p>
     </div>
-    </div></div>
+    </div>
+
+    <div ng-if="!LineCtrl.cache.showPanels">
+      <button type="button" class="btn btn-small btn-primary dropdown-toggle center-block" ng-click="LineCtrl.cache.showPanels = true">Recommended panel of HipSci lines</button>
+    </div>
 
     <hr/>
         <div class="row list-panel">
