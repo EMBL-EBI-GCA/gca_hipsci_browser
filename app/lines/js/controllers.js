@@ -318,7 +318,7 @@ controllers.controller('DonorListCtrl', function() {
 
 });
 
-controllers.controller('LineListCtrl', function() {
+controllers.controller('LineListCtrl', ['routeCache', function(routeCache) {
     var controller = this;
     this.documentType = 'cellLine';
     this.exportFilename = 'hipsci_lines';
@@ -466,7 +466,9 @@ controllers.controller('LineListCtrl', function() {
       ]
     };
 
-});
+    this.cache = routeCache.get('lineList', 'lineList');
+
+}]);
 
 controllers.controller('FileListCtrl', function() {
     var controller=this;

@@ -414,3 +414,12 @@ a.purchase-btn {
     margin-bottom: 0px;
   }
 }
+
+@media (min-width: 768px) { /* @screen-sm-min */
+  div.dismiss-button-container {
+    margin-top: 14px;
+  }
+}
+div.dismiss-button-container {
+  margin-bottom: 14px;
+}
