@@ -136,7 +136,7 @@ services.factory('lineTableVars', function lineTableVarsFactory() {
             var hitStr = 'hit['+i+']';
             field.td = 
                 field.esName == 'bioSamplesAccession' ? '<td class="matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item biosample" popover="Biosample" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
-              : field.esName == 'bankingStatus' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
+              : field.esName == 'bankingStatus' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter" ng-class="'+hitStr+'.classes"></span></div></td>'
               : field.esName == 'openAccess' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field.esName == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
               : field.esName == 'assays.name' ? '<td ng-repeat="assay in compileParams.assays" class="matrix-dot"><a ng-if="'+hitStr+'[$index]" ng-href="#/lines/{{hit[0]}}/{{assay.short}}"><div class="matrix-dot-item assay" popover="{{assay.long}}" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
@@ -157,13 +157,21 @@ services.factory('lineTableVars', function lineTableVarsFactory() {
                 processedFields[i] = {letter: '', text: ''};
                 if (hitFields.hasOwnProperty(field.esName)) {
                     processedFields[i].text = jQuery.grep(hitFields[field.esName], function(str) {return ! /shipped/i.test(str)}).join(', ');
+                    processedFields[i].classes = [];
                     processedFields[i].letter = /banked/i.test(processedFields[i].text) ? 'B'
                                             : /pending/i.test(processedFields[i].text) ? 'P'
                                             : /not selected/i.test(processedFields[i].text) ? 'N'
                                             : /selected/i.test(processedFields[i].text) ? 'S'
                                             : '';
+                    if (processedFields[i].letter === 'S') {
+                      processedFields[i].classes.push('bank-selected');
+                    }
                     if (/ecacc/i.test(processedFields[i].text)) {
                       purchaseUrl = 'http://www.phe-culturecollections.org.uk/products/celllines/ipsc/detail.jsp?refId='+hitFields.ecaccCatalogNumber[0]+'&collection=ecacc_ipsc';
+                      processedFields[i].classes.push('banked-ecacc');
+                    }
+                    if (/ebisc/i.test(processedFields[i].text)) {
+                      processedFields[i].classes.push('banked-ebisc');
                     }
                 }
             }

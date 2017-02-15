@@ -263,6 +263,16 @@ table.matrix td.matrix-dot .matrix-dot-orange{
   font-size: 20px;
 }
 
+table.matrix td .bank-selected {
+  color: red;
+}
+table.matrix td .banked-ecacc {
+  color: GoldenRod;
+}
+table.matrix td .banked-ebisc {
+  color: green;
+}
+
 /* layout for matrix and files page with fixed width lhs column */
 @media (min-width: 992px) { /* @screen-md-min */
   .fixd-width-lhs {
