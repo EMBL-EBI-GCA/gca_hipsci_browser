@@ -19,54 +19,54 @@ hipsciBrowser.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
     when('/lines/:ipscName', {
-      templateUrl: 'partials/line-detail.html?ver=20170215',
+      templateUrl: 'partials/line-detail.html?ver=20170215b',
       controller: 'LineDetailCtrl',
       controllerAs: 'LineCtrl',
     }).
     when('/lines/:ipscName/:assay', {
-      templateUrl: 'partials/line-assay-detail.html?ver=20170215',
+      templateUrl: 'partials/line-assay-detail.html?ver=20170215b',
       controller: 'LineAssayCtrl',
       controllerAs: 'LineCtrl',
     }).
     when('/donors/:donorName', {
-      templateUrl: 'partials/donor-detail.html?ver=20170215',
+      templateUrl: 'partials/donor-detail.html?ver=20170215b',
       controller: 'DonorDetailCtrl'
     }).
     when('/lines', {
-      templateUrl: 'partials/line-list.html?ver=20170215',
+      templateUrl: 'partials/line-list.html?ver=20170215b',
       controller: 'LineListCtrl',
       controllerAs: 'LineCtrl',
       reloadOnSearch: false,
     }).
     when('/donors', {
-      templateUrl: 'partials/donor-list.html?ver=20170215',
+      templateUrl: 'partials/donor-list.html?ver=20170215b',
       controller: 'DonorListCtrl',
       controllerAs: 'DonorCtrl',
       reloadOnSearch: false,
     }).
     when('/files', {
-      templateUrl: 'partials/file-list.html?ver=20170215',
+      templateUrl: 'partials/file-list.html?ver=20170215b',
       controller: 'FileListCtrl',
       controllerAs: 'FileCtrl',
       reloadOnSearch: false,
     }).
     when('/datasets', {
-      templateUrl: 'partials/dataset-table.html?ver=20170215',
+      templateUrl: 'partials/dataset-table.html?ver=20170215b',
       controller: 'DatasetTableCtrl',
       controllerAs: 'DSCtrl',
     }).
     when('/cohorts/:cohortId', {
-      templateUrl: 'partials/cohort-detail.html?ver=20170215',
+      templateUrl: 'partials/cohort-detail.html?ver=20170215b',
       controller: 'CohortDetailCtrl',
       controllerAs: 'CohortCtrl',
     }).
     when('/assays/:assayName', {
-      templateUrl: 'partials/assay-detail.html?ver=20170215',
+      templateUrl: 'partials/assay-detail.html?ver=20170215b',
       controller: 'AssayDetailCtrl',
       controllerAs: 'AssayCtrl',
     }).
     when('/api', {
-      templateUrl: 'partials/api.html?ver=20170215',
+      templateUrl: 'partials/api.html?ver=20170215b',
     }).
     otherwise({
       redirectTo: '/lines/'
