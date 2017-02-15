@@ -19,49 +19,49 @@ hipsciBrowser.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
     when('/lines/:ipscName', {
-      templateUrl: 'partials/line-detail.html?ver=20160908',
+      templateUrl: 'partials/line-detail.html?ver=20170215',
       controller: 'LineDetailCtrl',
       controllerAs: 'LineCtrl',
     }).
     when('/lines/:ipscName/:assay', {
-      templateUrl: 'partials/line-assay-detail.html?ver=20160908',
+      templateUrl: 'partials/line-assay-detail.html?ver=20170215',
       controller: 'LineAssayCtrl',
       controllerAs: 'LineCtrl',
     }).
     when('/donors/:donorName', {
-      templateUrl: 'partials/donor-detail.html?ver=20160722',
+      templateUrl: 'partials/donor-detail.html?ver=20170215',
       controller: 'DonorDetailCtrl'
     }).
     when('/lines', {
-      templateUrl: 'partials/line-list.html?ver=20170106b',
+      templateUrl: 'partials/line-list.html?ver=20170215',
       controller: 'LineListCtrl',
       controllerAs: 'LineCtrl',
       reloadOnSearch: false,
     }).
     when('/donors', {
-      templateUrl: 'partials/donor-list.html?ver=20160722',
+      templateUrl: 'partials/donor-list.html?ver=20170215',
       controller: 'DonorListCtrl',
       controllerAs: 'DonorCtrl',
       reloadOnSearch: false,
     }).
     when('/files', {
-      templateUrl: 'partials/file-list.html?ver=20160722',
+      templateUrl: 'partials/file-list.html?ver=20170215',
       controller: 'FileListCtrl',
       controllerAs: 'FileCtrl',
       reloadOnSearch: false,
     }).
     when('/datasets', {
-      templateUrl: 'partials/dataset-table.html?ver=20161114',
+      templateUrl: 'partials/dataset-table.html?ver=20170215',
       controller: 'DatasetTableCtrl',
       controllerAs: 'DSCtrl',
     }).
     when('/cohorts/:cohortId', {
-      templateUrl: 'partials/cohort-detail.html?ver=20161114',
+      templateUrl: 'partials/cohort-detail.html?ver=20170215',
       controller: 'CohortDetailCtrl',
       controllerAs: 'CohortCtrl',
     }).
     when('/api', {
-      templateUrl: 'partials/api.html?ver=20160722',
+      templateUrl: 'partials/api.html?ver=20170215',
     }).
     otherwise({
       redirectTo: '/lines/'
