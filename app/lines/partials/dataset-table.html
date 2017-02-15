@@ -14,7 +14,7 @@
     <th ng-repeat="assay in DSCtrl.assays">{{assay}}</th>
   </tr></thead>
   <tbody><tr ng-repeat="cohort in DSCtrl.cohorts">
-    <td>{{cohort['_source'].name}}</td>
+    <td><a ng-href="#/cohorts/{{cohort._id}}">{{cohort['_source'].name}}</a></td>
     <td ng-repeat="assay in DSCtrl.assays">
       <a ng-if="cohortDatasets[cohort['_source'].name] && cohortDatasets[cohort['_source'].name][assay]"
        href="" ng-click="DSCtrl.showModal(cohort, assay)">

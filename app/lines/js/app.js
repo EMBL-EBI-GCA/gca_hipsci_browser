@@ -55,6 +55,11 @@ hipsciBrowser.config(['$routeProvider',
       controller: 'DatasetTableCtrl',
       controllerAs: 'DSCtrl',
     }).
+    when('/cohorts/:cohortId', {
+      templateUrl: 'partials/cohort-detail.html?ver=20161114',
+      controller: 'CohortDetailCtrl',
+      controllerAs: 'CohortCtrl',
+    }).
     when('/api', {
       templateUrl: 'partials/api.html?ver=20160722',
     }).

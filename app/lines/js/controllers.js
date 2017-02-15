@@ -318,138 +318,17 @@ controllers.controller('DonorListCtrl', function() {
 
 });
 
-controllers.controller('LineListCtrl', ['routeCache', function(routeCache) {
+controllers.controller('LineListCtrl', ['routeCache', 'lineTableVars', function(routeCache, lineTableVars) {
     var controller = this;
     this.documentType = 'cellLine';
     this.exportFilename = 'hipsci_lines';
 
-    this.assays = [
-                {short: 'gtarray', long: 'Genotyping array'},
-                {short: 'gexarray', long: 'Expression array'},
-                {short: 'exomeseq', long: 'Exome-seq'},
-                {short: 'rnaseq', long: 'RNA-seq'},
-                {short: 'wgs seq', long: 'Whole genome sequencing'},
-                {short: 'mtarray', long: 'Methylation array'},
-                {short: 'proteomics', long: 'Proteomics'},
-                {short: 'cellbiol-fn', long: 'Cellular phenotyping'},
-        ];
-
-    this.fields = [
-        {visible: true,  sortable: true,  selectable: false, esName: 'name', label: 'Name'},
-        {visible: false,  sortable: true,  selectable: true,  esName: 'cellType.value', label: 'Cell Type'},
-        {visible: true,  sortable: true,  selectable: true,  esName: 'diseaseStatus.value', label: 'Disease Status'},
-        {visible: true,  sortable: true,  selectable: true,  esName: 'donor.sex.value', label: 'Sex'},
-        {visible: false, sortable: true,  selectable: true,  esName: 'donor.ethnicity', label: 'Ethnicity'},
-        {visible: false, sortable: true,  selectable: true,  esName: 'donor.age', label: 'Age'},
-        {visible: true,  sortable: true,  selectable: true,  esName: 'sourceMaterial.value', label: 'Source Material'},
-        {visible: true,  sortable: true,  selectable: true,  esName: 'tissueProvider', label: 'Tissue Provider'},
-        {visible: false, sortable: true,  selectable: true,  esName: 'reprogramming.methodOfDerivation', label: 'Method of derivation'},
-        {visible: false, sortable: true,  selectable: true,  esName: 'reprogramming.dateOfDerivation', label: 'Date of derivation'},
-        {visible: true,  sortable: false, selectable: false, esName: 'bioSamplesAccession', label: 'Biosample'},
-        {visible: true,  sortable: false, selectable: false, esName: 'openAccess', label: 'Open access data'},
-        {visible: true,  sortable: false, selectable: false, esName: 'bankingStatus', label: 'Bank status'},
-
-        {visible: true,  sortable: false, selectable: false, esName: 'assays.name', label: 'Assays data available'},
-        {visible: true, sortable: false, selectable: false, esName: 'ecaccCatalogNumber', label: 'ECACC catalog number'},
-    ];
-
-    for (var i=0; i<this.fields.length; i++) {
-        var field = this.fields[i];
-        if (field.visible || field.selectable) {
-            field.th = 
-                field.esName == 'bioSamplesAccession' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
-              : field.esName == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+field.label+'</span><md-modal modal-md="banking_status" title="Banked status"></md-modal></div></th>'
-              : field.esName == 'openAccess' ? '<th class="matrix-dot"><div><span>Data access</span><md-modal modal-md="access" title="Data access"></md-modal></div></th>'
-              : field.esName == 'assays.name' ? '<th ng-repeat="assay in compileParams.assays" class="matrix-dot assay"><div><span ng-bind="assay.short"></span></div></th>'
-              : field.esName == 'diseaseStatus.value' ? '<th>'+field.label+'<md-modal modal-md="disease" title="Disease status"></md-modal></th>'
-              : field.esName == 'ecaccCatalogNumber' ? '<th class="purchase-button"></th>'
-              : '<th>'+field.label+'</th>'
-            var hitStr = 'hit['+i+']';
-            field.td = 
-                field.esName == 'bioSamplesAccession' ? '<td class="matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item biosample" popover="Biosample" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
-              : field.esName == 'bankingStatus' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
-              : field.esName == 'openAccess' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
-              : field.esName == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
-              : field.esName == 'assays.name' ? '<td ng-repeat="assay in compileParams.assays" class="matrix-dot"><a ng-if="'+hitStr+'[$index]" ng-href="#/lines/{{hit[0]}}/{{assay.short}}"><div class="matrix-dot-item assay" popover="{{assay.long}}" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
-              : field.esName == 'ecaccCatalogNumber' ? '<td class="purchase-button"><a ng-if="'+hitStr+'" class="btn btn-sm btn-primary" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Purchase</a></td>'
-              : '<td ng-bind="'+hitStr+'"></td>'
-        }
-    }
-
-    this.processHitFields = function(hitFields, fields) {
-        var processedFields = [];
-
-        var purchaseUrl;
-        var iPurchaseUrl;
-
-        for (var i=0; i<fields.length; i++) {
-            var field = fields[i];
-            if (field.esName == 'bankingStatus') {
-                processedFields[i] = {letter: '', text: ''};
-                if (hitFields.hasOwnProperty(field.esName)) {
-                    processedFields[i].text = jQuery.grep(hitFields[field.esName], function(str) {return ! /shipped/i.test(str)}).join(', ');
-                    processedFields[i].letter = /banked/i.test(processedFields[i].text) ? 'B'
-                                            : /pending/i.test(processedFields[i].text) ? 'P'
-                                            : /not selected/i.test(processedFields[i].text) ? 'N'
-                                            : /selected/i.test(processedFields[i].text) ? 'S'
-                                            : '';
-                    if (/ecacc/i.test(processedFields[i].text)) {
-                      purchaseUrl = 'http://www.phe-culturecollections.org.uk/products/celllines/ipsc/detail.jsp?refId='+hitFields.ecaccCatalogNumber[0]+'&collection=ecacc_ipsc';
-                    }
-                }
-            }
-            else if (field.esName == 'ecaccCatalogNumber') {
-              iPurchaseUrl = i;
-            }
-            else if (field.esName == 'openAccess') {
-                processedFields[i] = {letter: '', text: ''};
-                if (hitFields.hasOwnProperty(field.esName)) {
-                    processedFields[i].text = hitFields[field.esName][0] ? 'Open access' : 'Managed access';
-                    processedFields[i].letter = hitFields[field.esName][0] ? 'O' : 'M';
-                }
-            }
-            else if (field.esName == 'assays.name') {
-                processedFields[i] = [];
-                for (var j=0; j<controller.assays.length; j++) {
-                    processedFields[i].push(jQuery.inArray(controller.assays[j].long, hitFields[field.esName]) > -1 ? true: false);
-                }
-            }
-            else {
-                processedFields[i] = ! hitFields.hasOwnProperty(field.esName) ? undefined
-                        : hitFields[field.esName][0];
-            }
-        }
-        if (iPurchaseUrl) {
-          processedFields[iPurchaseUrl] = purchaseUrl;
-        }
-        return processedFields;
-    };
-
-    var bankingStatusSortRegex = [/banked/i, /^selected/i, /pending/i]
-    this.bankingStatusSort = function(a,b) {
-        for (var i=0; i<bankingStatusSortRegex.length; i++) {
-            var a_passes = bankingStatusSortRegex[i].test(a.term) ? 1 : 0;
-            var b_passes = bankingStatusSortRegex[i].test(b.term) ? 1 : 0;
-            if (a_passes != b_passes) {
-                return b_passes - a_passes;
-            }
-        }
-    };
-
+    this.assays = lineTableVars.assays;
+    this.fields = lineTableVars.fields;
+    this.processHitFields = lineTableVars.processHitFields;
+    this.bankingSortFn = lineTableVars.bankingSortFn;
 
     this.tickedPublishFilter = true;
-
-    var bankingSortOrder = {};
-    bankingSortOrder['Banked at ECACC'] = 1;
-    bankingSortOrder['Banked at EBiSC'] = 2;
-    bankingSortOrder['Selected for banking'] = 3;
-    bankingSortOrder['Pending selection'] = 4;
-    this.bankingSortFn = function(a, b) {
-        return (bankingSortOrder[a.term] && bankingSortOrder[b.term]) ? bankingSortOrder[a.term] - bankingSortOrder[b.term] || b.unfilteredCount - a.unfilteredCount
-                : bankingSortOrder[a.term] ? -1
-                : bankingSortOrder[b.term] ? 1
-                : b.unfilteredCount - a.unfilteredCount;
-    };
 
     this.panelLines = {
       fd: [
@@ -613,5 +492,42 @@ controllers.controller('DatasetTableCtrl', ['$scope', 'apiClient', '$modal',
         c.apiStatus = resp.status;
         c.apiStatusText = resp.statusText;
     });
+  }
+]);
+
+controllers.controller('CohortDetailCtrl', ['$routeParams', 'apiClient', '$http', 'lineTableVars',
+  function($routeParams, apiClient, $http, lineTableVars) {
+    var c = this;
+    c.apiError = false;
+    c.apiSuccess = false;
+    c.documentType = 'cellLine';
+    c.exportFilename = 'hipsci-'+$routeParams.cohortId;
+    c.tickedPublishFilter = true;
+
+    c.assays = lineTableVars.assays;
+    c.fields = lineTableVars.fields;
+    c.processHitFields = lineTableVars.processHitFields;
+    c.bankingSortFn = lineTableVars.bankingSortFn;
+
+    apiClient.getSource({
+        index: 'hipsci',
+        type: 'cohort',
+        id: $routeParams.cohortId,
+    }).then(function(resp) {
+        c.apiSuccess = true;
+        if (resp.data.hasOwnProperty('_source') && resp.data._source.hasOwnProperty('disease') && resp.data._source.disease.hasOwnProperty('value')) {
+          c.disease = resp.data._source.disease.value;
+          console.log(c.disease);
+        }
+    }, function(resp) {
+        c.apiError = true;
+        c.apiStatus = resp.status;
+        c.apiStatusText = resp.statusText;
+    });
+
+    $http.get('md/cohorts/'+$routeParams.cohortId+'.md?ver=20160908b', {responseType: 'text', cache: true
+      }).success(function(data) {
+          c.mdContent = data;
+      });
   }
 ]);
