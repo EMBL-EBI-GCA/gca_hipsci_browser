@@ -596,6 +596,9 @@ controllers.controller('DatasetTableCtrl', ['$scope', 'apiClient', '$modal',
         c.cohorts = resp.data['hits']['hits'];
         for (var i=0; i< c.cohorts.length; i++) {
           var hit = c.cohorts[i]['_source'];
+          if (hit.name === 'Normal') {
+            hit.name = 'Normal, managed access';
+          }
           var datasets = {}
           for (var j=0; j< hit.datasets.length; j++) {
             var dataset = hit.datasets[j];
