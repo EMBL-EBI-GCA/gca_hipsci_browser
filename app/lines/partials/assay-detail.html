@@ -1,29 +1,27 @@
 <div class="panel panel-default"><div class="panel-body">
 
 <div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1"
-      ng-bind-html="CohortCtrl.mdContent | markdown"></div></div>
-  <div ng-if="CohortCtrl.apiError">
-      <span>API response: {{CohortCtrl.apiStatus}} {{CohortCtrl.apiStatusText}}</span>
-  </div>
+      ng-bind-html="AssayCtrl.mdContent | markdown"></div></div>
+  <div ng-if="AssayCtrl.routeError"> {{AssayCtrl.routeError}} </div>
 
   <hr/>
-  <h3 class="text-center" ng-if="CohortCtrl.disease">Cell lines from the {{CohortCtrl.disease}} cohort</h3>
+  <h3 class="text-center" ng-if="AssayCtrl.assayName">Cell lines with {{AssayCtrl.assayName}} data</h3>
 
-    <list-panel ng-if="CohortCtrl.disease" document-type="CohortCtrl.documentType" export-filename="CohortCtrl.exportFilename">
-      <list-init-fields html-fields="CohortCtrl.fields" export-fields="CohortCtrl.fields"></list-init-fields>
-      <invisible-filter field="calculated.bankingStatus" term="'Selected for banking'" active="CohortCtrl.tickedPublishFilter"></invisible-filter>
-      <invisible-filter field="diseaseStatus.value" term="CohortCtrl.disease"></invisible-filter>
+    <list-panel ng-if="AssayCtrl.assayName" document-type="AssayCtrl.documentType" export-filename="AssayCtrl.exportFilename">
+      <list-init-fields html-fields="AssayCtrl.fields" export-fields="AssayCtrl.fields"></list-init-fields>
+      <invisible-filter field="calculated.bankingStatus" term="'Selected for banking'" active="AssayCtrl.tickedPublishFilter"></invisible-filter>
+      <invisible-filter field="assays.name" term="AssayCtrl.assayName"></invisible-filter>
         <div class="row list-panel">
             <div class="col-md-3 fixd-width-lhs">
                 <facets-clear text="Clear filters"></facets-clear>
                 <form><div class="form-group">
-                <div class="checkbox"><input type="checkbox" ng-model="CohortCtrl.tickedPublishFilter"></input> Display only lines that are selected for banking</div>
+                <div class="checkbox"><input type="checkbox" ng-model="AssayCtrl.tickedPublishFilter"></input> Display only lines that are selected for banking</div>
                 </div></form>
                 <div class="row">
                 <div class="col-sm-6 col-md-12">
-                <aggs-filter title="Banking availability" field="calculated.bankingStatus" modal-md="banking_status" sort-function="CohortCtrl.bankingSortFn"></aggs-filter>
+                <aggs-filter title="Banking availability" field="calculated.bankingStatus" modal-md="banking_status" sort-function="LineCtrl.bankingSortFn"></aggs-filter>
                 </div>
-                <div class="col-sm-6 col-md-12" ng-if="CohortCtrl.disease === 'Normal'">
+                <div class="col-sm-6 col-md-12">
                 <aggs-filter title="Data Access" field="calculated.access" modal-md="access"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
@@ -33,7 +31,13 @@
                 <aggs-filter title="Source Material" field="sourceMaterial.value"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
+                <aggs-filter title="Disease Status" field="diseaseStatus.value" modal-md="disease"></aggs-filter>
+                </div>
+                <div class="col-sm-6 col-md-12">
                 <aggs-filter title="Age" field="donor.age.indexed"></aggs-filter>
+                </div>
+                <div class="col-sm-6 col-md-12">
+                <aggs-filter title="Tissue Provider" field="tissueProvider"></aggs-filter>
                 </div>
                 </div>
             </div>
@@ -58,7 +62,7 @@
                 </div>
 
             <div class="table-responsive">
-                <list-table class="matrix table table-striped" process-hit-fields="CohortCtrl.processHitFields" compile-params="{assays: CohortCtrl.assays}"
+                <list-table class="matrix table table-striped" process-hit-fields="AssayCtrl.processHitFields" compile-params="{assays: AssayCtrl.assays}"
                         default-sort-fields="[['_score', false],['calculated.assayCount',false],['bankingStatus', true]]" tr-class="slanted">
                 </list-table>
             </div>

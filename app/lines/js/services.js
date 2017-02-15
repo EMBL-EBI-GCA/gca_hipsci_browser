@@ -98,7 +98,7 @@ services.factory('lineTableVars', function lineTableVarsFactory() {
               {short: 'gexarray', long: 'Expression array'},
               {short: 'exomeseq', long: 'Exome-seq'},
               {short: 'rnaseq', long: 'RNA-seq'},
-              {short: 'wgs seq', long: 'Whole genome sequencing'},
+              {short: 'wgs-seq', long: 'Whole genome sequencing'},
               {short: 'mtarray', long: 'Methylation array'},
               {short: 'proteomics', long: 'Proteomics'},
               {short: 'cellbiol-fn', long: 'Cellular phenotyping'},

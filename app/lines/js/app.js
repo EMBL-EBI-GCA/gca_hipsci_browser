@@ -60,6 +60,11 @@ hipsciBrowser.config(['$routeProvider',
       controller: 'CohortDetailCtrl',
       controllerAs: 'CohortCtrl',
     }).
+    when('/assays/:assayName', {
+      templateUrl: 'partials/assay-detail.html?ver=20170215',
+      controller: 'AssayDetailCtrl',
+      controllerAs: 'AssayCtrl',
+    }).
     when('/api', {
       templateUrl: 'partials/api.html?ver=20170215',
     }).

@@ -531,3 +531,31 @@ controllers.controller('CohortDetailCtrl', ['$routeParams', 'apiClient', '$http'
       });
   }
 ]);
+
+controllers.controller('AssayDetailCtrl', ['$routeParams', '$http', 'lineTableVars',
+  function($routeParams, $http, lineTableVars) {
+    var c = this;
+    c.documentType = 'cellLine';
+    c.exportFilename = 'hipsci-'+$routeParams.assayName;
+    c.tickedPublishFilter = true;
+
+    c.assays = lineTableVars.assays;
+    c.fields = lineTableVars.fields;
+    c.processHitFields = lineTableVars.processHitFields;
+    c.bankingSortFn = lineTableVars.bankingSortFn;
+
+    for (var i=0; i<c.assays.length; i++) {
+      if (c.assays[i].short === $routeParams.assayName) {
+        c.assayName = c.assays[i].long;
+      }
+    }
+    if (!c.assayName) {
+      c.routeError = '404 Not Found';
+    }
+
+    $http.get('md/assays/'+$routeParams.assayName+'.md?ver=20160908b', {responseType: 'text', cache: true
+      }).success(function(data) {
+          c.mdContent = data;
+      });
+  }
+]);
