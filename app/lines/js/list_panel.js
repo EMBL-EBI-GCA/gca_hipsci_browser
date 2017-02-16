@@ -97,6 +97,11 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
             c.unbindRouteUpdate = null;
         }
       }
+      $scope.$on('$detroy', function() {
+        if (c.unbindRouteUpdate) {
+          c.unbindRouteUpdate();
+        }
+      });
 
       c.loadFromUrl = function(firstView, routeChangeFn) {
           c.routeUpdateUnlisten();
