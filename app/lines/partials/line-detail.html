@@ -168,17 +168,25 @@
         <section ng-if="data.cnv">
         <h3 class="item-detail-section">Custom CNV check</h3>
         <hr/>
-        <dl class="dl-horizontal dl-horizontal-wide">
-            <div ng-if="data.cnv.hasOwnProperty('num_different_regions')">
-                <dt>Number of regions different from primary tissue:</dt>
-                <dd ng-bind="data.cnv.num_different_regions"></dd>
-            </div>
-            <div ng-if="data.cnv.hasOwnProperty('length_different_regions_Mbp')">
-                <dt>Length of differences from primary tissue:</dt>
-                <dd><span ng-bind="data.cnv.length_different_regions_Mbp"></span> Mbp</dd>
-            </div>
-        </dl>
         <div class="row">
+
+        <div class="alert alert-warning col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1" ng-if="data.cnv.hasOwnProperty('comments')">
+          <div ng-repeat="comment in data.cnv.comments"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {{comment}}</div>
+        </div>
+
+        <div class="col-md-12">
+          <dl class="dl-horizontal dl-horizontal-wide">
+              <div ng-if="data.cnv.hasOwnProperty('num_different_regions')">
+                  <dt>Number of regions different from primary tissue:</dt>
+                  <dd ng-bind="data.cnv.num_different_regions"></dd>
+              </div>
+              <div ng-if="data.cnv.hasOwnProperty('length_different_regions_Mbp')">
+                  <dt>Length of differences from primary tissue:</dt>
+                  <dd><span ng-bind="data.cnv.length_different_regions_Mbp"></span> Mbp</dd>
+              </div>
+          </dl>
+        </col>
+
         <div class="col-md-6" ng-if="data.cnv.summary_image">
             <div class="item-detail-img">
             <a ng-href="ftp://ftp.hipsci.ebi.ac.uk{{data.cnv.summary_image}}"><img class="img-responsive center-block" ng-src="http://ftp.hipsci.ebi.ac.uk{{data.cnv.summary_image}}" alt="CNV summary"></img></a>
