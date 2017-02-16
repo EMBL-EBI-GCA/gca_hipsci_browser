@@ -97,6 +97,9 @@
                     },
                     "num_different_regions": {
                         "type": "integer"
+                    },
+                    "comments": {
+                        "type": "string"
                     }
                 }
             },
