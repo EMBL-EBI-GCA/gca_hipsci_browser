@@ -87,15 +87,18 @@ p .left-image{
 .facet ul.list-group.collapsed{
   margin-left: -1px;
   padding-left: 1px; /* padding and margin compensate each other, but are only here to force IE 8 to redraw the ul when collapsed class is removed */
-  max-height: 250px;
+  max-height: 180px;
   overflow: hidden;
 }
 
 /*Show hide button appears in the factet title bar*/
 .facet button {
   position: absolute;
-  top: 10px;
+  top: 5px;
   right: 10px;
+}
+.facet li.list-group-item {
+  padding: 7px 10px;
 }
 /* Facet filter query input*/
 .list-search-box{
@@ -217,6 +220,17 @@ table.matrix td.purchase-button a.btn {
 table.matrix td.name {
   white-space: nowrap;
 }
+.cohort-table table.matrix td.disease-status,
+.mtarray-table table.matrix td.mtarray,
+.gtarray-table table.matrix td.gtarray,
+.gexarray-table table.matrix td.gexarray,
+.rnaseq-table table.matrix td.rnaseq,
+.exomeseq-table table.matrix td.exomeseq,
+.proteomics-table table.matrix td.proteomics,
+.cellbiol-fn-table table.matrix td.cellbiol-fn,
+.wgs-seq-table table.matrix td.wgs-seq {
+  background-color: #f5ecb0;
+}
 
 table.matrix td div.wide-td{
   max-width: 300px;
@@ -265,12 +279,15 @@ table.matrix td.matrix-dot .matrix-dot-orange{
 
 table.matrix td .bank-selected {
   color: red;
+  font-weight: bold;
 }
 table.matrix td .banked-ecacc {
   color: GoldenRod;
+  font-weight: bold;
 }
 table.matrix td .banked-ebisc {
   color: green;
+  font-weight: bold;
 }
 
 /* layout for matrix and files page with fixed width lhs column */

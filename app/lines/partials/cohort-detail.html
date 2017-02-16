@@ -7,7 +7,6 @@
   </div>
 
   <hr/>
-  <h3 class="text-center" ng-if="CohortCtrl.disease">Cell lines from the {{CohortCtrl.disease}} cohort</h3>
 
     <list-panel ng-if="CohortCtrl.disease" document-type="CohortCtrl.documentType" export-filename="CohortCtrl.exportFilename">
       <list-init-fields html-fields="CohortCtrl.fields" export-fields="CohortCtrl.fields"></list-init-fields>
@@ -57,7 +56,7 @@
                     <list-search-box label="Search cell lines"></list-search-box>
                 </div>
 
-            <div class="table-responsive">
+            <div class="table-responsive cohort-table">
                 <list-table class="matrix table table-striped" process-hit-fields="CohortCtrl.processHitFields" compile-params="{assays: CohortCtrl.assays}"
                         default-sort-fields="[['_score', false],['calculated.assayCount',false],['bankingStatus', true]]" tr-class="slanted">
                 </list-table>

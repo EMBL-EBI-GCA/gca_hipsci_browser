@@ -547,6 +547,7 @@ controllers.controller('AssayDetailCtrl', ['$routeParams', '$http', 'lineTableVa
     for (var i=0; i<c.assays.length; i++) {
       if (c.assays[i].short === $routeParams.assayName) {
         c.assayName = c.assays[i].long;
+        c.assayShortName = c.assays[i].short;
       }
     }
     if (!c.assayName) {
