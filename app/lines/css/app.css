@@ -161,7 +161,7 @@ body { padding-top: 60px; }
 
 /* matrix grid styles */
 div.matrix-wrapper {
-  padding-right: 80px; /* to prevent slanting heading to overflow out of the page */
+  padding-right: 60px; /* to prevent slanting heading to overflow out of the page */
 }
 html[data-useragent*='MSIE 8'] div.matrix-wrapper {
   padding-right: 0; /* not need in IE 8 since the heading are not slanting */
@@ -197,7 +197,6 @@ html[data-useragent*='MSIE 8'] table.matrix th.matrix-dot > div > span {
   padding: 0;
 }
 table.matrix th.purchase-button {
-  border: none;
   width: 0px;
 }
 table.matrix td.valign {
@@ -208,13 +207,8 @@ table.matrix td.matrix-dot {
   border-left: thin solid #ddd;
   overflow: hidden;
 }
-table.matrix td.purchase-button {
-  border-top: 0px;
-  background-color: rgb(255, 255, 255);
-  width: 110px;
-}
 table.matrix td.purchase-button a.btn {
-  width: 100%;
+  width: 110px;
 }
 
 table.matrix td.name {

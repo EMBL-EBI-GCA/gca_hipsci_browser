@@ -120,6 +120,10 @@
                     "surfaceCoating": {
                         "type": "string",
                         "index": "not_analyzed"
+                    },
+                    "summary": {
+                        "type": "string",
+                        "index": "not_analyzed"
                     }
                 }
             },

@@ -113,21 +113,21 @@ services.factory('lineTableVars', function lineTableVarsFactory() {
         {visible: false, sortable: true,  selectable: true,  esName: 'donor.age', label: 'Age'},
         {visible: false,  sortable: true,  selectable: true,  esName: 'sourceMaterial.value', label: 'Source Material'},
         {visible: false,  sortable: true,  selectable: true,  esName: 'tissueProvider', label: 'Tissue Provider'},
+        {visible: true,  sortable: true,  selectable: true,  esName: 'culture.summary', label: 'Culture'},
         {visible: false, sortable: true,  selectable: true,  esName: 'reprogramming.methodOfDerivation', label: 'Method of derivation'},
         {visible: false, sortable: true,  selectable: true,  esName: 'reprogramming.dateOfDerivation', label: 'Date of derivation'},
-        {visible: true,  sortable: false, selectable: false, esName: 'bioSamplesAccession', label: 'Biosample'},
+        {visible: true, sortable: false, selectable: false, esName: 'ecaccCatalogNumber', label: 'ECACC catalog number'},
+        {visible: false,  sortable: false, selectable: false, esName: 'bioSamplesAccession', label: 'Biosample'},
         {visible: true,  sortable: false, selectable: false, esName: 'openAccess', label: 'Open access data'},
         {visible: true,  sortable: false, selectable: false, esName: 'bankingStatus', label: 'Bank status'},
 
         {visible: true,  sortable: false, selectable: false, esName: 'assays.name', label: 'Assays data available'},
-        {visible: true, sortable: false, selectable: false, esName: 'ecaccCatalogNumber', label: 'ECACC catalog number'},
     ];
     for (var i=0; i<f.fields.length; i++) {
         var field = f.fields[i];
         if (field.visible || field.selectable) {
             field.th = 
-                field.esName == 'bioSamplesAccession' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
-              : field.esName == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+field.label+'</span><md-modal modal-md="banking_status" title="Banked status"></md-modal></div></th>'
+                field.esName == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+field.label+'</span><md-modal modal-md="banking_status" title="Banked status"></md-modal></div></th>'
               : field.esName == 'openAccess' ? '<th class="matrix-dot"><div><span>Data access</span><md-modal modal-md="access" title="Data access"></md-modal></div></th>'
               : field.esName == 'assays.name' ? '<th ng-repeat="assay in compileParams.assays" class="matrix-dot assay"><div><span ng-bind="assay.short" ng-class="assay.short"></span></div></th>'
               : field.esName == 'diseaseStatus.value' ? '<th class="disease-status">'+field.label+'<md-modal modal-md="disease" title="Disease status"></md-modal></th>'
@@ -135,8 +135,7 @@ services.factory('lineTableVars', function lineTableVarsFactory() {
               : '<th>'+field.label+'</th>'
             var hitStr = 'hit['+i+']';
             field.td = 
-                field.esName == 'bioSamplesAccession' ? '<td class="matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item biosample" popover="Biosample" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
-              : field.esName == 'bankingStatus' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter" ng-class="'+hitStr+'.classes"></span></div></td>'
+                field.esName == 'bankingStatus' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter" ng-class="'+hitStr+'.classes"></span></div></td>'
               : field.esName == 'openAccess' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field.esName == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
               : field.esName == 'assays.name' ? '<td ng-repeat="assay in compileParams.assays" class="matrix-dot" ng-class="assay.short"><a ng-if="'+hitStr+'[$index]" ng-href="#/lines/{{hit[0]}}/{{assay.short}}"><div class="matrix-dot-item assay" popover="{{assay.long}}" popover-trigger="mouseenter">&#x25cf;</div></a></td>'

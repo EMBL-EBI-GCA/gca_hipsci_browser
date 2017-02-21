@@ -74,6 +74,11 @@
                 <dd ng-bind="data.donor.sex.value"></dd>
             </div>
 
+            <div ng-if="data.culture.summary">
+                <dt>Culture conditions:</dt>
+                <dd>{{data.culture.summary}} when banked</dd>
+            </div>
+
             <div ng-if="data.bioSamplesAccession">
                 <dt>Biosample:</dt>
                 <dd><a data-toggle="tooltip" title="test" ng-href="http://www.ebi.ac.uk/biosamples/sample/{{data.bioSamplesAccession}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span ng-bind="data.bioSamplesAccession"></span></a></dd>
@@ -81,7 +86,13 @@
 
             <div ng-if="data.certificateOfAnalysis.url">
                 <dt>Certificate of analysis:</dt>
-                <dd><a ng-href="{{data.certificateOfAnalysis.url}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> PDF</a></dd>
+                <dd><a ng-href="{{data.certificateOfAnalysis.url}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> CoA</a></dd>
+            </div>
+
+            <div ng-if="data.culture.medium">
+                <dt>SOP for culturing:</dt>
+                <dd ng-if="data.culture.medium == 'E8 media'"><a href="/documents/feeder-free-culture-culture-protocol.pdf" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> Feeder-free SOP</a></dd>
+                <dd ng-if="data.culture.medium == 'KOSR'"><a href="/documents/feeder-dependent-culture-culture-protocol.pdf" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> Feeder-dependent SOP</a></dd>
             </div>
         </dl>
         </section>

@@ -63,7 +63,7 @@
                 <aggs-filter title="Banking availability" field="calculated.bankingStatus" modal-md="banking_status" sort-function="LineCtrl.bankingSortFn"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
-                <aggs-filter title="Data Access" field="calculated.access" modal-md="access"></aggs-filter>
+                <aggs-filter title="Donor consent" field="calculated.access" modal-md="access"></aggs-filter>
                 </div>
                 <div class="col-sm-6 col-md-12">
                 <aggs-filter title="Assays" field="assays.name" multi-boolean="and" modal-md="assays"></aggs-filter>
@@ -102,7 +102,7 @@
                     <list-search-box label="Search cell lines"></list-search-box>
                 </div>
 
-            <div class="table-responsive">
+            <div class="table-responsive matrix-wrapper">
                 <list-table class="matrix table table-striped" process-hit-fields="LineCtrl.processHitFields" compile-params="{assays: LineCtrl.assays}"
                         default-sort-fields="[['_score', false],['calculated.assayCount',false],['bankingStatus', true]]" tr-class="slanted">
                 </list-table>
