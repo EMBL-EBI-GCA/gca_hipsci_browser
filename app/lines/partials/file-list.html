@@ -6,8 +6,9 @@
         <h1>Files</h1>
         <hr/>
 
+        <button type="button" class="btn btn-small btn-primary center-block hidden-md hidden-lg" ng-click="FileCtrl.cache.showFilters = !FileCtrl.cache.showFilters">{{FileCtrl.cache.showFilters ? 'Hide' : 'Apply'}} filters</button>
         <div class="row list-panel">
-            <div class="col-md-3 fixd-width-lhs">
+            <div class="col-md-3 fixd-width-lhs" ng-class="{'hidden-sm': !FileCtrl.cache.showFilters, 'hidden-xs': !FileCtrl.cache.showFilters}">
                 <facets-clear text="Clear filters"></facets-clear>
                 <div class="row">
                 <div class="col-sm-6 col-md-12">

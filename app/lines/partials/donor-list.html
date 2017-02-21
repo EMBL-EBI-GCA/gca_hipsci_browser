@@ -6,8 +6,9 @@
         <h1>Donors</h1>
         <hr/>
 
+        <button type="button" class="btn btn-small btn-primary center-block hidden-md hidden-lg" ng-click="DonorCtrl.cache.showFilters = !DonorCtrl.cache.showFilters">{{DonorCtrl.cache.showFilters ? 'Hide' : 'Apply'}} filters</button>
         <div class="row list-panel">
-            <div class="col-md-3 fixd-width-lhs">
+            <div class="col-md-3 fixd-width-lhs" ng-class="{'hidden-sm': !DonorCtrl.cache.showFilters, 'hidden-xs': !DonorCtrl.cache.showFilters}">
                 <facets-clear text="Clear filters"></facets-clear>
                 <div class="row">
                 <div class="col-sm-6 col-md-12">

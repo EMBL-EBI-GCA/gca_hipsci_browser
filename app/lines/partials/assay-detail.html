@@ -10,8 +10,9 @@
       <list-init-fields html-fields="AssayCtrl.fields" export-fields="AssayCtrl.fields"></list-init-fields>
       <invisible-filter field="calculated.bankingStatus" term="'Selected for banking'" active="AssayCtrl.tickedPublishFilter"></invisible-filter>
       <invisible-filter field="assays.name" term="AssayCtrl.assayName"></invisible-filter>
+      <button type="button" class="btn btn-small btn-primary center-block hidden-md hidden-lg" ng-click="AssayCtrl.cache.showFilters = !AssayCtrl.cache.showFilters">{{AssayCtrl.cache.showFilters ? 'Hide' : 'Apply'}} filters</button>
         <div class="row list-panel">
-            <div class="col-md-3 fixd-width-lhs">
+            <div class="col-md-3 fixd-width-lhs" ng-class="{'hidden-sm': !AssayCtrl.cache.showFilters, 'hidden-xs': !AssayCtrl.cache.showFilters}">
                 <facets-clear text="Clear filters"></facets-clear>
                 <form><div class="form-group">
                 <div class="checkbox"><input type="checkbox" ng-model="AssayCtrl.tickedPublishFilter"></input> Display only lines that are selected for banking</div>

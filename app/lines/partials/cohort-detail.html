@@ -12,8 +12,9 @@
       <list-init-fields html-fields="CohortCtrl.fields" export-fields="CohortCtrl.fields"></list-init-fields>
       <invisible-filter field="calculated.bankingStatus" term="'Selected for banking'" active="CohortCtrl.tickedPublishFilter"></invisible-filter>
       <invisible-filter field="diseaseStatus.value" term="CohortCtrl.disease"></invisible-filter>
+      <button type="button" class="btn btn-small btn-primary center-block hidden-md hidden-lg" ng-click="CohortCtrl.cache.showFilters = !CohortCtrl.cache.showFilters">{{CohortCtrl.cache.showFilters ? 'Hide' : 'Apply'}} filters</button>
         <div class="row list-panel">
-            <div class="col-md-3 fixd-width-lhs">
+            <div class="col-md-3 fixd-width-lhs" ng-class="{'hidden-sm': !CohortCtrl.cache.showFilters, 'hidden-xs': !CohortCtrl.cache.showFilters}">
                 <facets-clear text="Clear filters"></facets-clear>
                 <form><div class="form-group">
                 <div class="checkbox"><input type="checkbox" ng-model="CohortCtrl.tickedPublishFilter"></input> Display only lines that are selected for banking</div>

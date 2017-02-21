@@ -52,8 +52,9 @@
     <list-panel document-type="LineCtrl.documentType" export-filename="LineCtrl.exportFilename">
     <list-init-fields html-fields="LineCtrl.fields" export-fields="LineCtrl.fields"></list-init-fields>
     <invisible-filter field="calculated.bankingStatus" term="'Selected for banking'" active="LineCtrl.tickedPublishFilter"></invisible-filter>
+    <button type="button" class="btn btn-small btn-primary center-block hidden-md hidden-lg" ng-click="LineCtrl.cache.showFilters = !LineCtrl.cache.showFilters">{{LineCtrl.cache.showFilters ? 'Hide' : 'Apply'}} filters</button>
         <div class="row list-panel">
-            <div class="col-md-3 fixd-width-lhs">
+            <div class="col-md-3 fixd-width-lhs" ng-class="{'hidden-sm': !LineCtrl.cache.showFilters, 'hidden-xs': !LineCtrl.cache.showFilters}">
                 <facets-clear text="Clear filters"></facets-clear>
                 <form><div class="form-group">
                 <div class="checkbox"><input type="checkbox" ng-model="LineCtrl.tickedPublishFilter"></input> Display only lines that are selected for banking</div>
