@@ -128,7 +128,7 @@ services.factory('lineTableVars', function lineTableVarsFactory() {
         if (field.visible || field.selectable) {
             field.th = 
                 field.esName == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+field.label+'</span><md-modal modal-md="banking_status" title="Banked status"></md-modal></div></th>'
-              : field.esName == 'openAccess' ? '<th class="matrix-dot"><div><span>Data access</span><md-modal modal-md="access" title="Data access"></md-modal></div></th>'
+              : field.esName == 'openAccess' ? '<th class="matrix-dot"><div><span>Donor consent</span><md-modal modal-md="access" title="Data access"></md-modal></div></th>'
               : field.esName == 'assays.name' ? '<th ng-repeat="assay in compileParams.assays" class="matrix-dot assay"><div><span ng-bind="assay.short" ng-class="assay.short"></span></div></th>'
               : field.esName == 'diseaseStatus.value' ? '<th class="disease-status">'+field.label+'<md-modal modal-md="disease" title="Disease status"></md-modal></th>'
               : field.esName == 'ecaccCatalogNumber' ? '<th class="purchase-button"></th>'
