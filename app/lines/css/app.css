@@ -1,5 +1,6 @@
 /* app css stylesheet */
 body {
+  padding-top: 75px;
   background-color: rgb(235,235,235);
   background: linear-gradient(to bottom, #FBFDFD 0%, #FAFAFA 35%) repeat scroll 0% 0% transparent;
 }
@@ -436,20 +437,36 @@ ul.data-portal-nav-tabs {
              url('pontiac_regular-webfont.ttf') format('truetype'),
              url('pontiac_regular-webfont.svg#webfont') format('svg');
 }
-#footer {
+@font-face{
+        font-family: 'pontiac_bold-webfont';
+        src: url('pontiac_bold-webfont.eot');
+        src: url('pontiac_bold-webfont.eot?#iefix') format('embedded-opentype'),
+             url('pontiac_bold-webfont.woff') format('woff'),
+             url('pontiac_bold-webfont.ttf') format('truetype'),
+             url('pontiac_bold-webfont.svg#webfont') format('svg');
+}
+
+#footer, #topmenu {
   background:#252525;
   color:#fff;
-  text-align:center;
   font-size: 14px;
   line-height: 1.6;
   font-weight: 400;
   letter-spacing: 1.5px;
+}
+#footer {
+  text-align:center;
   font-family:"pontiac_regular-webfont", Arial, sans-serif;
 }
 
-#footer > .container-fluid {
-  width: 80%;
+#footer > .container-fluid, #topmenu > .container-fluid {
   max-width: 1200px;
+}
+@media (min-width: 768px) {
+  #footer > .container-fluid, #topmenu > .container-fluid  {
+    width: 80%;
+    padding: 0;
+  }
 }
 #footer h5 {
   text-transform: uppercase;
@@ -477,4 +494,43 @@ ul.data-portal-nav-tabs {
   padding: 100px 0 50px;
   clear: both;
   font-size: 0.8em;
+}
+
+#topmenu {
+  position:fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9999;
+  font-family:"pontiac_bold-webfont", Arial, sans-serif;
+}
+#logo {
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+#logo a {
+  display: block;
+}
+#menu {
+  padding-top: 5px;
+  text-align: right;
+}
+#menu a{
+  font-family: "pontiac_bold-webfont", Arial, sans-serif;
+  text-decoration: none;
+  font-size: 1.1em;
+  text-transform: uppercase;
+  color: inherit;
+}
+#menu nav a {
+  display: block;
+  padding: 14px 20px;
+}
+#menu ul {
+  padding-left: 0;
+  margin: 0;
+  float: right;
+}
+#menu ul li {
+  list-style-type: none;
+  display: inline-block;
+  float: left;
 }
