@@ -199,13 +199,16 @@ html[data-useragent*='MSIE 8'] table.matrix th.matrix-dot > div > span {
 table.matrix th.purchase-button {
   width: 0px;
 }
-table.matrix td.valign {
+table.matrix > tbody > tr > td, table.matrix td.valign {
     vertical-align: middle;
 }
 table.matrix td.matrix-dot {
   text-align: center;
   border-left: thin solid #ddd;
   overflow: hidden;
+}
+table.matrix td.purchase-button {
+  padding: 4px;
 }
 table.matrix td.purchase-button a.btn {
   width: 110px;
