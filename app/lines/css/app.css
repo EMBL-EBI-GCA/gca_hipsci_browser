@@ -134,8 +134,6 @@ a.download {
   font-weight: bolder;
   text-decoration: underline;
 }
-/*padding for the fixed position nav bar */
-body { padding-top: 60px; } 
 
 /*angular ui bootstrap css fix see http://angular-ui.github.io/bootstrap/*/
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
@@ -390,9 +388,6 @@ ul.dropdown-menu div.checkbox {
         margin-top:10px;
         height: auto;
     }
-    .view-container {
-        margin-top: 30px;
-    }
 }
 
 @media (max-width: 991px) { /* @screen-md-min */
@@ -430,4 +425,5 @@ div.dismiss-button-container {
 
 ul.data-portal-nav-tabs {
   border-bottom: 0;
+  margin-top: 0;
 }
