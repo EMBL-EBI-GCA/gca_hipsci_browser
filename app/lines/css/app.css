@@ -201,6 +201,8 @@ table.matrix th.purchase-button {
 }
 table.matrix > tbody > tr > td, table.matrix td.valign {
     vertical-align: middle;
+    padding: 4px 8px;
+    height: 39px;
 }
 table.matrix td.matrix-dot {
   text-align: center;
