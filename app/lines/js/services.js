@@ -79,7 +79,7 @@ services.directive('mdModal', ['$modal', '$http', function($modal, $http) {
                 });
             }
             scope.modalInstance = $modal.open({
-                templateUrl: 'partials/modal.html?ver=20160204',
+                templateUrl: 'partials/modal.html?ver=20170308',
                 scope: scope,
             });
             scope.unbindRouteUpdate = scope.$on('$routeChangeStart', function(event, object) {
