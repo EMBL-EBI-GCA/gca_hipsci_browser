@@ -11,25 +11,6 @@ hr {
   margin: 15px 0;
 }
 
-
-/*Print icon*/
-div.print {
-  position: relative;
-}
-div.print a {
-  cursor: pointer;
-  position: absolute;
-  margin: 11px;
-  right: 0;
-  z-index: 100;
-}
-@media print {
-  div.print {
-    display: none;
-  }
-}
-
-
 /*Sort BG*/
 .sort {
   background-repeat: no-repeat;
@@ -434,11 +415,8 @@ a.purchase-btn {
   margin-left: 30px;
 }
 
-@media (max-width: 1440px) { /* @screen-md-min */
-  h1.browser-heading {
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
+.panel-body h1 {
+  margin: 0 0 10px;
 }
 
 @media (min-width: 768px) { /* @screen-sm-min */
@@ -448,4 +426,8 @@ a.purchase-btn {
 }
 div.dismiss-button-container {
   margin-bottom: 14px;
+}
+
+ul.data-portal-nav-tabs {
+  border-bottom: 0;
 }

@@ -16,3 +16,18 @@ navigation.directive('navigationBanner', ['$location', function($location) {
         }
     };
 }]);
+
+navigation.directive('navigationTabs', ['$location', function($location) {
+    var activeLink = function (viewLocation) {
+        return viewLocation == $location.path();
+    };
+
+    return {
+        restrict: 'E',
+        templateUrl : 'partials/navigation-tabs.html?ver=20170220',
+        scope : true,
+        link : function (scope) {
+            scope.activeLink = activeLink;
+        }
+    };
+}]);
