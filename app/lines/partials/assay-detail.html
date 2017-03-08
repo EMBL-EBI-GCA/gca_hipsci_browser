@@ -61,7 +61,7 @@
                     <list-search-box label="Search cell lines"></list-search-box>
                 </div>
 
-            <div class="table-responsive" ng-class="AssayCtrl.assayShortName+'-table'">
+            <div class="table-responsive matrix-wrapper" ng-class="AssayCtrl.assayShortName+'-table'">
                 <list-table class="matrix table table-striped" process-hit-fields="AssayCtrl.processHitFields" compile-params="{assays: AssayCtrl.assays}"
                         default-sort-fields="[['_score', false],['calculated.assayCount',false],['bankingStatus', true]]" tr-class="slanted">
                 </list-table>
