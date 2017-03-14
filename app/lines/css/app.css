@@ -513,24 +513,97 @@ ul.data-portal-nav-tabs {
   padding-top: 5px;
   text-align: right;
 }
-#menu a{
+#menu a, #menu button {
   font-family: "pontiac_bold-webfont", Arial, sans-serif;
   text-decoration: none;
   font-size: 1.1em;
   text-transform: uppercase;
   color: inherit;
-}
-#menu nav a {
   display: block;
   padding: 14px 20px;
+}
+#menu button  {
+  display: none;
+  width: 100%;
+  text-align: right;
+  background-color: inherit;
 }
 #menu ul {
   padding-left: 0;
   margin: 0;
+}
+#menu ul.menu-1 {
   float: right;
 }
 #menu ul li {
   list-style-type: none;
   display: inline-block;
   float: left;
+  position: relative;
+}
+#menu li ul {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 53px;
+  background:#252525;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  width: 180px;
+}
+#menu li li ul {
+  top: 0;
+  left: -180px;
+}
+#menu ul.menu-1 > a {
+  display: none;
+}
+
+@media (min-width: 901px) {
+  #menu nav a:hover, #menu > button:hover {
+    background-color: black;
+    color: rgb(15, 160, 206);
+  }
+  #menu li:hover > ul {
+    display: block;
+  }
+}
+@media (max-width: 900px) {
+  #menu button, #menu ul.menu-1, #menu li ul {
+    display: block;
+  }
+  #menu li ul button {
+    text-align: left;
+  }
+  #menu li ul {
+    width: 100%;
+    background-color: rgb(33,33,33);
+  }
+  #menu li li ul {
+    background-color: black;
+  }
+  #menu a, #menu button {
+    text-decoration: none;
+    text-transform: none;
+  }
+  #menu li.has-dropdown > a {
+    display: none;
+  }
+  #menu ul.menu-1.menu-collapse, #menu li > ul.menu-collapse {
+    display: none;
+  }
+  #menu ul.menu-1 {
+    float: none;
+  }
+  #menu ul.menu-1 li {
+    display: block;
+    float: none;
+  }
+  #menu ul.menu-1 ul {
+    position: static;
+  }
+  #menu a{
+    text-transform: none;
+  }
 }
