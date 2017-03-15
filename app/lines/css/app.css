@@ -526,7 +526,7 @@ ul.data-portal-nav-tabs {
   display: none;
   width: 100%;
   text-align: right;
-  background-color: inherit;
+  background-color: transparent;
 }
 #menu ul {
   padding-left: 0;
