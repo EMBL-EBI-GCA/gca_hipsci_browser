@@ -499,7 +499,7 @@ ul.data-portal-nav-tabs {
 #topmenu {
   position:fixed;
   top: 0; left: 0; right: 0;
-  z-index: 9999;
+  z-index: 999;
   font-family:"pontiac_bold-webfont", Arial, sans-serif;
 }
 #logo {
