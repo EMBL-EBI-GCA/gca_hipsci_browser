@@ -27,30 +27,6 @@ hr {
 	background-image: url(../img/desc.gif);
 }
 
-/*footer images should all scale to the height of the blueprint logo, but keep their aspect ratio*/
-.footer div.logo {
-  text-align: center;
-}
-.footer div.logo:first-child {
-  text-align: left;
-}
-.footer div.logo:last-child {
-  text-align: right;
-}
-@media (max-width: 767px) { /* @screen-xs-max */
-  .footer div.logo {
-    text-align: center !important;
-    margin-bottom: 15px;
-  }
-}
-.footer  {
-  font-size: 11px;
-  padding-bottom: 15px;
-}
-.footer .right{
-  text-align: right;
-}
-
 /* fixed height logo images */
 img.logo {
   height: 54px;
@@ -489,6 +465,17 @@ ul.data-portal-nav-tabs {
 #foot1 a{
   text-decoration: none;
   color: inherit;
+}
+#foot1 a.img-link {
+  display: inline-block;
+}
+#foot1 a.img-link img {
+  max-height: 60px;
+}
+@media (max-width: 1200px) {
+  #foot1 a.img-link img {
+    max-height: 50px;
+  }
 }
 #disc {
   padding: 100px 0 50px;
