@@ -9,7 +9,7 @@ navigation.directive('navigationBanner', [function() {
 
     return {
         restrict: 'E',
-        templateUrl : 'partials/navigation.html?ver=20170314',
+        templateUrl : 'partials/navigation.html?ver=20170320',
         scope : true,
         link : function (scope) {
             scope.collapsed = {};
@@ -18,6 +18,11 @@ navigation.directive('navigationBanner', [function() {
             }
             scope.toggleCollapse = function(label) {
               scope.collapsed[label] = !scope.isCollapsed(label);
+            }
+            scope.submit = function() {
+              if (scope.searchTerm) {
+                window.location.href="http://www.hipsci.org/search/#?q="+scope.searchTerm;
+              }
             }
         }
     };

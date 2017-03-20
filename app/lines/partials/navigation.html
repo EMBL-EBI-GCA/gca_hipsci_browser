@@ -1,10 +1,15 @@
 <div id="topmenu"><div class="container-fluid">
   <div class="row">
-    <div class="col-md-3 col-sm-4 col-xs-4" id="logo">
+    <div class="col-md-2 col-sm-2 col-xs-4" id="logo">
       <a href="index.html" alt="HipSci"> <img src="img/logo.png" alt="HipSci" ></a>
     </div>
-    <div class="col-md-9 col-sm-8 col-xs-8" id="menu">
+    <div class="col-md-10 col-sm-10 col-xs-8" id="menu">
       <button class="btn" ng-click="toggleCollapse('menu')">Menu</button>
+      <form ng-submit="submit()" class="form-inline">
+        <div class="form-group"><input type="text" ng-model="searchTerm" name="text" class="form-control"></div>
+        <div class="form-group"><input type="image" name="submit" src="img/icos.png"></div>
+      </form>
+      <div class="clearfix visible-xs-block"></div>
       <nav><ul class="menu-1" ng-class="isCollapsed('menu') ? 'menu-collapse' : ''">
         <li class="has-dropdown">
           <a href="/">Home</a>

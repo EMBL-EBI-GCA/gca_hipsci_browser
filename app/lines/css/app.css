@@ -439,7 +439,7 @@ ul.data-portal-nav-tabs {
   max-width: 1200px;
 }
 @media (min-width: 768px) {
-  #footer > .container-fluid, #topmenu > .container-fluid  {
+  #footer > .container-fluid{
     width: 80%;
     padding: 0;
   }
@@ -500,6 +500,15 @@ ul.data-portal-nav-tabs {
   padding-top: 5px;
   text-align: right;
 }
+#menu > form {
+  float: right;
+  padding: 8px 20px;
+}
+#menu > form div.form-group {
+  display: inline-block;
+  margin-bottom: 0;
+  vertical-align: middle;
+}
 #menu a, #menu button {
   font-family: "pontiac_bold-webfont", Arial, sans-serif;
   text-decoration: none;
@@ -514,6 +523,10 @@ ul.data-portal-nav-tabs {
   width: 100%;
   text-align: right;
   background-color: transparent;
+}
+#menu > button  {
+  float: right;
+  width: auto;
 }
 #menu ul {
   padding-left: 0;
