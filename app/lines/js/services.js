@@ -157,7 +157,7 @@ services.factory('lineTableVars', function lineTableVarsFactory() {
                 processedFields[i] = {letter: '', text: ''};
                 if (hitFields.hasOwnProperty(field.esName)) {
                     processedFields[i].text = jQuery.grep(hitFields[field.esName], function(str) {return ! /shipped/i.test(str)}).join(', ');
-                    processedFields[i].classes = [];
+                    processedFields[i].classes = ['b-status'];
                     processedFields[i].letter = /banked/i.test(processedFields[i].text) ? 'B'
                                             : /pending/i.test(processedFields[i].text) ? 'P'
                                             : /not selected/i.test(processedFields[i].text) ? 'N'
