@@ -292,7 +292,7 @@ controllers.controller('DonorListCtrl', function() {
             field.th = 
                 field.esName == 'bioSamplesAccession' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
               : field.esName == 'cellLines.name' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
-              : field.esName == 'diseaseStatus.value' ? '<th>'+field.label+'<md-modal modal-md="disease" title="Disease status"></md-modal></th>'
+              : field.esName == 'diseaseStatus.value' ? '<th>'+field.label+'</th>'
               : '<th>'+field.label+'</th>'
             var hitStr = 'hit['+i+']';
             field.td = 

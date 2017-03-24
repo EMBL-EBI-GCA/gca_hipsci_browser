@@ -1,23 +1,39 @@
 
-###Managed access data
+All cell lines from donors with rare diseases are classed as "managed access".
 
-The consent agreement of some HipSci donors authorises release of [individually unique data](/data/access#unique)
-only for specific research use to bona fide researchers.
-Cell lines on this page are marked as 'Managed access' if the donor's individually unique data are bound by these restrictions.
+Cell lines from our normal healthy donors are either "managed access" or "open access" depending on the ethics under which they were collected.
 
-Managed access data are stored in the [EGA](http://www.ebi.ac.uk/ega) archive.
-For access to
-these data, researchers must read the Data Access Agreement documents([pdf](/documents/HipSci_Normals_DAA_v3.2_form.pdf), [doc](/documents/HipSci_Normals_DAA_v3.2_form.doc)) and
-register for access via WTSI's [Electronic Data Access Mechanism](https://www.sanger.ac.uk/legal/DAA/MasterController).
+## Managed access 
 
-###Open access data
+The recipient of a managed access cell line agrees that:
 
-The consent agreement of some HipSci donors authorises release of [individually unique data](/data/access#unique)
-to all parties, with no requirement to satisfy any data access restrictions.
-Cell lines on this page are marked as 'Open access' if there are no restrictions on the donor's individually unique data.
+* Genetic or genomic data it generates from use of the Cell Line will be held securely and only
+used in biomedical research
+* Genetic or genomic data will only be made available to third party
+researchers under a Data Access Agreement at least as stringent as the Data
+Access Agreement for data from the same Cell Lines at the EGA submitted by
+Sanger.
 
-###Individually-unique vs Non-unique
+Sanger encourages submission of genomic data to a managed access
+repository such as the [EGA](https://ega-archive.org) or [dbGAP](https://www.ncbi.nlm.nih.gov/gap),
+with access being restricted to use for biomedical research and subject to a
+Data Access Agreement at least as stringent as that for data from the same Cell
+Lines at the EGA submitted by Sanger.
 
-The difference between individually-unique and non-unique data is explained on HipSci's
-[data access information page](/data/access/). Managed access restrictions apply only to
-individually-unique data types; non-unique data can be distributed openly for any cell line.
+For the avoidance of doubt, genetic or
+genomic data from the Cell Lines may not be made available on the open
+internet.
+
+
+## Open access
+
+
+The recipient of an open access cell line agrees:
+
+* Not to make any attempt to identify the original donors of the Cell Lines.
+* To remove any
+data mapping to the Y chromosome (including sequencing reads, genotypes etc.)
+before making genetic or genomic data available to third parties.
+
+Once this has been done, data may be made available for biomedical research in an open
+access fashion, permitting redistribution of derived data sets.
