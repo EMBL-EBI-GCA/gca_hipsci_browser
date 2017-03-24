@@ -595,6 +595,7 @@ ul.data-portal-nav-tabs {
   }
   #menu ul.menu-1 {
     float: none;
+    margin-right: 50px;
   }
   #menu ul.menu-1 li {
     display: block;
