@@ -435,14 +435,8 @@ ul.data-portal-nav-tabs {
   font-family:"pontiac_regular-webfont", Arial, sans-serif;
 }
 
-#footer > .container-fluid, #topmenu > .container-fluid {
+#topmenu > .container-fluid {
   max-width: 1200px;
-}
-@media (min-width: 768px) {
-  #footer > .container-fluid{
-    width: 80%;
-    padding: 0;
-  }
 }
 #footer h5 {
   text-transform: uppercase;
@@ -568,8 +562,14 @@ ul.data-portal-nav-tabs {
   #menu li:hover > ul {
     display: block;
   }
+  .clearfix.small-menu-clearfix {
+    display: none;
+  }
 }
 @media (max-width: 900px) {
+  .clearfix.small-menu-clearfix {
+    display: block;
+  }
   #menu button, #menu ul.menu-1, #menu li ul {
     display: block;
   }

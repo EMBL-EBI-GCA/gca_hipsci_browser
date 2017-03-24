@@ -9,7 +9,7 @@ navigation.directive('navigationBanner', [function() {
 
     return {
         restrict: 'E',
-        templateUrl : 'partials/navigation.html?ver=20170320b',
+        templateUrl : 'partials/navigation.html?ver=20170324',
         scope : true,
         link : function (scope) {
             scope.collapsed = {};
