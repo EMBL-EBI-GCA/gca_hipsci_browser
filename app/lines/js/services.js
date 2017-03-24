@@ -73,7 +73,7 @@ services.directive('mdModal', ['$modal', '$http', function($modal, $http) {
     link: function(scope, iElement, iAttrs, ctrls) {
         scope.showModal = function() {
             if (!scope.modalContent) {
-                $http.get('md/'+scope.modalMd+'.md?ver=20160908b', {responseType: 'text', cache: true
+                $http.get('md/'+scope.modalMd+'.md?ver=20170324', {responseType: 'text', cache: true
                 }).success(function(data) {
                     scope.modalContent = data;
                 });
@@ -130,7 +130,7 @@ services.factory('lineTableVars', function lineTableVarsFactory() {
                 field.esName == 'bankingStatus' ? '<th class="matrix-dot"><div><span>'+field.label+'</span><md-modal modal-md="banking_status" title="Banked status"></md-modal></div></th>'
               : field.esName == 'openAccess' ? '<th class="matrix-dot"><div><span>Donor consent</span><md-modal modal-md="access" title="Data access"></md-modal></div></th>'
               : field.esName == 'assays.name' ? '<th ng-repeat="assay in compileParams.assays" class="matrix-dot assay"><div><span ng-bind="assay.short" ng-class="assay.short"></span></div></th>'
-              : field.esName == 'diseaseStatus.value' ? '<th class="disease-status">'+field.label+'<md-modal modal-md="disease" title="Disease status"></md-modal></th>'
+              : field.esName == 'diseaseStatus.value' ? '<th class="disease-status">'+field.label+'</th>'
               : field.esName == 'ecaccCatalogNumber' ? '<th class="purchase-button"></th>'
               : '<th>'+field.label+'</th>'
             var hitStr = 'hit['+i+']';
@@ -157,7 +157,7 @@ services.factory('lineTableVars', function lineTableVarsFactory() {
                 processedFields[i] = {letter: '', text: ''};
                 if (hitFields.hasOwnProperty(field.esName)) {
                     processedFields[i].text = jQuery.grep(hitFields[field.esName], function(str) {return ! /shipped/i.test(str)}).join(', ');
-                    processedFields[i].classes = [];
+                    processedFields[i].classes = ['b-status'];
                     processedFields[i].letter = /banked/i.test(processedFields[i].text) ? 'B'
                                             : /pending/i.test(processedFields[i].text) ? 'P'
                                             : /not selected/i.test(processedFields[i].text) ? 'N'
