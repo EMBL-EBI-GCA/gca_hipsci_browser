@@ -566,6 +566,8 @@ controllers.controller('SearchCtrl', ['$location', '$http', '$scope', 'apiClient
     var c = this;
     $scope.siteHits = [];
     $scope.lineHits = [];
+    $scope.numSiteHits = 0;
+    $scope.numLineHits = 0;
 
     $scope.q = $location.search().q;
     if ($scope.q) {
@@ -590,6 +592,7 @@ controllers.controller('SearchCtrl', ['$location', '$http', '$scope', 'apiClient
         body: postBody1
       }).then(function(resp) {
         $scope.siteHits = resp.data.hits.hits;
+        $scope.numSiteHits = resp.data.hits.total;
       });
 
       var postBody2 = {
@@ -598,14 +601,16 @@ controllers.controller('SearchCtrl', ['$location', '$http', '$scope', 'apiClient
             query: $scope.q,
             fields: ['searchable.free', 'searchable.fixed^3'],
             type: 'most_fields',
-          }
+          },
         },
+        size: 20,
       };
       apiClient.search({
         type: 'cellLine',
         body: postBody2
       }).then(function(resp) {
         $scope.lineHits = resp.data.hits.hits;
+        $scope.numLineHits = resp.data.hits.total;
       });
 
     };
