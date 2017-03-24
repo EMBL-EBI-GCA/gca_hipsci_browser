@@ -608,3 +608,13 @@ ul.data-portal-nav-tabs {
     text-transform: none;
   }
 }
+
+
+
+.search-results {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.search-results a.btn {
+  margin: 5px;
+}
