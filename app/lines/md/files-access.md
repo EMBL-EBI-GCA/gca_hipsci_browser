@@ -10,7 +10,7 @@ that are bound by these restrictions.
 
 Managed access data are stored in the [EGA](http://www.ebi.ac.uk/ega) archive.
 For access to
-these data, researchers must read the Data Access Agreement documents([pdf](/documents/HipSci_Normals_DAA_v3.2_form.pdf), [doc](/documents/HipSci_Normals_DAA_v3.2_form.doc)) and
+these data, researchers must read the Data Access Agreement documents([pdf](/documents/hipsci-daa.pdf)) and
 register for access via WTSI's [Electronic Data Access Mechanism](https://www.sanger.ac.uk/legal/DAA/MasterController).
 
 ###Open access data
