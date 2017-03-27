@@ -65,6 +65,11 @@ hipsciBrowser.config(['$routeProvider',
       controller: 'AssayDetailCtrl',
       controllerAs: 'AssayCtrl',
     }).
+    when('/search', {
+      templateUrl: 'partials/search.html?ver=20170324',
+      controller: 'SearchCtrl',
+      controllerAs: 'SearchCtrl',
+    }).
     when('/api', {
       templateUrl: 'partials/api.html?ver=20170324',
     }).

@@ -595,6 +595,7 @@ ul.data-portal-nav-tabs {
   }
   #menu ul.menu-1 {
     float: none;
+    margin-right: 50px;
   }
   #menu ul.menu-1 li {
     display: block;
@@ -606,4 +607,14 @@ ul.data-portal-nav-tabs {
   #menu a{
     text-transform: none;
   }
+}
+
+
+
+.search-results {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.search-results a.btn {
+  margin: 5px;
 }

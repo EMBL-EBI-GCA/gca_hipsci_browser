@@ -21,7 +21,7 @@ navigation.directive('navigationBanner', [function() {
             }
             scope.submit = function() {
               if (scope.searchTerm) {
-                window.location.href="http://www.hipsci.org/search/#?q="+scope.searchTerm;
+                window.location.href="#/search?q="+scope.searchTerm;
               }
             }
         }

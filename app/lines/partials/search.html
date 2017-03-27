@@ -1,0 +1,17 @@
+<div class="panel panel-default"><div class="panel-body">
+  <div class="search-results">
+  <h2 class="text-center">Search results: {{q}}</h2>
+  <h3 class="text-center">{{numLineHits}} matching cell lines</h3>
+
+    <div>
+      <a ng-repeat="hit in lineHits" role="button" class="btn btn-primary" ng-href="#/lines/{{hit._source.name}}">{{hit._source.name}}</a>
+    </div>
+
+    <h3 ng-if="numSiteHits" class="text-center">{{numSiteHits}} website pages</h3>
+    <div ng-repeat="hit in siteHits">
+      <h3><a ng-href="{{hit._source.url}}">{{hit._source.title}}</a></h3>
+      <p ng-bind-html="hit.highlight.content.join('&#133')"></p>
+    </div>
+
+  </div>
+</div></div>
