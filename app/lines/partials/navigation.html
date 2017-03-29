@@ -11,9 +11,9 @@
       <button class="btn" ng-click="toggleCollapse('home')">Home</button>
       <ul ng-class="isCollapsed('home') ? 'menu-collapse' : ''">
         <li><a href="/">Home</a></li>
-        <li><a href="/#abouthomewide">About HipSci</a></li>
+        <li><a href="/#about-hipsci">About HipSci</a></li>
         <li><a href="/#news">News</a></li>
-        <li><a href="/#homepipeline">HipSci Workflow</a></li>
+        <li><a href="/#workflow">HipSci Workflow</a></li>
       </ul>
     </li>
     <li class="has-dropdown">
@@ -21,29 +21,29 @@
       <button class="btn" ng-click="toggleCollapse('about')">About Us</button>
       <ul ng-class="isCollapsed('about') ? 'menu-collapse' : ''">
         <li><a href="/about">About Us</a></li>
-        <li><a href="/about#teamtext">Investigators</a></li>
+        <li><a href="/about#investigators">Investigators</a></li>
         <li><a href="/about#funders">Funders and partners</a></li>
         <li><a href="/about#news">News</a></li>
       </ul>
     </li>
     <li class="has-dropdown">
-      <a href="/lines">Cell lines</a>
+      <a href="/cells">Cell lines</a>
       <button class="btn" ng-click="toggleCollapse('lines')">Cell Lines</button>
       <ul ng-class="isCollapsed('lines') ? 'menu-collapse' : ''">
-        <li><a href="/celllines">Cell lines</a></li>
-        <li><a href="/celllines#isotype">Cohorts</a></li>
+        <li><a href="/cells">Cell lines</a></li>
+        <li><a href="/cells#cohorts">Cohorts</a></li>
         <li class="has-dropdown">
-          <a href="/celllines#celllinesusewide">Using HipSci lines for your research</a>
+          <a href="/cells#for-your-research">Using HipSci lines for your research</a>
           <button class="btn" ng-click="toggleCollapse('usingLines')">Using HipSci lines for your research</button>
           <ul ng-class="isCollapsed('usingLines') ? 'menu-collapse' : ''">
-            <li><a href="/celllines#celllinesusewide">Purchase lines</a></li>
-            <li><a href="/celllines#vids">Navigation our cell line browser</a></li>
-            <li><a href="/celllines#vids">Culturing feeder free lines</a></li>
-            <li><a href="/celllines#vids">Culturing feeder dependent lines</a></li>
-            <li><a href="/celllines#vids">Trouble shooting iPSC culture</a></li>
+            <li><a href="/cells#for-your-research">Purchase lines</a></li>
+            <li><a href="/cells#navigate-browser">Navigation our cell line browser</a></li>
+            <li><a href="/cells#feeder-free">Culturing feeder free lines</a></li>
+            <li><a href="/cells#feeder-dependent">Culturing feeder dependent lines</a></li>
+            <li><a href="/cells#trouble-shoot-culture">Trouble shooting iPSC culture</a></li>
           </ul>
         </li>
-        <li><a href="/lines#faq">FAQs on cell lines</a></li>
+        <li><a href="/cells#faq">FAQs on cell lines</a></li>
       </ul>
     </li>
     <li class="has-dropdown">
@@ -51,14 +51,14 @@
       <button class="btn" ng-click="toggleCollapse('data')">Data</button>
       <ul ng-class="isCollapsed('data') ? 'menu-collapse' : ''">
         <li><a href="/data">Data</a></li>
-        <li><a href="/data#isotype">Assays</a></li>
+        <li><a href="/data#assays">Assays</a></li>
         <li class="has-dropdown">
-          <a href="/data#datausewide">Using HipSci data for your research</a>
+          <a href="/data#for-your-research">Using HipSci data for your research</a>
           <button class="btn" ng-click="toggleCollapse('usingData')">Using HipSci data for your research</button>
           <ul ng-class="isCollapsed('usingData') ? 'menu-collapse' : ''">
-            <li><a href="/data#datausewide">The data - an overview</a></li>
-            <li><a href="/data#datausewide">How to apply for managed access data</a></li>
-            <li><a href="/data#datausewide">Finding and downloading data</a></li>
+            <li><a href="/data#overview">The data - an overview</a></li>
+            <li><a href="/data#apply-managed-access">How to apply for managed access data</a></li>
+            <li><a href="/data#find-and-download">Finding and downloading data</a></li>
           </ul>
         </li>
         <li><a href="/data#faq">FAQs on data</a></li>
