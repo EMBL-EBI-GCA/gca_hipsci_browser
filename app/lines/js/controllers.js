@@ -62,7 +62,7 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
 
     this.assayToHref = function(assayObj) {
         if (assayObj.hasOwnProperty('archive') && assayObj.archive == 'EGA') {
-            return 'https://www.ebi.ac.uk/ega/studies/'+assayObj.study;
+            return 'https://ega-archive.org/studies/'+assayObj.study;
         }
         if (assayObj.hasOwnProperty('archive') && assayObj.archive == 'ENA') {
             return 'http://www.ebi.ac.uk/ena/data/view/'+assayObj.study;
