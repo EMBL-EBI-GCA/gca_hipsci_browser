@@ -8,7 +8,7 @@ only for specific research use to bona fide researchers.
 Files on this page are marked as 'Managed access' if they contain individually unique data for donors
 that are bound by these restrictions.
 
-Managed access data are stored in the [EGA](http://www.ebi.ac.uk/ega) archive.
+Managed access data are stored in the [EGA](https://ega-archive.org) archive.
 For access to
 these data, researchers must read the Data Access Agreement documents([pdf](/documents/hipsci-daa.pdf)) and
 register for access via WTSI's [Electronic Data Access Mechanism](https://www.sanger.ac.uk/legal/DAA/MasterController).
