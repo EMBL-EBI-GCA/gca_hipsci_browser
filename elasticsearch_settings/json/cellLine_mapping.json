@@ -275,6 +275,10 @@
             },
             "ebiscName": {
                 "type": "string",
+                "index": "not_analyzed"
+            },
+            "hPSCregName": {
+                "type": "string",
                 "index": "not_analyzed",
                 "copy_to": "searchable.fixed"
             },
