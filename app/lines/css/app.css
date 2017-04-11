@@ -180,7 +180,7 @@ table.matrix td.name {
 .exomeseq-table table.matrix td.exomeseq,
 .proteomics-table table.matrix td.proteomics,
 .cellbiol-fn-table table.matrix td.cellbiol-fn,
-.wgs-seq-table table.matrix td.wgs-seq {
+.wgs-table table.matrix td.wgs {
   background-color: #f5ecb0;
 }
 
