@@ -433,6 +433,9 @@ ul.dropdown-menu div.checkbox {
 a.purchase-btn {
   margin-left: 30px;
 }
+a.panel-purchase {
+  margin: 10px;
+}
 
 @media (max-width: 1440px) { /* @screen-md-min */
   h1.browser-heading {
