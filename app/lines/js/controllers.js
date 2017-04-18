@@ -554,7 +554,7 @@ controllers.controller('AssayDetailCtrl', ['$routeParams', '$http', 'lineTableVa
       c.routeError = '404 Not Found';
     }
 
-    $http.get('md/assays/'+$routeParams.assayName+'.md?ver=20170308d', {responseType: 'text', cache: true
+    $http.get('md/assays/'+$routeParams.assayName+'.md?ver=20170418', {responseType: 'text', cache: true
       }).success(function(data) {
           c.mdContent = data;
       });
