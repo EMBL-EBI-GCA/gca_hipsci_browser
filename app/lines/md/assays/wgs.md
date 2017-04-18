@@ -1,5 +1,4 @@
 Whole genome sequencing
 ======================
 
-Whole genome sequencing is performed on a selection of open-access iPSC lines in order to genotype those lines in all regions of the genome.
-
+A small selection (~150 donors) of iPS cell lines and their primary somatic cells have been deep whole genome sequenced at 30x coverage.
