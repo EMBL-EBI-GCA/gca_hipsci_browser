@@ -5,5 +5,5 @@ RNA sequencing is performed on all iPSC lines selected for banking.  This data a
 
 * gene expression levels
 * alternative gene-spliced transcripts
-* post-transcriptional modifications, 
+* post-transcriptional modifications
 * gene fusion events
