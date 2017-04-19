@@ -525,7 +525,7 @@ controllers.controller('CohortDetailCtrl', ['$routeParams', 'apiClient', '$http'
         c.apiStatusText = resp.statusText;
     });
 
-    $http.get('md/cohorts/'+$routeParams.cohortId+'.md?ver=20170418', {responseType: 'text', cache: true
+    $http.get('md/cohorts/'+$routeParams.cohortId+'.md?ver=20170419', {responseType: 'text', cache: true
       }).success(function(data) {
           c.mdContent = data;
       });
