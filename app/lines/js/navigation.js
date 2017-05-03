@@ -9,7 +9,7 @@ navigation.directive('navigationBanner', [function() {
 
     return {
         restrict: 'E',
-        templateUrl : 'partials/navigation.html?ver=20170324',
+        templateUrl : 'partials/navigation.html?ver=20170503c',
         scope : true,
         link : function (scope) {
             scope.collapsed = {};
@@ -35,7 +35,7 @@ navigation.directive('navigationTabs', ['$location', function($location) {
 
     return {
         restrict: 'E',
-        templateUrl : 'partials/navigation-tabs.html?ver=20170308',
+        templateUrl : 'partials/navigation-tabs.html?ver=20170503c',
         scope : true,
         link : function (scope) {
             scope.activeLink = activeLink;

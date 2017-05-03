@@ -220,7 +220,7 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
             archiveUrl: archive.url
         };
         var modalInstance = $modal.open({
-          templateUrl: 'partials/ega_modal.html?ver=20170308d',
+          templateUrl: 'partials/ega_modal.html?ver=20170503c',
           scope: $scope
         });
         c.unbindEgaModal = $scope.$on('$routeChangeStart', function(event, object) {
@@ -455,7 +455,7 @@ controllers.controller('DatasetTableCtrl', ['$scope', 'apiClient', '$modal',
       $scope.selectedAssay = assay;
       $scope.selectedCohort = cohort['_source'];
       var modalInstance = $modal.open({
-        templateUrl: 'partials/ega_dataset_modal.html?ver=20170308d',
+        templateUrl: 'partials/ega_dataset_modal.html?ver=20170503c',
         scope: $scope
       });
       c.unbindModal = $scope.$on('$routeChangeStart', function(event, object) {
@@ -525,7 +525,7 @@ controllers.controller('CohortDetailCtrl', ['$routeParams', 'apiClient', '$http'
         c.apiStatusText = resp.statusText;
     });
 
-    $http.get('md/cohorts/'+$routeParams.cohortId+'.md?ver=20170419b', {responseType: 'text', cache: true
+    $http.get('md/cohorts/'+$routeParams.cohortId+'.md?ver=20170503c', {responseType: 'text', cache: true
       }).success(function(data) {
           c.mdContent = data;
       });
@@ -554,7 +554,7 @@ controllers.controller('AssayDetailCtrl', ['$routeParams', '$http', 'lineTableVa
       c.routeError = '404 Not Found';
     }
 
-    $http.get('md/assays/'+$routeParams.assayName+'.md?ver=20170418', {responseType: 'text', cache: true
+    $http.get('md/assays/'+$routeParams.assayName+'.md?ver=20170503c', {responseType: 'text', cache: true
       }).success(function(data) {
           c.mdContent = data;
       });
