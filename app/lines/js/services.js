@@ -117,7 +117,7 @@ services.factory('lineTableVars', function lineTableVarsFactory() {
         {visible: false, sortable: true,  selectable: true,  esName: 'reprogramming.methodOfDerivation', label: 'Method of derivation'},
         {visible: false, sortable: true,  selectable: true,  esName: 'reprogramming.dateOfDerivation', label: 'Date of derivation'},
         {visible: false,  sortable: false, selectable: true, esName: 'pluritest.pluripotency', label: 'Pluritest pluripotency score'},
-        {visible: false,  sortable: false, selectable: true, esName: 'pluritest.novelty', label: 'Pluritest pluripotency score'},
+        {visible: false,  sortable: false, selectable: true, esName: 'pluritest.novelty', label: 'Pluritest novelty score'},
         {visible: false,  sortable: false, selectable: true, esName: 'cnv.num_different_regions', label: 'CNV num different regions'},
         {visible: false,  sortable: false, selectable: true, esName: 'cnv.length_different_regions_Mbp', label: 'CNV length of different regions / Mbp'},
         {visible: true, sortable: false, selectable: false, esName: 'ecaccCatalogNumber', label: 'ECACC catalog number'},
