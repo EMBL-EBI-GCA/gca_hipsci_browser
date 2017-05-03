@@ -73,13 +73,13 @@ services.directive('mdModal', ['$modal', '$http', function($modal, $http) {
     link: function(scope, iElement, iAttrs, ctrls) {
         scope.showModal = function() {
             if (!scope.modalContent) {
-                $http.get('md/'+scope.modalMd+'.md?ver=20170324', {responseType: 'text', cache: true
+                $http.get('md/'+scope.modalMd+'.md?ver=20170331', {responseType: 'text', cache: true
                 }).success(function(data) {
                     scope.modalContent = data;
                 });
             }
             scope.modalInstance = $modal.open({
-                templateUrl: 'partials/modal.html?ver=20160204',
+                templateUrl: 'partials/modal.html?ver=20170308',
                 scope: scope,
             });
             scope.unbindRouteUpdate = scope.$on('$routeChangeStart', function(event, object) {

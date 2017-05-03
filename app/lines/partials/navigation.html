@@ -1,30 +1,68 @@
-<div id="topnav-bar" class="navbar navbar-fixed-top" role="navigation">
- <div class="container-fluid">
-   <div class="navbar-header">
-     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-       <span class="sr-only">Toggle navigation</span>
-       <span class="icon-bar"></span>
-       <span class="icon-bar"></span>
-       <span class="icon-bar"></span>
-     </button>
-     <div class="navbar-brand">
-        <a  href="/"><img src="img/hipsci-logo.png"/> </a>
-     </div>
-   </div>
-   <div class="navbar-tagline">
-    <h3>Human Induced Pluripotent Stem Cells Initiative</h3>
-   </div>
-   <div class="navbar-collapse collapse">
-     <ul class="nav navbar-nav">
-       <li><a href="/">Home</a></li>
-       <li ng-class="{ active: activeLink('/lines')}"><a href="#/lines">Search Cell Lines</a></li>
-       <li ng-class="{ active: activeLink('/donors')}"><a href="#/donors">Search Donors</a></li>
-       <li ng-class="{ active: activeLink('/files')}"><a href="#/files">Search Files</a></li>
-       <li ng-class="{ active: activeLink('/datasets')}"><a href="#/datasets">EGA Datasets</a></li>
-    </ul>
-     <ul class="nav navbar-nav navbar-right hidden-sm">
-       <li ng-class="{ active: activeLink('/api')}"><a href="#/api">API docs</a></li>
-     </ul>
-   </div><!--/.nav-collapse -->
- </div>
-</div>					
+<div class="col-md-10 col-sm-10 col-xs-9" id="menu">
+  <form ng-submit="submit()" class="form-inline">
+    <div class="form-group"><input type="text" ng-model="searchTerm" name="text" class="form-control"></div>
+    <div class="form-group"><input type="image" name="submit" src="img/icos.png"></div>
+  </form>
+  <button class="btn" ng-click="toggleCollapse('menu')">Menu</button>
+  <div class="clearfix small-menu-clearfix"></div>
+  <nav><ul class="menu-1" ng-class="isCollapsed('menu') ? 'menu-collapse' : ''">
+    <li class="has-dropdown">
+      <a href="/">Home</a>
+      <button class="btn" ng-click="toggleCollapse('home')">Home</button>
+      <ul ng-class="isCollapsed('home') ? 'menu-collapse' : ''">
+        <li><a href="/">Home</a></li>
+        <li><a href="/#about-hipsci">About HipSci</a></li>
+        <li><a href="/#news">News</a></li>
+        <li><a href="/#workflow">HipSci Workflow</a></li>
+      </ul>
+    </li>
+    <li class="has-dropdown">
+      <a href="/about">About Us</a>
+      <button class="btn" ng-click="toggleCollapse('about')">About Us</button>
+      <ul ng-class="isCollapsed('about') ? 'menu-collapse' : ''">
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/about#investigators">Investigators</a></li>
+        <li><a href="/about#funders">Funders and partners</a></li>
+        <li><a href="/about#news">News</a></li>
+      </ul>
+    </li>
+    <li class="has-dropdown">
+      <a href="/cells">Cell lines</a>
+      <button class="btn" ng-click="toggleCollapse('lines')">Cell Lines</button>
+      <ul ng-class="isCollapsed('lines') ? 'menu-collapse' : ''">
+        <li><a href="/cells">Cell lines</a></li>
+        <li><a href="/cells#cohorts">Cohorts</a></li>
+        <li class="has-dropdown">
+          <a href="/cells#for-your-research">Using HipSci lines for your research</a>
+          <button class="btn" ng-click="toggleCollapse('usingLines')">Using HipSci lines for your research</button>
+          <ul ng-class="isCollapsed('usingLines') ? 'menu-collapse' : ''">
+            <li><a href="/cells#for-your-research">Purchase lines</a></li>
+            <li><a href="/cells#navigate-browser">Navigation our cell line browser</a></li>
+            <li><a href="/cells#feeder-free">Culturing feeder free lines</a></li>
+            <li><a href="/cells#feeder-dependent">Culturing feeder dependent lines</a></li>
+            <li><a href="/cells#trouble-shoot-culture">Trouble shooting iPSC culture</a></li>
+          </ul>
+        </li>
+        <li><a href="/cells#faq">FAQs on cell lines</a></li>
+      </ul>
+    </li>
+    <li class="has-dropdown">
+      <a href="/data">Data</a>
+      <button class="btn" ng-click="toggleCollapse('data')">Data</button>
+      <ul ng-class="isCollapsed('data') ? 'menu-collapse' : ''">
+        <li><a href="/data">Data</a></li>
+        <li><a href="/data#assays">Assays</a></li>
+        <li class="has-dropdown">
+          <a href="/data#for-your-research">Using HipSci data for your research</a>
+          <button class="btn" ng-click="toggleCollapse('usingData')">Using HipSci data for your research</button>
+          <ul ng-class="isCollapsed('usingData') ? 'menu-collapse' : ''">
+            <li><a href="/data#overview">The data - an overview</a></li>
+            <li><a href="/data#apply-managed-access">How to apply for managed access data</a></li>
+            <li><a href="/data#find-and-download">Finding and downloading data</a></li>
+          </ul>
+        </li>
+        <li><a href="/data#faq">FAQs on data</a></li>
+      </ul>
+    </li>
+  </ul></nav>
+</div>

@@ -1,34 +1,13 @@
 /* app css stylesheet */
 body {
+  padding-top: 75px;
   background-color: rgb(235,235,235);
   background: linear-gradient(to bottom, #FBFDFD 0%, #FAFAFA 35%) repeat scroll 0% 0% transparent;
-}
-p {
-  text-align: justify;
 }
 
 hr {
   margin: 15px 0;
 }
-
-
-/*Print icon*/
-div.print {
-  position: relative;
-}
-div.print a {
-  cursor: pointer;
-  position: absolute;
-  margin: 11px;
-  right: 0;
-  z-index: 100;
-}
-@media print {
-  div.print {
-    display: none;
-  }
-}
-
 
 /*Sort BG*/
 .sort {
@@ -46,30 +25,6 @@ div.print a {
 }
 .sort.sortDesc {
 	background-image: url(../img/desc.gif);
-}
-
-/*footer images should all scale to the height of the blueprint logo, but keep their aspect ratio*/
-.footer div.logo {
-  text-align: center;
-}
-.footer div.logo:first-child {
-  text-align: left;
-}
-.footer div.logo:last-child {
-  text-align: right;
-}
-@media (max-width: 767px) { /* @screen-xs-max */
-  .footer div.logo {
-    text-align: center !important;
-    margin-bottom: 15px;
-  }
-}
-.footer  {
-  font-size: 11px;
-  padding-bottom: 15px;
-}
-.footer .right{
-  text-align: right;
 }
 
 /* fixed height logo images */
@@ -153,8 +108,6 @@ a.download {
   font-weight: bolder;
   text-decoration: underline;
 }
-/*padding for the fixed position nav bar */
-body { padding-top: 60px; } 
 
 /*angular ui bootstrap css fix see http://angular-ui.github.io/bootstrap/*/
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
@@ -410,9 +363,6 @@ ul.dropdown-menu div.checkbox {
         margin-top:10px;
         height: auto;
     }
-    .view-container {
-        margin-top: 30px;
-    }
 }
 
 @media (max-width: 991px) { /* @screen-md-min */
@@ -438,11 +388,8 @@ a.panel-purchase {
   margin: 10px;
 }
 
-@media (max-width: 1440px) { /* @screen-md-min */
-  h1.browser-heading {
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
+.panel-body h1 {
+  margin: 0 0 10px;
 }
 
 @media (min-width: 768px) { /* @screen-sm-min */
@@ -452,4 +399,226 @@ a.panel-purchase {
 }
 div.dismiss-button-container {
   margin-bottom: 14px;
+}
+
+ul.data-portal-nav-tabs {
+  border-bottom: 0;
+  margin-top: 0;
+}
+
+
+
+/* styles provided by conceptstore */
+@font-face{
+        font-family: 'pontiac_regular-webfont';
+        src: url('pontiac_regular-webfont.eot');
+        src: url('pontiac_regular-webfont.eot?#iefix') format('embedded-opentype'),
+             url('pontiac_regular-webfont.woff') format('woff'),
+             url('pontiac_regular-webfont.ttf') format('truetype'),
+             url('pontiac_regular-webfont.svg#webfont') format('svg');
+}
+@font-face{
+        font-family: 'pontiac_bold-webfont';
+        src: url('pontiac_bold-webfont.eot');
+        src: url('pontiac_bold-webfont.eot?#iefix') format('embedded-opentype'),
+             url('pontiac_bold-webfont.woff') format('woff'),
+             url('pontiac_bold-webfont.ttf') format('truetype'),
+             url('pontiac_bold-webfont.svg#webfont') format('svg');
+}
+
+#footer, #topmenu {
+  background:#252525;
+  color:#fff;
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+}
+#footer {
+  text-align:center;
+  font-family:"pontiac_regular-webfont", Arial, sans-serif;
+}
+
+#topmenu > .container-fluid {
+  max-width: 1200px;
+}
+#footer h5 {
+  text-transform: uppercase;
+  font-size: 1.1em;
+}
+
+#footerbox {
+  padding-top: 100px;
+}
+#foot1 {
+  font-size: 0.9em;
+}
+#foot1 ul {
+  padding-left: 0;
+}
+#foot1 ul li {
+  list-style-type: none;
+  padding-bottom: 1em;
+}
+#foot1 a{
+  text-decoration: none;
+  color: inherit;
+}
+#foot1 a.img-link {
+  display: inline-block;
+}
+#foot1 a.img-link img {
+  max-height: 60px;
+}
+@media (max-width: 1200px) {
+  #foot1 a.img-link img {
+    max-height: 50px;
+  }
+}
+#disc {
+  padding: 100px 0 50px;
+  clear: both;
+  font-size: 0.8em;
+}
+
+#topmenu {
+  position:fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 999;
+  font-family:"pontiac_bold-webfont", Arial, sans-serif;
+}
+#logo {
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+#logo a {
+  display: block;
+}
+#menu {
+  padding-top: 5px;
+  text-align: right;
+}
+#menu > form {
+  float: right;
+  padding: 8px 20px;
+}
+#menu > form div.form-group {
+  display: inline-block;
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+#menu a, #menu button {
+  font-family: "pontiac_bold-webfont", Arial, sans-serif;
+  text-decoration: none;
+  font-size: 1.1em;
+  text-transform: uppercase;
+  color: inherit;
+  display: block;
+  padding: 14px 20px;
+}
+#menu button  {
+  display: none;
+  width: 100%;
+  text-align: right;
+  background-color: transparent;
+}
+#menu > button  {
+  float: right;
+  width: auto;
+}
+#menu ul {
+  padding-left: 0;
+  margin: 0;
+}
+#menu ul.menu-1 {
+  float: right;
+}
+#menu ul li {
+  list-style-type: none;
+  display: inline-block;
+  float: left;
+  position: relative;
+}
+#menu li ul {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 53px;
+  background:#252525;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  width: 180px;
+}
+#menu li li ul {
+  top: 0;
+  left: -180px;
+}
+#menu ul.menu-1 > a {
+  display: none;
+}
+
+@media (min-width: 901px) {
+  #menu nav a:hover, #menu > button:hover {
+    background-color: black;
+    color: rgb(15, 160, 206);
+  }
+  #menu li:hover > ul {
+    display: block;
+  }
+  .clearfix.small-menu-clearfix {
+    display: none;
+  }
+}
+@media (max-width: 900px) {
+  .clearfix.small-menu-clearfix {
+    display: block;
+  }
+  #menu button, #menu ul.menu-1, #menu li ul {
+    display: block;
+  }
+  #menu li ul button {
+    text-align: left;
+  }
+  #menu li ul {
+    width: 100%;
+    background-color: rgb(33,33,33);
+  }
+  #menu li li ul {
+    background-color: black;
+  }
+  #menu a, #menu button {
+    text-decoration: none;
+    text-transform: none;
+  }
+  #menu li.has-dropdown > a {
+    display: none;
+  }
+  #menu ul.menu-1.menu-collapse, #menu li > ul.menu-collapse {
+    display: none;
+  }
+  #menu ul.menu-1 {
+    float: none;
+    margin-right: 50px;
+  }
+  #menu ul.menu-1 li {
+    display: block;
+    float: none;
+  }
+  #menu ul.menu-1 ul {
+    position: static;
+  }
+  #menu a{
+    text-transform: none;
+  }
+}
+
+
+
+.search-results {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.search-results a.btn {
+  margin: 5px;
 }
