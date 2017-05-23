@@ -147,6 +147,19 @@
       </div></div>
       </section>
 
+      <section ng-if="idrUrl">
+      <h3 class="item-detail-section">Image Data Resource</h3>
+      <hr/>
+      <div class="row"><div class="col-md-8 col-lg-8 col-sm-10 col-md-offset-2 col-lg-offset-2 col-sm-offset-1">
+      <p>Cellular phenotyping data from {{ipscName}} has been analyzed in the <a ng-href="{{idrUrl}}" target="_blank">Image Data Resource</a></p>
+      <ol>
+        <li>Visit the page for <a ng-href="{{idrUrl}}" target="_blank">{{ipscName}}</a> at the Image Data Resource</li>
+        <li>Use the navigation panel on the left-hand side to open an imaging experiment</li>
+        <li>Click on any image, and see the phenotyping attributes displayed in the panel on the right-hand side</li>
+      </ol>
+      </div></div>
+      </section>
+
 
         <section ng-if="data.pluritest">
         <h3 class="item-detail-section">Pluritest assessment for pluripotency<md-modal modal-md="pluritest" title="Pluritest assessment for pluripotency"></md-modal></h3>

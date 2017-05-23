@@ -53,6 +53,10 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
         if (proteomics.length > 0) {
           $scope.peptrackerUrl = proteomics[0].peptrackerURL;
         };
+        var cellbiolfn = jQuery.grep($scope.data.assays, function(obj) {return obj.name === 'Cellular phenotyping' ? 1 : 0});
+        if (cellbiolfn.length > 0 && cellbiolfn[0].hasOwnProperty('idrURL')) {
+          $scope.idrUrl = cellbiolfn[0].idrURL;
+        };
     }, function(resp) {
         $scope.apiError = true;
         $scope.apiStatus = resp.status;
@@ -200,13 +204,18 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
         $scope.apiSuccess = true;
         $scope.lineData = resp.data['_source'];
         $scope.lineData.bankingStatus = $scope.lineData.bankingStatus ? jQuery.grep($scope.lineData.bankingStatus, function(str) {return ! /shipped/i.test(str)}) : undefined;
-        if ($scope.assay !== 'Proteomics') {
-          return;
+        if ($scope.assay == 'Proteomics') {
+          var proteomics = jQuery.grep($scope.lineData.assays, function(obj) {return obj.name === 'Proteomics' ? 1 : 0});
+          if (proteomics.length > 0) {
+            $scope.peptrackerUrl = proteomics[0].peptrackerURL;
+          };
         }
-        var proteomics = jQuery.grep($scope.lineData.assays, function(obj) {return obj.name === 'Proteomics' ? 1 : 0});
-        if (proteomics.length > 0) {
-          $scope.peptrackerUrl = proteomics[0].peptrackerURL;
-        };
+        if ($scope.assay == 'Cellular phenotyping') {
+          var cellbiol = jQuery.grep($scope.lineData.assays, function(obj) {return obj.name === 'Cellular phenotyping' ? 1 : 0});
+          if (cellbiol.length > 0 && cellbiol[0].hasOwnProperty('idrURL')) {
+            $scope.idrUrl = cellbiol[0].idrURL;
+          };
+        }
     }, function(resp) {
         $scope.apiError = true;
         $scope.apiStatus = resp.status;
