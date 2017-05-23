@@ -19,12 +19,12 @@ hipsciBrowser.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
     when('/lines/:ipscName', {
-      templateUrl: 'partials/line-detail.html?ver=20170503c',
+      templateUrl: 'partials/line-detail.html?ver=20170523',
       controller: 'LineDetailCtrl',
       controllerAs: 'LineCtrl',
     }).
     when('/lines/:ipscName/:assay', {
-      templateUrl: 'partials/line-assay-detail.html?ver=20170503c',
+      templateUrl: 'partials/line-assay-detail.html?ver=20170523',
       controller: 'LineAssayCtrl',
       controllerAs: 'LineCtrl',
     }).
