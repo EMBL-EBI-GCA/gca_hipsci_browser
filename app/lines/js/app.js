@@ -71,7 +71,10 @@ hipsciBrowser.config(['$routeProvider',
       controllerAs: 'SearchCtrl',
     }).
     when('/api', {
-      templateUrl: 'partials/api.html?ver=20170525',
+      controller: function() {
+        window.location.replace("/data/faq/api");
+      },
+      template: '<div></div>',
     }).
     otherwise({
       redirectTo: '/lines/'
