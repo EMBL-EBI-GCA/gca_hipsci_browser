@@ -8,6 +8,9 @@ listPanelModule.directive('listPanel', ['apiClient', '$location', function (apiC
     link: function(scope, iElement, iAttrs, controller) {
       controller.documentType = scope.$eval(iAttrs.documentType);
       controller.exportFilename = scope.$eval(iAttrs.exportFilename);
+      if (iAttrs.hitsPerPage) {
+        controller.hitsPerPage = iAttrs.hitsPerPage;
+      }
       scope.exportData = controller.exportData;
 
       var firstView = true;

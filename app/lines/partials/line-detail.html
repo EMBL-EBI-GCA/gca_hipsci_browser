@@ -102,7 +102,7 @@
         <hr/>
 
         <div class="row" ng-controller="FileListCtrl as FileCtrl">
-        <list-panel document-type="FileCtrl.documentType" >
+        <list-panel document-type="FileCtrl.documentType" hits-per-page="-1">
         <list-init-fields html-fields="LineCtrl.fileFields" export-fields="FileCtrl.exportFields"></list-init-fields>
         <invisible-filter field="samples.name" term="ipscName"></invisible-filter>
 
