@@ -1,10 +1,10 @@
 <div class="panel panel-default">
     <div class="panel-body">
 
-    <h1><span ng-bind="ipscName"></span>
+    <h1 class="data-portal-block"><span ng-bind="ipscName"></span>
     <a role="button" class="btn btn-primary purchase-btn" ng-if="data.purchaseUrl" ng-href="{{data.purchaseUrl}}" target="_blank">Purchase <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></a>
     </h1>
-    <h2>HipSci cell line</h2>
+    <h2 class="data-portal-block">HipSci cell line</h2>
     <hr/>
 
         <div ng-if="apiError">
@@ -98,7 +98,7 @@
         </section>
 
         <section ng-if="data.assays">
-        <h3 class="item-detail-section">Genomic assay files</h3>
+        <h3 class="data-portal-block item-detail-section">Genomic assay files</h3>
         <hr/>
 
         <div class="row" ng-controller="FileListCtrl as FileCtrl">
@@ -135,7 +135,7 @@
         </section>
 
       <section ng-if="peptrackerUrl">
-      <h3 class="item-detail-section">Encyclopedia of Protein Dynamics</h3>
+      <h3 class="data-portal-block item-detail-section">Encyclopedia of Protein Dynamics</h3>
       <hr/>
       <div class="row"><div class="col-md-8 col-lg-8 col-sm-10 col-md-offset-2 col-lg-offset-2 col-sm-offset-1">
       <p>Mass spectrometry data from {{ipscName}} has been analyzed in the <a ng-href="{{peptrackerUrl}}" target="_blank">Encyclopedia of Protein Dynamics</a></p>
@@ -148,7 +148,7 @@
       </section>
 
       <section ng-if="idrUrl">
-      <h3 class="item-detail-section">Image Data Resource</h3>
+      <h3 class="data-portal-block item-detail-section">Image Data Resource</h3>
       <hr/>
       <div class="row"><div class="col-md-8 col-lg-8 col-sm-10 col-md-offset-2 col-lg-offset-2 col-sm-offset-1">
       <p>Cellular phenotyping data from {{ipscName}} is available at the <a href="http://idr.openmicroscopy.org/about/" target="_blank">Image Data Resource</a></p>
@@ -162,7 +162,7 @@
 
 
         <section ng-if="data.pluritest">
-        <h3 class="item-detail-section">Pluritest assessment for pluripotency<md-modal modal-md="pluritest" title="Pluritest assessment for pluripotency"></md-modal></h3>
+        <h3 class="data-portal-block item-detail-section">Pluritest assessment for pluripotency<md-modal modal-md="pluritest" title="Pluritest assessment for pluripotency"></md-modal></h3>
         <hr/>
         <dl class="dl-horizontal">
             <div ng-if="data.pluritest.hasOwnProperty('pluripotency')">
@@ -175,7 +175,7 @@
             </div>
         </dl>
 
-        <div class="row">
+        <div class="data-portal-block row">
         <div class="col-md-6" ng-if="data.pluritest.hasOwnProperty('pluripotency_image')">
             <div class="item-detail-img">
             <a ng-href="ftp://ftp.hipsci.ebi.ac.uk{{data.pluritest.pluripotency_image}}"><img class="img-responsive center-block" ng-src="http://ftp.hipsci.ebi.ac.uk{{data.pluritest.pluripotency_image}}" alt="Pluritest pluripotency plot"></img></a>
@@ -190,9 +190,9 @@
         </section>
 
         <section ng-if="data.cnv">
-        <h3 class="item-detail-section">Custom CNV check<md-modal modal-md="cnv-check" title="Custom CNV check"></md-modal></h3>
+        <h3 class="data-portal-block item-detail-section">Custom CNV check<md-modal modal-md="cnv-check" title="Custom CNV check"></md-modal></h3>
         <hr/>
-        <div class="row">
+        <div class="data-portal-block row">
 
         <div class="alert alert-danger col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1" ng-if="data.cnv.hasOwnProperty('comments')">
           <div ng-repeat="comment in data.cnv.comments"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {{comment}}</div>

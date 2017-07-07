@@ -1,20 +1,16 @@
 <div class="panel panel-default">
     <div class="panel-body">
-    <h1>Cell Lines</h1>
+    <h1 class="data-portal-block">Cell Lines</h1>
 
-    <div class="row" ng-if="LineCtrl.cache.showPanels">
-    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1">
+    <div class="data-portal-block" ng-if="LineCtrl.cache.showPanels">
     <div class="row">
-    <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
-    <p class="text-justify">For new users of our iPSC resource, we have composed two panels of lines from the HipSci iPSC collection that we would recommend. These lines have been selected based on their high pluritest scores, low CNV’s, comprehensively characterised assay data, and their ability to differentiate.</p>
-    </div>
+    <p class="col-lg-9 col-md-8 col-sm-8 col-xs-12 text-justify">For new users of our iPSC resource, we have composed two panels of lines from the HipSci iPSC collection that we would recommend. These lines have been selected based on their high pluritest scores, low CNV’s, comprehensively characterised assay data, and their ability to differentiate.</p>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 dismiss-button-container">
       <button type="button" class="btn btn-small btn-primary dropdown-toggle center-block" ng-click="LineCtrl.cache.showPanels = false">Dismiss this message</button>
     </div>
     </div>
-    </div>
     <div class="clearfix"></div>
-    <div class="col-lg-3 col-lg-offset-2 col-md-5 col-md-offset-1 col-sm-5 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+    <div class="col-lg-4 col-lg-offset-1 col-md-5 col-md-offset-1 col-sm-5 col-sm-offset-1 col-xs-10 col-xs-offset-1">
     <div class="panel panel-primary text-center">
     <div class="panel-heading"><h4 class="panel-title">Feeder-free panel</h4></div>
     <a class="btn btn-sm btn-primary panel-purchase" href="http://www.phe-culturecollections.org.uk/products/celllines/ipsc/detail.jsp?refId=77659901&collection=ecacc_ipsc"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Purchase the panel</a></a>
@@ -26,7 +22,7 @@
     </table>
     </div>
     </div>
-    <div class="col-log-6 col-log-offset-1 col-lg-3 col-lg-offset-2 col-md-5 col-md-offset-0 col-sm-5 col-sm-offset-0 col-xs-10 col-xs-offset-1">
+    <div class="col-lg-4 col-lg-offset-1 col-md-5 col-md-offset-0 col-sm-5 col-sm-offset-0 col-xs-10 col-xs-offset-1">
     <div class="panel panel-primary text-center">
     <div class="panel-heading"><h4 class="panel-title">Feeder-dependent panel</h4></div>
     <a class="btn btn-sm btn-primary panel-purchase" href="http://www.phe-culturecollections.org.uk/products/celllines/ipsc/detail.jsp?refId=77659933&collection=ecacc_ipsc"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Purchase the panel</a></a>
@@ -39,6 +35,7 @@
     </div>
     </div>
     </div>
+    <div class="clearfix"></div>
 
     <div ng-if="!LineCtrl.cache.showPanels">
       <button type="button" class="btn btn-small btn-primary dropdown-toggle center-block" ng-click="LineCtrl.cache.showPanels = true">Recommended panel of HipSci lines</button>

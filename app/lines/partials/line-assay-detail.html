@@ -1,7 +1,7 @@
 <div class="panel panel-default">
 <div class="panel-body">
 
-    <h1><span ng-bind="assay"></span> data files for <span ng-bind="ipscName"></span></h1>
+    <h1 class="data-portal-block"><span ng-bind="assay"></span> data files for <span ng-bind="ipscName"></span></h1>
     <hr/>
 
         <div ng-if="apiError">
@@ -81,7 +81,7 @@
     </section>
 
     <section ng-if="peptrackerUrl">
-    <h3 class="item-detail-section">Encyclopedia of Protein Dynamics</h3>
+    <h3 class="data-portal-block item-detail-section">Encyclopedia of Protein Dynamics</h3>
     <hr/>
     <div class="row"><div class="col-md-8 col-lg-8 col-sm-10 col-md-offset-2 col-lg-offset-2 col-sm-offset-1">
     <p>Mass spectrometry data from {{ipscName}} has been analyzed in the <a ng-href="{{peptrackerUrl}}" target="_blank">Encyclopedia of Protein Dynamics</a></p>
@@ -94,7 +94,7 @@
     </section>
 
     <section ng-if="idrUrl">
-    <h3 class="item-detail-section">Image Data Resource</h3>
+    <h3 class="data-portal-block item-detail-section">Image Data Resource</h3>
     <hr/>
     <div class="row"><div class="col-md-8 col-lg-8 col-sm-10 col-md-offset-2 col-lg-offset-2 col-sm-offset-1">
     <p>Cellular phenotyping data from {{ipscName}} is available at the <a href="http://idr.openmicroscopy.org/about/" target="_blank">Image Data Resource</a></p>
@@ -109,7 +109,7 @@
     </div>
 
     <section ng-repeat="fileGroup in files">
-    <h3 class="item-detail-section" ng-bind="fileGroup._source.description"></h3>
+    <h3 class="data-portal-block item-detail-section" ng-bind="fileGroup._source.description"></h3>
     <hr/>
     <dl class="dl-horizontal">
     <div ng-if="fileGroup._source.assay.hasOwnProperty('type')">
