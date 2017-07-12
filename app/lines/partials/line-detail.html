@@ -103,7 +103,7 @@
         <p class="data-portal-block" ng-if="!LineCtrl.showFilesTable">
           {{ipscName}} has data from <span ng-repeat="assay in data.assays">{{$last && !$first ? 'and ' : ''}}{{assay.name}}{{$last ? '' : ', ' }}</span>
         </p>
-        <button type="button" ng-if="!LineCtrl.showFilesTable " class="btn btn-small btn-primary dropdown-toggle center-block" ng-click="LineCtrl.showFilesTable = true">Show the list of available data</button>
+        <button type="button" ng-if="!LineCtrl.showFilesTable " class="btn btn-small btn-primary dropdown-toggle center-block" ng-click="LineCtrl.showFilesTable = true">Expand to a list of available data</button>
 
         <div class="row" ng-if="LineCtrl.showFilesTable" ng-controller="FileListCtrl as FileCtrl">
         <list-panel document-type="FileCtrl.documentType" hits-per-page="-1">
@@ -137,6 +137,16 @@
         </div>
 
         </section>
+
+      <section ng-if="data.differentiations">
+        <h3 class="data-portal-block item-detail-section">Differentiation studies</h3>
+        <hr/>
+        <div class="data-portal-block row"><div ng-repeat="diff in data.differentiations" class="panel panel-default col-md-6 col-sm-6 col-xs-6">
+          <h4 class="text-center text-capitalize">{{diff.cellType}}</h4>
+          <p ng-if="diff.publication">{{diff.publication.title}} - <a ng-href="diff.publication.url">{{diff.publication.reference}}</a></p>
+          <p ng-repeat="link in diff.links">{{link.description}}: <a ng-href="link.url">{{link.name}}</a></p>
+        </div></div>
+      </section>
 
       <section ng-if="peptrackerUrl">
       <h3 class="data-portal-block item-detail-section">Encyclopedia of Protein Dynamics</h3>
