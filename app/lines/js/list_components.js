@@ -268,6 +268,7 @@ listComponents.directive('aggsFilter', function() {
     link: function(scope, iElement, iAttrs, ctrls) {
         var aggsFilterCtrl = ctrls[0];
         var listPanelCtrl = ctrls[1];
+        aggsFilterCtrl.ucFirst = scope.$eval(iAttrs.ucFirst);
         aggsFilterCtrl.sortFunction = scope.$parent.$eval(scope.sortFunction)
             || function(a, b) {return b.unfilteredCount - a.unfilteredCount};
 
@@ -303,6 +304,10 @@ listComponents.directive('aggsFilter', function() {
         scope.toggleCollapse = function() {
             aggsFilterCtrl.toggleCollapse();
         };
+
+        scope.termToString = function(term) {
+          return term && aggsFilterCtrl.ucFirst ? term.charAt(0).toUpperCase() + term.slice(1) : term;
+        }
 
         iAttrs.$set('list-panel-registered', true);
     }
