@@ -24,7 +24,7 @@ hipsciBrowser.config(['$routeProvider',
       controllerAs: 'LineCtrl',
     }).
     when('/lines/:ipscName/:assay', {
-      templateUrl: 'partials/line-assay-detail.html?ver=20170713',
+      templateUrl: 'partials/line-assay-detail.html?ver=20170720',
       controller: 'LineAssayCtrl',
       controllerAs: 'LineCtrl',
     }).
@@ -33,7 +33,7 @@ hipsciBrowser.config(['$routeProvider',
       controller: 'DonorDetailCtrl'
     }).
     when('/lines', {
-      templateUrl: 'partials/line-list.html?ver=20170713',
+      templateUrl: 'partials/line-list.html?ver=20170720',
       controller: 'LineListCtrl',
       controllerAs: 'LineCtrl',
       reloadOnSearch: false,
@@ -56,7 +56,7 @@ hipsciBrowser.config(['$routeProvider',
       controllerAs: 'DSCtrl',
     }).
     when('/cohorts/:cohortId', {
-      templateUrl: 'partials/cohort-detail.html?ver=20170713',
+      templateUrl: 'partials/cohort-detail.html?ver=20170720',
       controller: 'CohortDetailCtrl',
       controllerAs: 'CohortCtrl',
     }).
