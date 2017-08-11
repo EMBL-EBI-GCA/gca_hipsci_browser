@@ -629,3 +629,7 @@ ul.data-portal-nav-tabs {
 .search-results a.btn {
   margin: 5px;
 }
+
+.panel.panel-differentiation {
+  margin-bottom: 0;
+}

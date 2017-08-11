@@ -141,10 +141,13 @@
       <section ng-if="data.differentiations">
         <h3 class="data-portal-block item-detail-section">Differentiation studies</h3>
         <hr/>
-        <div class="data-portal-block row"><div ng-repeat="diff in data.differentiations" class="panel panel-default col-md-6 col-sm-6 col-xs-6">
-          <h4 class="text-center text-capitalize">{{diff.cellType}}</h4>
-          <p ng-if="diff.publication">{{diff.publication.title}} - <a ng-href="{{diff.publication.url}}">{{diff.publication.reference}}</a></p>
-          <p ng-repeat="link in diff.links">{{link.description}}: <a ng-href="{{link.url}}">{{link.name}}</a></p>
+        <div class="data-portal-block row"><div ng-repeat="diff in data.differentiations">
+          <div ng-if="$even" class="clearfix"></div>
+          <div class="panel panel-default panel-differentiation col-md-6 col-sm-6 col-xs-6">
+            <h4 class="text-center text-capitalize">{{diff.cellType}}</h4>
+            <p ng-if="diff.publication">{{diff.publication.title}} - <a ng-href="{{diff.publication.url}}" target="_blank">{{diff.publication.reference}}</a></p>
+            <p ng-repeat="link in diff.links">{{link.description}}: <a ng-href="{{link.url}}" target="_blank">{{link.name}}</a></p>
+          <div>
         </div></div>
       </section>
 
