@@ -113,6 +113,7 @@ services.factory('lineTableVars', function lineTableVarsFactory() {
         {visible: false, sortable: true,  selectable: true,  esName: 'donor.age', label: 'Age'},
         {visible: false,  sortable: true,  selectable: true,  esName: 'sourceMaterial.value', label: 'Source Material'},
         {visible: false,  sortable: true,  selectable: true,  esName: 'tissueProvider', label: 'Tissue Provider'},
+        {visible: false,  sortable: true,  selectable: true,  esName: 'predictedPopulation', label: 'Predicted Population'},
         {visible: true,  sortable: true,  selectable: true,  esName: 'culture.summary', label: 'Culture'},
         {visible: false, sortable: true,  selectable: true,  esName: 'reprogramming.methodOfDerivation', label: 'Method of derivation'},
         {visible: false, sortable: true,  selectable: true,  esName: 'reprogramming.dateOfDerivation', label: 'Date of derivation'},

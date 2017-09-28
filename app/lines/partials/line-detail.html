@@ -74,6 +74,11 @@
                 <dd ng-bind="data.donor.sex.value"></dd>
             </div>
 
+            <div ng-if="data.predictedPopulation">
+                <dt>Predicted Population:</dt>
+                <dd ng-bind="data.predictedPopulation"></dd>
+            </div>
+
             <div ng-if="data.culture.summary">
                 <dt>Culture conditions:</dt>
                 <dd>{{data.culture.summary}} when banked</dd>

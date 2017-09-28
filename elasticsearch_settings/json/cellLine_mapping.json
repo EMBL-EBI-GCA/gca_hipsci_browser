@@ -256,7 +256,7 @@
             },
             "predictedPopulation": {
                 "type": "string",
-                "index": "analyzed",
+                "index": "not_analyzed",
                 "copy_to": "searchable.free"
             },
             "sourceMaterial": {

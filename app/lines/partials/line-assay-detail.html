@@ -43,6 +43,11 @@
                 <dd ng-bind="lineData.tissueProvider"></dd>
             </div>
 
+            <div ng-if="lineData.predictedPopulation">
+                <dt>Predicted Population:</dt>
+                <dd ng-bind="lineData.predictedPopulation"></dd>
+            </div>
+
             <div ng-if="lineData.reprogramming.methodOfDerivation">
                 <dt>Method of derivation:</dt>
                 <dd ng-bind="lineData.reprogramming.methodOfDerivation"></dd>
