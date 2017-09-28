@@ -254,6 +254,11 @@
                     }
                 }
             },
+            "predictedPopulation": {
+                "type": "string",
+                "index": "analyzed",
+                "copy_to": "searchable.free"
+            },
             "sourceMaterial": {
                 "properties": {
                     "value": {
