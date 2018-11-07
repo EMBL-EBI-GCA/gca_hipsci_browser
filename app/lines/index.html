@@ -60,6 +60,18 @@
         ga('create', 'UA-62861164-1', 'auto');
         ga('send', 'pageview');
     </script>
+    <script>    
+        var localFrameworkVersion = '1.1'; // 1.1 or 1.2 or compliance or other
+            // if you select compliance or other we will add some helpful
+            // CSS styling, but you may need to add some CSS yourself
+         var newDataProtectionNotificationBanner = document.createElement('script');
+           newDataProtectionNotificationBanner.src = 'https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.3/js/ebi-global-includes/script/5_ebiFrameworkNotificationBanner.js?legacyRequest='+localFrameworkVersion;
+           document.head.appendChild(newDataProtectionNotificationBanner);
+           newDataProtectionNotificationBanner.onload = function() {
+           ebiFrameworkRunDataProtectionBanner(); // invoke the banner
+           };
+    </script>
+    <div id="data-protection-message-configuration" data-message="This website requires cookies, and the limited processing of your personal data in order to function. By using the site you are agreeing to this as outlined in our <a class='white-color' href='https://www.ebi.ac.uk/data-protection/privacy-notice/hipsci-data-portal'>Privacy Notice</a> and <a class='white-color' href='https://www.ebi.ac.uk/about/terms-of-use'>Terms Of Use</a>." data-service-id="hipsci-data-portal" data-data-protection-version="1"></div>
 	
 </head>
 <body role="document">
