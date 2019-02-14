@@ -1,3 +1,3 @@
-#ebisc browser
+#HipSci browser
 
-An angularjs based catalogue for EBiSC
+An angularjs based catalogue for HipSci
