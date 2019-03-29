@@ -57,10 +57,6 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
         if (cellbiolfn.length > 0 && cellbiolfn[0].hasOwnProperty('idrURL')) {
           $scope.idrUrl = cellbiolfn[0].idrURL;
         };
-        var idrVAR = jQuery.grep($scope.data.assays, function(obj) {return obj.name === 'High content imaging' ? 1 : 0});
-        if (idrVAR.length > 0 && idrVAR[0].hasOwnProperty('idrURL')) {
-          $scope.idrUrl = idrVAR[0].idrURL;
-        };
     }, function(resp) {
         $scope.apiError = true;
         $scope.apiStatus = resp.status;
@@ -162,7 +158,6 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
                 'mtarray': 'Methylation array',
                 'proteomics': 'Proteomics',
                 'cellbiol-fn': 'Cellular phenotyping',
-                'IDR': 'High content imaging',
         };
     $scope.assay = assayMap[$routeParams.assay];
     if (!$scope.assay) {
@@ -218,12 +213,6 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
         if ($scope.assay == 'Cellular phenotyping') {
           var cellbiol = jQuery.grep($scope.lineData.assays, function(obj) {return obj.name === 'Cellular phenotyping' ? 1 : 0});
           if (cellbiol.length > 0 && cellbiol[0].hasOwnProperty('idrURL')) {
-            $scope.idrUrl = cellbiol[0].idrURL;
-          };
-        }
-        if ($scope.assay == 'High content imaging') {
-          var idr = jQuery.grep($scope.lineData.assays, function(obj) {return obj.name === 'High content imaging' ? 1 : 0});
-          if (idr.length > 0 && idr[0].hasOwnProperty('idrURL')) {
             $scope.idrUrl = cellbiol[0].idrURL;
           };
         }
