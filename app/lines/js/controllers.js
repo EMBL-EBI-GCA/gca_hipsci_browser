@@ -158,6 +158,7 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
                 'mtarray': 'Methylation array',
                 'proteomics': 'Proteomics',
                 'cellbiol-fn': 'Cellular phenotyping',
+                'IDR': 'High content imaging',
         };
     $scope.assay = assayMap[$routeParams.assay];
     if (!$scope.assay) {
