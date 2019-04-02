@@ -57,6 +57,10 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
         if (cellbiolfn.length > 0 && cellbiolfn[0].hasOwnProperty('idrURL')) {
           $scope.idrUrl = cellbiolfn[0].idrURL;
         };
+        var idrVAR = jQuery.grep($scope.data.assays, function(obj) {return obj.name === 'High content imaging' ? 1 : 0});
+        if (idrVAR.length > 0 && idrVAR[0].hasOwnProperty('idrURL')) {
+          $scope.idrUrl = idrVAR[0].idrURL;
+        };
     }, function(resp) {
         $scope.apiError = true;
         $scope.apiStatus = resp.status;
@@ -93,7 +97,7 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
       {visible: false, selectable: false, esName: 'samples.cellType'},
       {visible: false,  selectable: false, esName: 'samples.name'},
     ];
-    
+
     for (var i=0; i<this.fileFields.length; i++) {
       var field = this.fileFields[i];
       if (field.visible || field.selectable) {
@@ -101,7 +105,7 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
             : field.esName == 'archive.ftpUrl' ? '<th>'+field.label+'<md-modal modal-md="files-access" title="Data access"></md-modal></th>'
             : '<th>'+field.label+'</th>';
           var hitStr = 'hit['+i+']';
-          field.td = 
+          field.td =
                 field.esName == 'samples.name' ? '<td class="name valign"><div class="chevron" ng-if="'+[hitStr]+'.length>5"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></div><div ng-class="{\'tall-td\': '+[hitStr]+'.length>5}"><div ng-repeat="name in '+hitStr+'"><a ng-href="#/lines/{{name}}" ng-bind="name"></a><br ng-if="!$last"></div></div><div class="chevron bottom-chevron" ng-if="'+[hitStr]+'.length>5"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></div></td>'
                 : field.esName == 'archive.ftpUrl' ? '<td class="valign"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
                 : field.esName == 'archive.name' ? '<td class="name valign"><a ng-href="{{'+hitStr+'.url}}" target="_blank" ng-bind="'+hitStr+'.name"></a></td>'
@@ -158,6 +162,7 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
                 'mtarray': 'Methylation array',
                 'proteomics': 'Proteomics',
                 'cellbiol-fn': 'Cellular phenotyping',
+                'IDR': 'High content imaging',
         };
     $scope.assay = assayMap[$routeParams.assay];
     if (!$scope.assay) {
@@ -216,6 +221,12 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
             $scope.idrUrl = cellbiol[0].idrURL;
           };
         }
+        if ($scope.assay == 'High content imaging') {
+          var idr = jQuery.grep($scope.lineData.assays, function(obj) {return obj.name === 'High content imaging' ? 1 : 0});
+          if (idr.length > 0 && idr[0].hasOwnProperty('idrURL')) {
+            $scope.idrUrl = cellbiol[0].idrURL;
+          };
+        }
     }, function(resp) {
         $scope.apiError = true;
         $scope.apiStatus = resp.status;
@@ -266,7 +277,7 @@ controllers.controller('DonorDetailCtrl', ['$scope', '$routeParams', 'apiClient'
             if (! $scope.data.bankingStatus.hasOwnProperty(bankingStatus)) {
                 $scope.data.bankingStatus[bankingStatus] = [];
             }
-            $scope.data.bankingStatus[bankingStatus].push(cellLine.name);            
+            $scope.data.bankingStatus[bankingStatus].push(cellLine.name);
         }
     }, function(resp) {
         $scope.apiError = true;
@@ -298,13 +309,13 @@ controllers.controller('DonorListCtrl', function() {
     for (var i=0; i<this.fields.length; i++) {
         var field = this.fields[i];
         if (field.visible || field.selectable) {
-            field.th = 
+            field.th =
                 field.esName == 'bioSamplesAccession' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
               : field.esName == 'cellLines.name' ? '<th class="matrix-dot"><div><span>'+field.label+'</span></div></th>'
               : field.esName == 'diseaseStatus.value' ? '<th>'+field.label+'</th>'
               : '<th>'+field.label+'</th>'
             var hitStr = 'hit['+i+']';
-            field.td = 
+            field.td =
                 field.esName == 'bioSamplesAccession' ? '<td class="matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item biosample" popover="Biosample" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
               : field.esName == 'cellLines.name' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.join(\', \')}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.length"></span></div></td>'
               : field.esName == 'name' ? '<td class="name"><a ng-href="#/donors/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
@@ -410,7 +421,7 @@ controllers.controller('FileListCtrl', function() {
                 : field.esName == 'archive.ftpUrl' ? '<th>'+field.label+'<md-modal modal-md="files-access" title="Data access"></md-modal></th>'
                 : '<th>'+field.label+'</th>';
             var hitStr = 'hit['+i+']';
-            field.td = 
+            field.td =
                   field.esName == 'samples.name' ? '<td class="name valign"><div class="chevron" ng-if="'+[hitStr]+'.length>5"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></div><div ng-class="{\'tall-td\': '+[hitStr]+'.length>5}"><div ng-repeat="name in '+hitStr+'"><a ng-href="#/lines/{{name}}" ng-bind="name"></a><br ng-if="!$last"></div></div><div class="chevron bottom-chevron" ng-if="'+[hitStr]+'.length>5"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></div></td>'
                   : field.esName == 'archive.ftpUrl' ? '<td class="valign"><a ng-if="'+hitStr+'" ng-href="{{'+hitStr+'}}" target="_blank"><span class="glyphicon glyphicon-download-alt" aria-hidden="true" ></span></a></td>'
                   : field.esName == 'archive.name' ? '<td class="valign"><a ng-href="{{'+hitStr+'.url}}" target="_blank" ng-bind="'+hitStr+'.name"></a></td>'
