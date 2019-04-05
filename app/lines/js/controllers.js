@@ -59,7 +59,7 @@ controllers.controller('LineDetailCtrl', ['$scope', '$routeParams', 'apiClient',
         };
         var idrVAR = jQuery.grep($scope.data.assays, function(obj) {return obj.name === 'High content imaging' ? 1 : 0});
         if (idrVAR.length > 0) {
-          $scope.idrUrl = idrVAR[0].idrURL;
+          $scope.idrapiUrl = idrVAR[0].idrapiURL;
         };
     }, function(resp) {
         $scope.apiError = true;
@@ -224,7 +224,7 @@ controllers.controller('LineAssayCtrl', ['$scope', '$routeParams', '$location', 
         if ($scope.assay == 'High content imaging') {
           var idr = jQuery.grep($scope.lineData.assays, function(obj) {return obj.name === 'High content imaging' ? 1 : 0});
           if (idr.length > 0) {
-            $scope.idrUrl = idr[0].idrURL;
+            $scope.idrapiUrl = idr[0].idrapiURL;
           };
         }
     }, function(resp) {
