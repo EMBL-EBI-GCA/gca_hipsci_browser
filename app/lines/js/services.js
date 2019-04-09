@@ -102,7 +102,7 @@ services.factory('lineTableVars', function lineTableVarsFactory() {
               {short: 'mtarray', long: 'Methylation array'},
               {short: 'proteomics', long: 'Proteomics'},
               {short: 'cellbiol-fn', long: 'Cellular phenotyping'},
-              {short: 'idr', long: 'High content imaging'},
+              {short: 'imaging', long: 'High content imaging'},
         ];
 
   f.fields = [
