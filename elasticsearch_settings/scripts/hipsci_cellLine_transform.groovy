@@ -31,7 +31,7 @@ if (ctx._source.assays) {
           ctx._source.searchable.free << 'wgs'
       }
       if (assay.name && (assay.name == 'High content imaging')) {
-          ctx._source.searchable.free << 'imaging'
+          ctx._source.searchable.free << 'idr'
       }
   }
 }
