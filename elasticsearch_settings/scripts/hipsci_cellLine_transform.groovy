@@ -30,6 +30,9 @@ if (ctx._source.assays) {
       if (assay.name && (assay.name == 'Whole genome sequencing')) {
           ctx._source.searchable.free << 'wgs'
       }
+      if (assay.name && (assay.name == 'High content imaging')) {
+          ctx._source.searchable.free << 'imaging'
+      }
   }
 }
 
