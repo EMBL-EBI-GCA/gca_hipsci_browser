@@ -240,7 +240,8 @@
                 "properties": {
                     "novelty": {
                         "type": "float",
-                        "index": "not_analyzed"
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.free"
                     },
                     "novelty_image": {
                         "type": "string",
@@ -248,7 +249,8 @@
                     },
                     "pluripotency": {
                         "type": "float",
-                        "index": "not_analyzed"
+                        "index": "not_analyzed",
+                        "copy_to": "searchable.free"
                     },
                     "pluripotency_image": {
                         "type": "string",
