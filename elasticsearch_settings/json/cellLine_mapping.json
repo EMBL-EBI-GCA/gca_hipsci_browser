@@ -239,14 +239,16 @@
             "pluritest": {
                 "properties": {
                     "novelty": {
-                        "type": "float"
+                        "type": "float",
+                        "index": "not_analyzed"
                     },
                     "novelty_image": {
                         "type": "string",
                         "index": "not_analyzed"
                     },
                     "pluripotency": {
-                        "type": "float"
+                        "type": "float",
+                        "index": "not_analyzed"
                     },
                     "pluripotency_image": {
                         "type": "string",
