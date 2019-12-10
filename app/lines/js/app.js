@@ -44,6 +44,11 @@ hipsciBrowser.config(['$routeProvider',
       controllerAs: 'DonorCtrl',
       reloadOnSearch: false,
     }).
+    when('/retirement', {
+      templateUrl: 'partials/retirement.html?ver=20170713',
+      controller: 'RetirementCtrl',
+      controllerAs: 'RetireCtrl',
+    }).
     when('/files', {
       templateUrl: 'partials/file-list.html?ver=20170713',
       controller: 'FileListCtrl',
@@ -69,6 +74,12 @@ hipsciBrowser.config(['$routeProvider',
       templateUrl: 'partials/search.html?ver=20170713',
       controller: 'SearchCtrl',
       controllerAs: 'SearchCtrl',
+    }).
+    when('/api', {
+      controller: function() {
+        window.location.replace("/data/faq/api");
+      },
+      template: '<div></div>',
     }).
     when('/api', {
       controller: function() {
