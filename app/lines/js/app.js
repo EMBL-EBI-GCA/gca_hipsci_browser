@@ -45,7 +45,7 @@ hipsciBrowser.config(['$routeProvider',
       reloadOnSearch: false,
     }).
     when('/retirement', {
-      templateUrl: 'partials/retirement.html?ver=20170713',
+      templateUrl: 'partials/retirement_page.html?ver=20170713',
       controller: 'RetirementCtrl',
       controllerAs: 'RetireCtrl',
     }).
