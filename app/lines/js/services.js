@@ -140,6 +140,7 @@ services.factory('lineTableVars', function lineTableVarsFactory() {
               : field.esName == 'ecaccCatalogNumber' ? '<th class="purchase-button"></th>'
               : '<th>'+field.label+'</th>'
             var hitStr = 'hit['+i+']';
+            console.log(hitStr);
             field.td = 
                 field.esName == 'bankingStatus' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter" ng-class="'+hitStr+'.classes"></span></div></td>'
               : field.esName == 'openAccess' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
