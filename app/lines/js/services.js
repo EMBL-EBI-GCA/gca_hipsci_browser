@@ -202,6 +202,7 @@ services.factory('lineTableVars', function lineTableVarsFactory() {
                     processedFields[i].push(jQuery.inArray(f.assays[j].long, hitFields[field.esName]) > -1 ? true: false);
                     console.log(hitFields[field.esName])
                     console.log(processedFields[i])
+                    console.log(f.assays[j].long)
                 }
             }
             else {
