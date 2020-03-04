@@ -141,8 +141,8 @@ services.factory('lineTableVars', function lineTableVarsFactory() {
               : '<th>'+field.label+'</th>'
             var hitStr = 'hit['+i+']';
             if (field.esName == 'assays.name') {console.log("'+hitStr+'[$index]")};
-            console.log(hitStr[$index]);
-            field.td = 
+            // console.log(hitStr[$index]);
+            field.td =
                 field.esName == 'bankingStatus' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter" ng-class="'+hitStr+'.classes"></span></div></td>'
               : field.esName == 'openAccess' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.text}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.letter"></span></div></td>'
               : field.esName == 'name' ? '<td class="name"><a ng-href="#/lines/{{'+hitStr+'}}" ng-bind="'+hitStr+'"</a></td>'
