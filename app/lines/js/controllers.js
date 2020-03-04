@@ -316,6 +316,7 @@ controllers.controller('DonorListCtrl', function() {
               : field.esName == 'diseaseStatus.value' ? '<th>'+field.label+'</th>'
               : '<th>'+field.label+'</th>'
             var hitStr = 'hit['+i+']';
+            console.log(hitStr);
             field.td =
                 field.esName == 'bioSamplesAccession' ? '<td class="matrix-dot"><a ng-href="http://www.ebi.ac.uk/biosamples/sample/{{'+hitStr+'}}" target="_blank"><div class="matrix-dot-item biosample" popover="Biosample" popover-trigger="mouseenter">&#x25cf;</div></a></td>'
               : field.esName == 'cellLines.name' ? '<td class="matrix-dot"><div class="matrix-dot-item" popover="{{'+hitStr+'.join(\', \')}}" popover-trigger="mouseenter"><span ng-bind="'+hitStr+'.length"></span></div></td>'
