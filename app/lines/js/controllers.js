@@ -554,8 +554,8 @@ controllers.controller('CohortDetailCtrl', ['$routeParams', 'apiClient', '$http'
 ]);
 
 controllers.controller('AssayDetailCtrl', ['$routeParams', '$http', 'lineTableVars',
-  consol.log($routeParams);
   function($routeParams, $http, lineTableVars) {
+    console.log($routeParams);
     var c = this;
     c.documentType = 'cellLine';
     c.exportFilename = 'hipsci-'+$routeParams.assayName;
