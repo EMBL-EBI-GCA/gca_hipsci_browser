@@ -200,9 +200,9 @@ services.factory('lineTableVars', function lineTableVarsFactory() {
                 processedFields[i] = [];
                 for (var j=0; j<f.assays.length; j++) {
                     processedFields[i].push(jQuery.inArray(f.assays[j].long, hitFields[field.esName]) > -1 ? true: false);
-                    console.log(hitFields[field.esName]) // FROM THE BEGINNING - Array(3) [ "Exome-seq", "RNA-seq", "Proteomics" ]      0: "Exome-seq"    1: "RNA-seq"     2: "Proteomics"     length: 3
-                    console.log(processedFields[i])  // ONE BY ONE - Array(9) [ false, false, true, true, false, false, true, false, false ]
-                    console.log(f.assays[j].long) // ONE BY ONE - Genotyping array -> Expression array -> .....
+                    // console.log(hitFields[field.esName]) // FROM THE BEGINNING - Array(3) [ "Exome-seq", "RNA-seq", "Proteomics" ]      0: "Exome-seq"    1: "RNA-seq"     2: "Proteomics"     length: 3
+                    // console.log(processedFields[i])  // ONE BY ONE - Array(9) [ false, false, true, true, false, false, true, false, false ]
+                    // console.log(f.assays[j].long) // ONE BY ONE - Genotyping array -> Expression array -> .....
                     // checks if f.assays[j].long is in hitFields[field.esName]
                     // hitFields[field.esName]    an array with all the existing assays
                 }

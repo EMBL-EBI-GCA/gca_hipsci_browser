@@ -554,6 +554,7 @@ controllers.controller('CohortDetailCtrl', ['$routeParams', 'apiClient', '$http'
 ]);
 
 controllers.controller('AssayDetailCtrl', ['$routeParams', '$http', 'lineTableVars',
+  consol.log($routeParams);
   function($routeParams, $http, lineTableVars) {
     var c = this;
     c.documentType = 'cellLine';
