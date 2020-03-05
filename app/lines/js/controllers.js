@@ -343,7 +343,6 @@ controllers.controller('LineListCtrl', ['routeCache', 'lineTableVars', function(
     var controller = this;
     this.documentType = 'cellLine';
     this.exportFilename = 'hipsci_lines';
-    console.log('routeCache');
     this.assays = lineTableVars.assays;
     this.fields = lineTableVars.fields;
     this.processHitFields = lineTableVars.processHitFields;
@@ -555,6 +554,7 @@ controllers.controller('CohortDetailCtrl', ['$routeParams', 'apiClient', '$http'
 
 controllers.controller('AssayDetailCtrl', ['$routeParams', '$http', 'lineTableVars',
   function($routeParams, $http, lineTableVars) {
+    console.log($routeParams);
     var c = this;
     c.documentType = 'cellLine';
     c.exportFilename = 'hipsci-'+$routeParams.assayName;
